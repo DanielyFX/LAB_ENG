@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="IES300@localhost">
+  <database-model serializer="dbm" dbms="MONGO" family-id="MONGO" format-version="4.52">
+    <root id="1">
+      <ServerVersion>7.0.7</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="IES300">
+      <Current>1</Current>
+      <LastIntrospectionLocalTimestamp>2024-05-04.16:08:49</LastIntrospectionLocalTimestamp>
+    </schema>
+    <schema id="3" parent="1" name="admin"/>
+    <schema id="4" parent="1" name="config"/>
+    <schema id="5" parent="1" name="local"/>
+    <table id="6" parent="2" name="chamados"/>
+    <column id="7" parent="6" name="_id">
+      <DasType>ObjectId|12s</DasType>
+      <Position>1</Position>
+    </column>
+  </database-model>
+</dataSource>

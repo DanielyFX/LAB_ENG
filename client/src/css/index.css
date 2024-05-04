@@ -1,0 +1,43 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+div#root {
+  height: 100%; /* remove this line to see div.app is no more 100% height */
+}
+
+div.app {
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+#body-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#body-container > #sidebar-container {
+  flex-basis: 20%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.sidebar-link {
+  /*margin-right: 50px;*/
+  margin-top: 5px;
+}
+
+#body-container > .body-main {
+  flex-basis: 80%;
+  padding-left: 50px;
+}

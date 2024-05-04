@@ -1,0 +1,22 @@
+#login-raiz {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-container {
+    display: flex;
+    flex-direction: column;
+    /*width: 70%;*/
+    padding: 10px;
+    align-items: center;
+    background-color: lightgray;
+    border-radius: 15px;
+}
+
+#login-form {
+    width: 50%;
+}
+

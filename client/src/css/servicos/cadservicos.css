@@ -1,0 +1,17 @@
+#cadservico-raiz {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#cadservico-main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    margin-left: 20px;
+    align-items: stretch;
+    /*background-color: lightgray;*/
+    border-radius: 15px;
+}

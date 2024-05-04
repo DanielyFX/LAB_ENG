@@ -1,0 +1,30 @@
+#inicio-raiz {
+
+}
+
+#inicio-topo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0 50px;
+    margin-top: 5%;
+}
+
+#inicio-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 30%;
+}
+
+.inicio-link {
+    margin: 10%;
+}
+
+.inicio-link > button {
+    width: 150px;
+}
