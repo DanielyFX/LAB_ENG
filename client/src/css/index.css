@@ -39,5 +39,5 @@ h1 {
 
 #body-container > .body-main {
   flex-basis: 80%;
-  padding-left: 50px;
+  padding-right: 50px;
 }

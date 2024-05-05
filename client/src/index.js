@@ -1,7 +1,7 @@
 // BIBLIOTECAS E OUTROS
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import {createBrowserRouter, Router, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 // CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css';
@@ -21,6 +21,8 @@ import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+// ARQUIVO JSON PARA TESTE
+import dados from './assets/dados.json';
 
 const router = createBrowserRouter([
     {
@@ -37,8 +39,8 @@ const router = createBrowserRouter([
             <div id="servicos-raiz">
                 <Header titulo="Serviços"/>
                 <div id="body-container">
-                    <Servicos/>
                     <Sidebar/>
+                    <Servicos/>
                 </div>
             </div>
         )
@@ -49,8 +51,8 @@ const router = createBrowserRouter([
             <div id="cadservico-raiz">
                 <Header titulo="Cadastrar Serviço"/>
                 <div id="body-container">
-                    <Cadastrar_servico/>
                     <Sidebar/>
+                    <Cadastrar_servico/>
                 </div>
             </div>
         )
@@ -61,8 +63,8 @@ const router = createBrowserRouter([
             <div id="tecnicos-raiz">
                 <Header titulo="Técnicos"/>
                 <div id="body-container">
-                    <Tecnicos/>
                     <Sidebar/>
+                    <Tecnicos/>
                 </div>
             </div>
         )
@@ -73,8 +75,8 @@ const router = createBrowserRouter([
             <div id="cadtecnico-raiz">
                 <Header titulo="Cadastrar Técnico"/>
                 <div id="body-container">
-                    <Cadastrar_tecnico/>
                     <Sidebar/>
+                    <Cadastrar_tecnico/>
                 </div>
             </div>
         )
@@ -85,8 +87,8 @@ const router = createBrowserRouter([
             <div id="atendentes-raiz">
                 <Header titulo="Atendentes"/>
                 <div id="body-container">
-                    <Atendentes/>
                     <Sidebar/>
+                    <Atendentes/>
                 </div>
             </div>
         )
@@ -97,8 +99,8 @@ const router = createBrowserRouter([
             <div id="cadatendente-raiz">
                 <Header titulo="Cadastrar Atendente"/>
                 <div id="body-container">
-                    <Cadastrar_atendente/>
                     <Sidebar/>
+                    <Cadastrar_atendente/>
                 </div>
             </div>
         )
@@ -109,8 +111,8 @@ const router = createBrowserRouter([
             <div id="clientes-raiz">
                 <Header titulo="Clientes"/>
                 <div id="body-container">
-                    <Clientes/>
                     <Sidebar/>
+                    <Clientes/>
                 </div>
             </div>
         )
@@ -121,20 +123,23 @@ const router = createBrowserRouter([
             <div id="cadcliente-raiz">
                 <Header titulo="Cadastrar Cliente"/>
                 <div id="body-container">
-                    <Cadastrar_cliente/>
                     <Sidebar/>
+                    <Cadastrar_cliente/>
                 </div>
             </div>
         )
     },
     {
         path: "/chamados/",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
         element: (
             <div id="chamados-raiz">
                 <Header titulo="Chamado"/>
                 <div id="body-container">
-                    <Chamados/>
                     <Sidebar/>
+                    <Chamados/>
                 </div>
             </div>
         )
@@ -145,8 +150,8 @@ const router = createBrowserRouter([
             <div id="cadchamado-raiz">
                 <Header titulo="Cadastrar Chamado"/>
                 <div id="body-container">
-                    <Cadastrar_chamado/>
                     <Sidebar/>
+                    <Cadastrar_chamado/>
                 </div>
             </div>
         )
