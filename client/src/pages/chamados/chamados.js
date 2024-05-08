@@ -10,8 +10,13 @@ export default function Chamados(props) {
     let { chamados } = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
+    const [parametroOrd, setParametroOrd] = useState("chamado");
     const [chamado, setChamado] = useState(0);
     const [show, setShow] = useState(false);
+
+    const sort_string = (a, b) => {
+        return a > b ? a === b ? 1 : 0 : -1;
+    }
 
     return (
         <div className="body-main">
@@ -30,6 +35,21 @@ export default function Chamados(props) {
                         <Dropdown.Item as="button" onClick={() => setParametro("data")}>data</Dropdown.Item>
                         <Dropdown.Item as="button" onClick={() => setParametro("atendente")}>atendente</Dropdown.Item>
                         <Dropdown.Item as="button" onClick={() => setParametro("cliente")}>cliente</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown>
+                    <Dropdown.Toggle variant="info">
+                        parâmetro de ordenação: {parametroOrd}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("todos")}>todos os campos</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("_id")}>_id</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("chamado")}>chamado</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("urgencia")}>urgencia</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("orcamento")}>orçamento</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("data")}>data</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("atendente")}>atendente</Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => setParametroOrd("cliente")}>cliente</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </InputGroup>
@@ -59,6 +79,23 @@ export default function Chamados(props) {
                             default:
                                 return true;
                         }
+                    }).sort((a,b) => {
+                        console.log(parametroOrd);
+                        switch (parametroOrd) {
+                            case "chamado":
+                            case "urgencia":
+                            case "orcamento":
+                            case "atendente":
+                            case "cliente":
+                                sort_string(a[parametroOrd], b[parametroOrd]);
+                                break;
+                            case "_id":
+                                return parseInt(a["_id"]) - parseInt(b["_id"])
+                            case "data":
+                                return new Date(a["previsao_atendimento"]) - new Date(b["previsao_atendimento"]);
+                            default:
+                                return true;
+                        }
                     }).map((chamado, key) => {
                         return (
                             <div className="chamado">
@@ -78,9 +115,7 @@ export default function Chamados(props) {
                     })
                 }
             </div>
-
             <ChamadoModal show={show} chamados={chamados} chamado_key={chamado} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
-
         </div>
     )
 }
