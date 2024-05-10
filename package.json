@@ -1,0 +1,13 @@
+{
+  "name": "ies300-projeto",
+  "version": "1.0.1",
+  "description": "na pasta do servidor utilizar arquivo .env:\r ``` \r PORT=3000\r CONNECTION_STRING=mongodb://localhost:27017\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "--recursive test",
+    "bump-version": "npm version patch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
