@@ -1,0 +1,14 @@
+.menu-lateral {
+    width: 200px;
+}
+
+.menu-lateral .dropdown-toggle {
+    width: 100%; 
+    text-align: center; 
+}
+
+.menu-lateral .dropdown-menu {
+    width: 100%; 
+}
+
+
