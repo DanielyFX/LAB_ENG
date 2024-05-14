@@ -49,10 +49,10 @@ function ChamadoModal(props) {
                    </Modal.Body>
                    <Modal.Footer>
                        <Button variant="secondary" onClick={handleClose}>
-                           Close
+                           Cancelar
                        </Button>
                        <Button variant="primary" onClick={handleClose} type='submit'>
-                           Save Changes
+                           Salvar
                        </Button>
                    </Modal.Footer>
                </Form>

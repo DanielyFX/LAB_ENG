@@ -1,4 +1,4 @@
-#login-raiz {
+#senha-raiz {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-#login-container {
+#senha-container {
     display: flex;
     flex-direction: column;
     /*width: 70%;*/
@@ -17,7 +17,6 @@
     border-radius: 15px;
 }
 
-#login-form {
+#senha-form {
     width: 50%;
 }
-

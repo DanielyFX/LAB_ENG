@@ -6,32 +6,40 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css';
 // PAGINAS
-import Inicio from './pages/inicio';
 import Login from "./pages/login";
-import Servicos from "./pages/servicos/servicos";
 import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
-import Tecnicos from "./pages/tecnicos/tecnicos";
 import Cadastrar_tecnico from "./pages/tecnicos/cadastrar_tecnico";
-import Atendentes from "./pages/atendentes/atendentes";
 import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
-import Clientes from "./pages/clientes/clientes";
 import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
 import Chamados from "./pages/chamados/chamados";
 import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
+import RecuperaSenha from './pages/senha';
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 // ARQUIVO JSON PARA TESTE
 import dados from './assets/dados.json';
 
+//ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
     {
         path: "/",
         element: (<Login/>)
     },
     {
+        path: "/recupera-senha",
+        element: <RecuperaSenha/>
+    },
+    {
         path: "/inicio",
-        element: <Inicio/>
+        element: (
+            <div id="servicos-raiz">
+                <Header titulo="Inicio"/>
+                <div id="body-container">
+                    <Sidebar/>
+                </div>
+            </div>
+        )
     },
     {
         path: "/servicos",
@@ -39,8 +47,7 @@ const router = createBrowserRouter([
             <div id="servicos-raiz">
                 <Header titulo="Serviços"/>
                 <div id="body-container">
-                    <Sidebar/>
-                    <Servicos/>
+                    <Sidebar/>            
                 </div>
             </div>
         )
@@ -63,8 +70,7 @@ const router = createBrowserRouter([
             <div id="tecnicos-raiz">
                 <Header titulo="Técnicos"/>
                 <div id="body-container">
-                    <Sidebar/>
-                    <Tecnicos/>
+                    <Sidebar/>                  
                 </div>
             </div>
         )
@@ -88,7 +94,6 @@ const router = createBrowserRouter([
                 <Header titulo="Atendentes"/>
                 <div id="body-container">
                     <Sidebar/>
-                    <Atendentes/>
                 </div>
             </div>
         )
@@ -112,7 +117,6 @@ const router = createBrowserRouter([
                 <Header titulo="Clientes"/>
                 <div id="body-container">
                     <Sidebar/>
-                    <Clientes/>
                 </div>
             </div>
         )
@@ -145,7 +149,7 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/chamados/cadastrar",
+        path: "/chamados/",
         element: (
             <div id="cadchamado-raiz">
                 <Header titulo="Cadastrar Chamado"/>
