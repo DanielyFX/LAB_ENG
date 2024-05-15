@@ -11,7 +11,7 @@ import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
 import Cadastrar_tecnico from "./pages/tecnicos/cadastrar_tecnico";
 import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
 import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
-import Chamados from "./pages/chamados/chamados";
+import Consultar_Chamados from "./pages/chamados/chamados";
 import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
 import RecuperaSenha from './pages/senha';
 // COMPONENTES
@@ -19,6 +19,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 // ARQUIVO JSON PARA TESTE
 import dados from './assets/dados.json';
+
 
 //ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
@@ -134,28 +135,28 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/chamados/",
-        loader: async () => {
-            return JSON.parse(JSON.stringify(dados));
-        },
-        element: (
-            <div id="chamados-raiz">
-                <Header titulo="Chamado"/>
-                <div id="body-container">
-                    <Sidebar/>
-                    <Chamados/>
-                </div>
-            </div>
-        )
-    },
-    {
-        path: "/chamados/",
+        path: "/chamados/cadastrar",
         element: (
             <div id="cadchamado-raiz">
                 <Header titulo="Cadastrar Chamado"/>
                 <div id="body-container">
                     <Sidebar/>
                     <Cadastrar_chamado/>
+                </div>
+            </div>
+        )
+    },
+    {
+        path: "/chamados/consultar",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
+        element: (
+            <div id="chamados-raiz">
+                <Header titulo="Consultar Chamados"/>
+                <div id="body-container">
+                    <Sidebar/>
+                    <Consultar_Chamados/>
                 </div>
             </div>
         )

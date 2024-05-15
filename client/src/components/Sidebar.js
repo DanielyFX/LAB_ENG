@@ -63,7 +63,8 @@ export default function Sidebar() {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu show={expandedMenu === "chamado"} style={{ width: "100%" }}>
-                    <Dropdown.Item href="/chamados">Cadastrar Chamado </Dropdown.Item>
+                    <Dropdown.Item href="/chamados/cadastrar">Cadastrar Chamado</Dropdown.Item>
+                    <Dropdown.Item href="/chamados/consultar">Consultar Chamado</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
 
