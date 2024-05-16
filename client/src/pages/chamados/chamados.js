@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import {useState} from "react";
 import {Dropdown, InputGroup} from "react-bootstrap";
 import ChamadoModal from "../../components/ChamadoModal";
-export default function Chamados(props) {
+export default function Consultar_Chamados(props) {
 
     let { chamados } = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
