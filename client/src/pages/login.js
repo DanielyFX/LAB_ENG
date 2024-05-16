@@ -30,8 +30,7 @@ export default function Login() {
             return;
         }
 
-        console.log('Email:', email);
-        console.log('Senha:', senha);
+    
 
 
     };
@@ -74,7 +73,14 @@ export default function Login() {
                         >
                             Esqueci Senha
                         </Button>
-                        <Button variant="primary" type="submit" size='lg'>Entrar</Button>
+                        <Button 
+                            variant="primary" 
+                            type="submit" 
+                            size='lg'
+                            href="/inicio" 
+                        >   
+                            Entrar
+                        </Button>
                     </ButtonGroup>   
                 </Form>
             </div>
