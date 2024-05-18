@@ -43,7 +43,7 @@ export default function Cadastrar_chamado() {
                     <Col sm={10}><Form.Control type="datetime-local"/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Atendente</Form.Label> {/*Deve trazer todos os atendentes cadastrados , em ordem alfabetica  */}
+                <Form.Label column sm={2}>Atendente</Form.Label> {/*Deve trazer todos os atendentes cadastrados , em ordem alfabetica  */}
                     <Col sm={10}>
                         <Form.Control as="select">
                             <option>Selecione...</option> 

@@ -18,21 +18,15 @@ export default function Login() {
 
   
         
-        const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+        const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
         if (!emailRegex.test(email)) {
             setEmailError('Por favor, insira um e-mail válido.');
             return;
         }
-
-        
         if (!senha.trim()) {
             setSenhaError('Por favor, insira sua senha.');
             return;
         }
-
-    
-
-
     };
 
     return (
@@ -77,7 +71,8 @@ export default function Login() {
                             variant="primary" 
                             type="submit" 
                             size='lg'
-                            href="/inicio" 
+                            href="/inicio"
+                            onClick={handleSubmit}
                         >   
                             Entrar
                         </Button>
