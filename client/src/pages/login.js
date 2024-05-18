@@ -18,22 +18,15 @@ export default function Login() {
 
   
         
-        const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+        const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
         if (!emailRegex.test(email)) {
             setEmailError('Por favor, insira um e-mail válido.');
             return;
         }
-
-        
         if (!senha.trim()) {
             setSenhaError('Por favor, insira sua senha.');
             return;
         }
-
-        console.log('Email:', email);
-        console.log('Senha:', senha);
-
-
     };
 
     return (
@@ -74,7 +67,15 @@ export default function Login() {
                         >
                             Esqueci Senha
                         </Button>
-                        <Button variant="primary" type="submit" size='lg'>Entrar</Button>
+                        <Button 
+                            variant="primary" 
+                            type="submit" 
+                            size='lg'
+                            href="/inicio"
+                            onClick={handleSubmit}
+                        >   
+                            Entrar
+                        </Button>
                     </ButtonGroup>   
                 </Form>
             </div>
