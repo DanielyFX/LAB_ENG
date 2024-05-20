@@ -7,19 +7,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css';
 // PAGINAS
 import Login from "./pages/login";
-import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
-import Cadastrar_tecnico from "./pages/tecnicos/cadastrar_tecnico";
-import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
-import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
-import Consultar_Chamados from "./pages/chamados/chamados";
-import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
-import Orcamento_chamado from "./pages/orcamento/orcamento_chamado";
 import RecuperaSenha from './pages/senha';
+
+import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
+
+import Cadastrar_tecnico from "./pages/tecnicos/cadastrar_tecnico";
+import Consultar_Tecnicos from "./pages/tecnicos/tecnicos";
+
+import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
+
+import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
+
+import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
+import Consultar_Chamados from "./pages/chamados/chamados";
+
+import Orcamento_chamado from "./pages/orcamento/orcamento_chamado";
+import Consultar_orcamento from "./pages/orcamento/orcamentos"
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 // ARQUIVO JSON PARA TESTE
 import dados from './assets/dados.json';
+
 
 
 //ROTAS NO NAVEGADOR
@@ -44,7 +53,10 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/servicos",
+        path: "/servicos/consultar",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
         element: (
             <div id="servicos-raiz">
                 <Header titulo="Serviços"/>
@@ -67,12 +79,16 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/tecnicos/",
+        path: "/tecnicos/consultar",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
         element: (
             <div id="tecnicos-raiz">
                 <Header titulo="Técnicos"/>
                 <div id="body-container">
-                    <Sidebar/>                  
+                    <Sidebar/>
+                    <Consultar_Tecnicos/>
                 </div>
             </div>
         )
@@ -90,7 +106,10 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/atendentes/",
+        path: "/atendentes/consultar",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
         element: (
             <div id="atendentes-raiz">
                 <Header titulo="Atendentes"/>
@@ -113,7 +132,10 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/clientes/",
+        path: "/clientes/consultar",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
         element: (
             <div id="clientes-raiz">
                 <Header titulo="Clientes"/>
@@ -170,6 +192,21 @@ const router = createBrowserRouter([
                 <div id="body-container">
                     <Sidebar/>
                     <Orcamento_chamado/>
+                </div>
+            </div>
+        )
+    },
+    {
+        path: "/orcamento/consultar",
+        loader: async () => {
+            return JSON.parse(JSON.stringify(dados));
+        },
+        element: (
+            <div id="chamados-raiz">
+                <Header titulo="Consultar Orçamentos"/>
+                <div id="body-container">
+                    <Sidebar/>
+                    <Consultar_orcamento/>
                 </div>
             </div>
         )
