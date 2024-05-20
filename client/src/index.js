@@ -13,6 +13,7 @@ import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
 import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
 import Consultar_Chamados from "./pages/chamados/chamados";
 import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
+import Orcamento_chamado from "./pages/orcamento/orcamento_chamado";
 import RecuperaSenha from './pages/senha';
 // COMPONENTES
 import Header from "./components/Header";
@@ -157,6 +158,18 @@ const router = createBrowserRouter([
                 <div id="body-container">
                     <Sidebar/>
                     <Consultar_Chamados/>
+                </div>
+            </div>
+        )
+    },
+    {
+        path: "/orcamento/cadastrar",
+        element: (
+            <div id="chamados-raiz">
+                <Header titulo="Realizar Orçamento"/>
+                <div id="body-container">
+                    <Sidebar/>
+                    <Orcamento_chamado/>
                 </div>
             </div>
         )
