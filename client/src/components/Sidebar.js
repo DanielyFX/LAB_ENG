@@ -72,6 +72,22 @@ export default function Sidebar() {
 
             <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic" style={{ width: "100%" }}>
+                   Orçamento
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu show={expandedMenu === "orcamento"} style={{ width: "100%" }}>
+                    <Dropdown.Item href="/orcamento/cadastrar">Realizar Orçamento</Dropdown.Item>
+                    <Dropdown.Item href="/orcamento/consultar">Consultar Orçamento</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+
+
+
+
+            <hr className="sidebar-divider" /> 
+
+            <Dropdown>
+                <Dropdown.Toggle variant="light" id="dropdown-basic" style={{ width: "100%" }}>
                    Atendente
                 </Dropdown.Toggle>
 
