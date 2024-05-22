@@ -5,8 +5,10 @@ import mongoose from 'mongoose';
 
 mongoose.connect(process.env.MONGOURI!).catch(err => {
     console.error(err);
-}).then(e => {
-    console.log("CONECTADO AO BANCO");
+    return Promise.reject(err);
+}).then(onfulfilled => console.log("CONECTADO AO BANCO"), (erro) => {
+    console.log("ERRO AO CONECTAR AO BANCO");
+    console.error(erro);
 })
 
 // FUNCIONARIOS
