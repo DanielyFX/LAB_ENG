@@ -10,13 +10,16 @@ import Login from "./pages/login";
 import RecuperaSenha from './pages/senha';
 
 import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
+import Consultar_Servicos from "./pages/servicos/servicos";
 
 import Cadastrar_tecnico from "./pages/tecnicos/cadastrar_tecnico";
 import Consultar_Tecnicos from "./pages/tecnicos/tecnicos";
 
 import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
+import Consultar_Atendentes from "./pages/atendentes/atendentes";
 
 import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
+import Consultar_Clientes from "./pages/clientes/clientes"
 
 import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
 import Consultar_Chamados from "./pages/chamados/chamados";
@@ -61,7 +64,8 @@ const router = createBrowserRouter([
             <div id="servicos-raiz">
                 <Header titulo="Serviços"/>
                 <div id="body-container">
-                    <Sidebar/>            
+                    <Sidebar/>
+                    <Consultar_Servicos/>
                 </div>
             </div>
         )
@@ -115,6 +119,7 @@ const router = createBrowserRouter([
                 <Header titulo="Atendentes"/>
                 <div id="body-container">
                     <Sidebar/>
+                    <Consultar_Atendentes/>
                 </div>
             </div>
         )
@@ -141,6 +146,7 @@ const router = createBrowserRouter([
                 <Header titulo="Clientes"/>
                 <div id="body-container">
                     <Sidebar/>
+                    <Consultar_Clientes/>
                 </div>
             </div>
         )

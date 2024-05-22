@@ -149,6 +149,122 @@
       "dataContrato": "2024-05-03T20:35:00.000Z"
     }
   ],
+  "orcamentos": [
+    {
+      "id": "aasdasdasdasdads",
+      "tecnico": "tec1",
+      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
+      "tipo": "manuteção micro",
+      "execucao": "30 dias",
+      "garantia": "1 ano",
+      "dataCriacao": "2024-04-02T09:00:00Z",
+      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
+      "situacao": "aprovado",
+      "observacao": "aaaaaabvcccccccc",
+      "desconto": "30% a vista",
+      "preco": "1000.00"
+    },
+    {
+      "id": "aasdasdasdasdads",
+      "tecnico": "tec1",
+      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
+      "tipo": "manuteção micro",
+      "execucao": "30 dias",
+      "garantia": "1 ano",
+      "dataCriacao": "2024-04-02T09:00:00Z",
+      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
+      "situacao": "aprovado",
+      "observacao": "aaaaaabvcccccccc",
+      "desconto": "30% a vista",
+      "preco": "1000.00"
+    },
+    {
+      "id": "aasdasdasdasdads",
+      "tecnico": "tec1",
+      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
+      "tipo": "manuteção micro",
+      "execucao": "30 dias",
+      "garantia": "1 ano",
+      "dataCriacao": "2024-04-02T09:00:00Z",
+      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
+      "situacao": "aprovado",
+      "observacao": "aaaaaabvcccccccc",
+      "desconto": "30% a vista",
+      "preco": "1000.00"
+    },
+    {
+      "id": "aasdasdasdasdads",
+      "tecnico": "tec1",
+      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
+      "tipo": "manuteção micro",
+      "execucao": "30 dias",
+      "garantia": "1 ano",
+      "dataCriacao": "2024-04-02T09:00:00Z",
+      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
+      "situacao": "aprovado",
+      "observacao": "aaaaaabvcccccccc",
+      "desconto": "30% a vista",
+      "preco": "1000.00"
+    }
+  ],
+  "clientes": [
+    {
+      "id": "66491499b95b713baeebf45e",
+      "nome": "cliente1",
+      "dataCriacao": "2022-05-18T20:49:26.322Z",
+      "documento": "ccccc",
+      "telefone": "11999999999",
+      "celular": "11999999999",
+      "email": "cliente@gmail.com",
+      "cep": "08320175",
+      "rua": "rua rua",
+      "numero": "200",
+      "bairro": "pq. san rafael",
+      "cidade": "londrina"
+    },
+    {
+      "id": "66491499b95b713baeebf45e",
+      "nome": "cliente4",
+      "dataCriacao": "2022-05-18T20:49:26.322Z",
+      "documento": "ccccc",
+      "telefone": "11999999999",
+      "celular": "11999999999",
+      "email": "cliente@gmail.com",
+      "cep": "08320175",
+      "rua": "rua rua",
+      "numero": "200",
+      "bairro": "pq. san rafael",
+      "cidade": "londrina"
+    },
+    {
+      "id": "66491499b95b713baeebf45e",
+      "nome": "cliente3",
+      "dataCriacao": "2022-05-18T20:49:26.322Z",
+      "documento": "ccccc",
+      "telefone": "11999999999",
+      "celular": "11999999999",
+      "email": "cliente@gmail.com",
+      "cep": "08320175",
+      "rua": "rua rua",
+      "numero": "200",
+      "bairro": "pq. san rafael",
+      "cidade": "londrina"
+    },
+    {
+      "id": "66491499b95b713baeebf45e",
+      "nome": "cliente2",
+      "dataCriacao": "2022-05-18T20:49:26.322Z",
+      "documento": "ccccc",
+      "telefone": "11999999999",
+      "celular": "11999999999",
+      "email": "cliente@gmail.com",
+      "cep": "08320175",
+      "rua": "rua rua",
+      "numero": "200",
+      "bairro": "pq. san rafael",
+      "cidade": "londrina"
+    }
+  ],
   "atendentes": [
     {
       "id": "66491499b95b713baeebf45e",
@@ -219,122 +335,6 @@
       "dataCriacao": "2024-05-18T20:49:26.322Z",
       "descricao": "aaaaaaa\naaaaaaaaaa\naaaaaaaaaaaa\naaaaaaaaaaa",
       "preco": "11110.00"
-    }
-  ],
-  "clientes": [
-    {
-      "id": "66491499b95b713baeebf45e",
-      "nome": "cliente1",
-      "dataCriacao": "2022-05-18T20:49:26.322Z",
-      "documento": "ccccc",
-      "telefone": "11999999999",
-      "celular": "11999999999",
-      "email": "cliente@gmail.com",
-      "cep": "08320175",
-      "rua": "rua rua",
-      "numero": "200",
-      "bairro": "pq. san rafael",
-      "cidade": "londrina"
-    },
-    {
-      "id": "66491499b95b713baeebf45e",
-      "nome": "cliente4",
-      "dataCriacao": "2022-05-18T20:49:26.322Z",
-      "documento": "ccccc",
-      "telefone": "11999999999",
-      "celular": "11999999999",
-      "email": "cliente@gmail.com",
-      "cep": "08320175",
-      "rua": "rua rua",
-      "numero": "200",
-      "bairro": "pq. san rafael",
-      "cidade": "londrina"
-    },
-    {
-      "id": "66491499b95b713baeebf45e",
-      "nome": "cliente3",
-      "dataCriacao": "2022-05-18T20:49:26.322Z",
-      "documento": "ccccc",
-      "telefone": "11999999999",
-      "celular": "11999999999",
-      "email": "cliente@gmail.com",
-      "cep": "08320175",
-      "rua": "rua rua",
-      "numero": "200",
-      "bairro": "pq. san rafael",
-      "cidade": "londrina"
-    },
-    {
-      "id": "66491499b95b713baeebf45e",
-      "nome": "cliente2",
-      "dataCriacao": "2022-05-18T20:49:26.322Z",
-      "documento": "ccccc",
-      "telefone": "11999999999",
-      "celular": "11999999999",
-      "email": "cliente@gmail.com",
-      "cep": "08320175",
-      "rua": "rua rua",
-      "numero": "200",
-      "bairro": "pq. san rafael",
-      "cidade": "londrina"
-    }
-  ],
-  "orcamentos": [
-    {
-      "id": "aasdasdasdasdads",
-      "tecnico": "tec1",
-      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
-      "tipo": "manuteção micro",
-      "execucao": "30 dias",
-      "garantia": "1 ano",
-      "dataCriacao": "2024-04-02T09:00:00Z",
-      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
-      "situacao": "aprovado",
-      "observacao": "aaaaaabvcccccccc",
-      "desconto": "30% a vista",
-      "preco": "1000.00"
-    },
-    {
-      "id": "aasdasdasdasdads",
-      "tecnico": "tec1",
-      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
-      "tipo": "manuteção micro",
-      "execucao": "30 dias",
-      "garantia": "1 ano",
-      "dataCriacao": "2024-04-02T09:00:00Z",
-      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
-      "situacao": "aprovado",
-      "observacao": "aaaaaabvcccccccc",
-      "desconto": "30% a vista",
-      "preco": "1000.00"
-    },
-    {
-      "id": "aasdasdasdasdads",
-      "tecnico": "tec1",
-      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
-      "tipo": "manuteção micro",
-      "execucao": "30 dias",
-      "garantia": "1 ano",
-      "dataCriacao": "2024-04-02T09:00:00Z",
-      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
-      "situacao": "aprovado",
-      "observacao": "aaaaaabvcccccccc",
-      "desconto": "30% a vista",
-      "preco": "1000.00"
-    },
-    {
-      "id": "aasdasdasdasdads",
-      "tecnico": "tec1",
-      "descricao": "aaaaaaaaaaa\naaaaaaaaa\naaaa",
-      "tipo": "manuteção micro",
-      "execucao": "30 dias",
-      "garantia": "1 ano",
-      "dataCriacao": "2024-04-02T09:00:00Z",
-      "endereco": "rua rua, n 200, 08320-175, pq. san rafael, Londrina, PR",
-      "situacao": "aprovado",
-      "observacao": "aaaaaabvcccccccc",
-      "desconto": "30% a vista",
-      "preco": "1000.00"
     }
   ]
 }

@@ -1,18 +1,18 @@
-import "../../css/tecnicos/tecnicos.css"
+import "../../css/atendentes/atendentes.css"
 import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
 import {Dropdown, InputGroup} from "react-bootstrap";
-import TecnicoModal from "../../components/TecnicoModal";
+import AtendenteModal from "../../components/AtendenteModal";
 
-export default function Consultar_Tecnicos() {
+export default function Consultar_Atendentes() {
 
-    let { tecnicos } = useLoaderData();
+    let { atendentes } = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
-    const [tecnico, setTecnico] = useState(0);
+    const [atendente, setAtendente] = useState(0);
     const [show, setShow] = useState(false);
 
     const dropdown = (dropdown) => {
@@ -29,6 +29,7 @@ export default function Consultar_Tecnicos() {
                 <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criacao</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("cpf")}>CPF</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("celular")}>Telefone</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("email")}>Email</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("dataContrato")}>Data de Contrato</Dropdown.Item>
             </Dropdown.Menu>
@@ -58,27 +59,29 @@ export default function Consultar_Tecnicos() {
             </InputGroup>
             <div id="chamados-main">
                 {
-                    tecnicos.filter((tecnico) => {
+                    atendentes.filter((atendente) => {
                         switch (parametro) {
                             case "todos":
-                                for (let parametro in tecnico) {
-                                    if (tecnico[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
+                                for (let parametro in atendente) {
+                                    if (atendente[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
                                 break;
                             case "_id":
-                                return tecnico.id.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.id.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "nome":
-                                return tecnico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "dataCriacao":
-                                return tecnico.dataCriacao.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.dataCriacao.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "cpf":
-                                return tecnico.cpf.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.cpf.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
+                            case "celular":
+                                return atendente.celular.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "telefone":
-                                return tecnico.telefone.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.telefone.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "email":
-                                return tecnico.email.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.email.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "dataContrato":
-                                return tecnico.dataContrato.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
+                                return atendente.dataContrato.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             default:
                                 return true;
                         }
@@ -97,18 +100,19 @@ export default function Consultar_Tecnicos() {
                             default:
                                 return true;
                         }
-                    }).map((tecnico, key) => {
+                    }).map((atendente, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${tecnico.id}_nome`}>NOME: {tecnico.nome}</p>
-                                <p key={`${tecnico.id}`}>ID: {tecnico.id}</p>
-                                <p key={`${tecnico.id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico.dataCriacao}</p>
-                                <p key={`${tecnico.id}_cpf`}>CPF: {tecnico.cpf}</p>
-                                <p key={`${tecnico.id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p>
-                                <p key={`${tecnico.id}_email`}>EMAIL: {tecnico.email}</p>
-                                <p key={`${tecnico.id}_telefone`}>TELEFONE: {tecnico.telefone}</p>
+                                <p key={`${atendente.id}_nome`}>NOME: {atendente.nome}</p>
+                                <p key={`${atendente.id}`}>ID: {atendente.id}</p>
+                                <p key={`${atendente.id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p>
+                                <p key={`${atendente.id}_cpf`}>CPF: {atendente.cpf}</p>
+                                <p key={`${atendente.id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p>
+                                <p key={`${atendente.id}_email`}>EMAIL: {atendente.email}</p>
+                                <p key={`${atendente.id}_telefone`}>TELEFONE: {atendente.telefone}</p>
+                                <p key={`${atendente.id}_celular`}>CELULAR: {atendente.celular}</p>
                                 <Button onClick={() => {
-                                    setTecnico(key)
+                                    setAtendente(key)
                                     setShow(true)
                                 }}>Editar</Button>
                             </div>
@@ -116,7 +120,7 @@ export default function Consultar_Tecnicos() {
                     })
                 }
             </div>
-            <TecnicoModal show={show} tecnicos={tecnicos} tecnico_key={tecnico} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
+            <AtendenteModal show={show} atendentes={atendentes} atendente_key={atendente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
         </div>
     )
 }
