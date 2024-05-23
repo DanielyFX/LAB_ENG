@@ -42,27 +42,31 @@ export default function Cadastrar_tecnico() {
             <Form id="cadtecnico-form" onSubmit={handleSubmit}>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome Completo</Form.Label>
-                    <Col sm={10}><Form.Control onChange={(e) => setNome(e.target.value)} type="text"/></Col>
+                    <Col sm={10}><Form.Control required onChange={(e) => setNome(e.target.value)} type="text"/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>CPF</Form.Label>
-                    <Col sm={10}><Form.Control onChange={(e) => setCpf(e.target.value)} type="text"/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00" maxLength={14} onChange={(e) => setCpf(e.target.value)} type="text"/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Telefone</Form.Label>
-                    <Col sm={10}><Form.Control onChange={(e) => setTelefone(e.target.value)} type="text"/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: (00) 0000-0000" maxLength={14} onChange={(e) => setTelefone(e.target.value)} type="text"/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Celular</Form.Label>
-                    <Col sm={10}><Form.Control onChange={(e) => setCelular(e.target.value)} type="text"/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: (00) 00000-0000" maxLength={15} onChange={(e) => setCelular(e.target.value)} type="text"/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Email</Form.Label>
-                    <Col sm={10}><Form.Control onChange={(e) => setEmail(e.target.value)} type="email"/></Col>
+                    <Col sm={10}><Form.Control  required  placeholder="Ex.: exemplo@email.com" onChange={(e) => setEmail(e.target.value)} type="email"/></Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                    <Form.Label column sm={2}>Senha</Form.Label>
+                    <Col sm={10}><Form.Control required maxLength={8} onChange={(e) => setEmail(e.target.value)} type="password" /></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Data de contrato</Form.Label>
-                    <Col sm={10}><Form.Control onChange={(e) => setDataContrato(e.target.value)} type="datetime-local"/></Col>
+                    <Col sm={10}><Form.Control required onChange={(e) => setDataContrato(e.target.value)} type="datetime-local"/></Col>
                 </Form.Group>
 
                 <ButtonGroup>
