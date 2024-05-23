@@ -3,8 +3,9 @@ import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
-import {Dropdown, InputGroup} from "react-bootstrap";
+import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import TecnicoModal from "../../components/TecnicoModal";
+import searchIcon from "../../css/Icons";
 
 export default function Consultar_Tecnicos() {
 
@@ -42,16 +43,17 @@ export default function Consultar_Tecnicos() {
     return (
         <div className="body-main">
             <InputGroup className="mb-3">
-                <Form.Control onChange={e => setPesquisa(e.target.value)}/>
+                <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
+                <Form.Control  placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de pesquisa: {parametro}
+                       Filtro de Pesquisa: {parametro}
                     </Dropdown.Toggle>
                     {dropdown("")}
                 </Dropdown>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de ordenação: {parametroOrd}
+                        Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
                     {dropdown("ord")}
                 </Dropdown>
@@ -107,10 +109,16 @@ export default function Consultar_Tecnicos() {
                                 <p key={`${tecnico.id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p>
                                 <p key={`${tecnico.id}_email`}>EMAIL: {tecnico.email}</p>
                                 <p key={`${tecnico.id}_telefone`}>TELEFONE: {tecnico.telefone}</p>
-                                <Button onClick={() => {
-                                    setTecnico(key)
-                                    setShow(true)
-                                }}>Editar</Button>
+                                
+                                <ButtonGroup>
+                                    <Button onClick={() => {
+                                        setTecnico(key)
+                                        setShow(true)
+                                    }}>Editar</Button>
+                                    <Button variant="danger" onClick={() => {
+                                    }}>Excluir</Button>
+                                </ButtonGroup>
+                                
                             </div>
                         );
                     })

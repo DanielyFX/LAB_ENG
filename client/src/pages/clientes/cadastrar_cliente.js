@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import '../../css/clientes/cadclientes.css';
+import { ButtonGroup } from "react-bootstrap";
 
 function limpa_formulário_cep() {
     document.getElementById('rua').value = "";
@@ -102,7 +103,12 @@ export default function Cadastrar_cliente() {
                     <Form.Label column sm={2}>Dados de Cadastro</Form.Label>
                     <Col sm={10}><Form.Control type="datetime-local" /></Col>
                 </Form.Group>
-                <Button variant="primary" type="submit">Cadastro</Button>
+
+                <ButtonGroup>
+                    <Button variant="primary" type="submit">Cadastrar</Button>
+                    <Button variant="secondary" href="/inicio">Cancelar</Button>
+                </ButtonGroup>
+
             </Form>
         </div>
     );

@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import '../../css/tecnicos/cadtecnicos.css'
 import {useState} from "react";
+import { ButtonGroup } from "react-bootstrap";
 
 export default function Cadastrar_tecnico() {
 
@@ -63,7 +64,12 @@ export default function Cadastrar_tecnico() {
                     <Form.Label column sm={2}>Data de contrato</Form.Label>
                     <Col sm={10}><Form.Control onChange={(e) => setDataContrato(e.target.value)} type="datetime-local"/></Col>
                 </Form.Group>
-                <Button variant="primary" type="submit">Cadastrar</Button>
+
+                <ButtonGroup>
+                    <Button variant="primary" type="submit">Cadastrar</Button>
+                    <Button variant="secondary" href="/inicio">Cancelar</Button>
+                </ButtonGroup>
+
             </Form>
         </div>
     )
