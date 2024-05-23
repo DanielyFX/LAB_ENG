@@ -14,7 +14,7 @@ function TecnicoModal(props) {
             <Modal {...props} >
                 <Form method="GET" action="/tecnicos">
                     <Modal.Header closeButton>
-                        <Modal.Title>Editar técnico</Modal.Title>
+                        <Modal.Title>Editar Técnico</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">

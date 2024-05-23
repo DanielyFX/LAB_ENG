@@ -14,7 +14,7 @@ function ServicoModal(props) {
             <Modal {...props} >
                 <Form method="GET" action="/servicos">
                     <Modal.Header closeButton>
-                        <Modal.Title>Editar técnico</Modal.Title>
+                        <Modal.Title>Editar Serviço</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">

@@ -3,8 +3,9 @@ import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
-import {Dropdown, InputGroup} from "react-bootstrap";
+import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ClienteModal from "../../components/ClienteModal";
+import searchIcon from "../../css/Icons";
 
 export default function Consultar_Clientes() {
 
@@ -47,16 +48,17 @@ export default function Consultar_Clientes() {
     return (
         <div className="body-main">
             <InputGroup className="mb-3">
-                <Form.Control onChange={e => setPesquisa(e.target.value)}/>
+                <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
+                <Form.Control placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de pesquisa: {parametro}
+                        Filtro de Pesquisa: {parametro}
                     </Dropdown.Toggle>
                     {dropdown("")}
                 </Dropdown>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de ordenação: {parametroOrd}
+                        Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
                     {dropdown("ord")}
                 </Dropdown>
@@ -132,10 +134,16 @@ export default function Consultar_Clientes() {
                                 <p key={`${cliente.id}_bairro`}>BAIRRO: {cliente.bairro}</p>
                                 <p key={`${cliente.id}_numero`}>NUMERO: {cliente.numero}</p>
                                 <p key={`${cliente.id}_cidade`}>CIDADE: {cliente.cidade}</p>
-                                <Button onClick={() => {
-                                    setCliente(key)
-                                    setShow(true)
-                                }}>Editar</Button>
+                                
+                                <ButtonGroup>
+                                    <Button onClick={() => {
+                                        setCliente(key)
+                                        setShow(true)
+                                    }}>Editar</Button>
+                                    <Button variant="danger" onClick={() => {
+                                        }}>Excluir</Button>
+                                </ButtonGroup>
+
                             </div>
                         );
                     })

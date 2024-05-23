@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         path: "/inicio",
         element: (
             <div id="servicos-raiz">
-                <Header titulo="Inicio"/>
+                <Header titulo="Início"/>
                 <div id="body-container">
                     <Sidebar/>
                 </div>
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         },
         element: (
             <div id="servicos-raiz">
-                <Header titulo="Serviços"/>
+                <Header titulo="Consultar Serviços"/>
                 <div id="body-container">
                     <Sidebar/>
                     <Consultar_Servicos/>
@@ -89,7 +89,7 @@ const router = createBrowserRouter([
         },
         element: (
             <div id="tecnicos-raiz">
-                <Header titulo="Técnicos"/>
+                <Header titulo="Consultar Técnicos"/>
                 <div id="body-container">
                     <Sidebar/>
                     <Consultar_Tecnicos/>
@@ -116,7 +116,7 @@ const router = createBrowserRouter([
         },
         element: (
             <div id="atendentes-raiz">
-                <Header titulo="Atendentes"/>
+                <Header titulo="Consultar Atendente"/>
                 <div id="body-container">
                     <Sidebar/>
                     <Consultar_Atendentes/>
@@ -143,7 +143,7 @@ const router = createBrowserRouter([
         },
         element: (
             <div id="clientes-raiz">
-                <Header titulo="Clientes"/>
+                <Header titulo="Consultar Clientes"/>
                 <div id="body-container">
                     <Sidebar/>
                     <Consultar_Clientes/>

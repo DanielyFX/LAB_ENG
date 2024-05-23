@@ -14,7 +14,7 @@ function ChamadoModal(props) {
            <Modal {...props} >
                <Form method="GET" action="/chamados">
                     <Modal.Header closeButton>
-                        <Modal.Title>Editar chamado</Modal.Title>
+                        <Modal.Title>Editar Chamado</Modal.Title>
                     </Modal.Header>
                    <Modal.Body>
                            <Form.Group as={Row} className="mb-3">

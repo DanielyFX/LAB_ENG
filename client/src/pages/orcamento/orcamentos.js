@@ -3,8 +3,9 @@ import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
-import {Dropdown, InputGroup} from "react-bootstrap";
+import {Dropdown, InputGroup, ButtonGroup} from "react-bootstrap";
 import OrcamentoModal from "../../components/OrcamentoModal";
+import searchIcon from "../../css/Icons";
 
 export default function Consultar_Tecnicos() {
 
@@ -46,16 +47,17 @@ export default function Consultar_Tecnicos() {
     return (
         <div className="body-main">
             <InputGroup className="mb-3">
-                <Form.Control onChange={e => setPesquisa(e.target.value)}/>
+                <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
+                <Form.Control placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de pesquisa: {parametro}
+                        Filtro de Pesquisa: {parametro}
                     </Dropdown.Toggle>
                     {dropdown("pesquisa")}
                 </Dropdown>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de ordenação: {parametroOrd}
+                        Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
                     {dropdown("ordenacao")}
                 </Dropdown>
@@ -128,11 +130,16 @@ export default function Consultar_Tecnicos() {
                                 <p key={`${orcamento.id}_observacao`}>NOME: {orcamento.observacao}</p>
                                 <p key={`${orcamento.id}_desconto`}>NOME: {orcamento.desconto}</p>
                                 <p key={`${orcamento.id}_preco`}>NOME: {orcamento.preco}</p>
-
-                                <Button onClick={() => {
-                                    setOrcamento(key)
-                                    setShow(true)
-                                }}>Editar</Button>
+                                
+                                <ButtonGroup>
+                                    <Button onClick={() => {
+                                        setOrcamento(key)
+                                        setShow(true)
+                                    }}>Editar</Button>
+                                    <Button variant="danger" onClick={() => {
+                                        }}>Excluir</Button>
+                                </ButtonGroup>
+                               
                             </div>
                         );
                     })
