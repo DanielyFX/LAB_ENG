@@ -40,4 +40,4 @@ const TecnicoSchema = new Schema({
 });
 
 const TecnicoModel = model<Tecnico>('Funcionario', TecnicoSchema);
-export { TecnicoModel };
+export { TecnicoModel, Tecnico };

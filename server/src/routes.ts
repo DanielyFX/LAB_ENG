@@ -11,9 +11,10 @@ mongoose.connect(process.env.MONGOURI!).catch(err => {
     console.error(erro);
 })
 
-// FUNCIONARIOS
+// TECNICOS
 const tecnicoController = new TecnicoController();
-router.post('/tecnicos/novo', tecnicoController.createFuncionario)
+router.post('/tecnicos/novo', tecnicoController.createTecnico)
+router.get('/tecnicos/consultar', tecnicoController.getAllTecnicos)
 
 router.get('/', (req: Request, res: Response) => {
     res.send('alo mundo');
