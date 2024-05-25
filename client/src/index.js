@@ -33,7 +33,6 @@ import Sidebar from "./components/Sidebar";
 import dados from './assets/dados.json';
 
 
-
 //ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
     {
@@ -85,7 +84,9 @@ const router = createBrowserRouter([
     {
         path: "/tecnicos/consultar",
         loader: async () => {
-            return JSON.parse(JSON.stringify(dados));
+            return fetch('http://localhost:3001/tecnicos/consultar', {
+                method: "GET"
+            });
         },
         element: (
             <div id="tecnicos-raiz">

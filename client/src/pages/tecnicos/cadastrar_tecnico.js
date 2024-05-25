@@ -34,7 +34,15 @@ export default function Cadastrar_tecnico() {
             mode: 'cors'
         })
             .then((resultado) => resultado.json())
-            .then((response) => { console.log(response) })
+            .then((response) => {
+                console.log(response)
+                if(response.success) {
+                    alert("Técnico Cadastrado com Sucesso!")
+                    window.location.reload()
+                } else {
+                    alert("Erro ao cadastrar o técnico!")
+                }
+            })
     }
 
     return (

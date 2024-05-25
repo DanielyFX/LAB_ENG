@@ -15,6 +15,8 @@ mongoose.connect(process.env.MONGOURI!).catch(err => {
 const tecnicoController = new TecnicoController();
 router.post('/tecnicos/novo', tecnicoController.createTecnico)
 router.get('/tecnicos/consultar', tecnicoController.getAllTecnicos)
+router.post('/tecnicos/editar', tecnicoController.editTecnico)
+router.delete('/tecnicos/deletar', tecnicoController.deleteTecnico)
 
 router.get('/', (req: Request, res: Response) => {
     res.send('alo mundo');

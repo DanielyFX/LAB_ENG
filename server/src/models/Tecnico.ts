@@ -5,6 +5,7 @@ interface Tecnico {
     dataCriacao: Date;
     dataContrato: Date;
     cpf: string;
+    celular: string;
     telefone: string;
     email: string;
 }
@@ -28,6 +29,11 @@ const TecnicoSchema = new Schema({
         required: true,
     },
     telefone: {
+        type: String,
+        default: '',
+        required: true,
+    },
+    celular: {
         type: String,
         default: '',
         required: true,
