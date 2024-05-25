@@ -3,8 +3,10 @@ import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
-import {Dropdown, InputGroup} from "react-bootstrap";
+import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ChamadoModal from "../../components/ChamadoModal";
+import searchIcon from "../../css/Icons";
+
 export default function Consultar_Chamados(props) {
 
     let { chamados } = useLoaderData();
@@ -21,10 +23,11 @@ export default function Consultar_Chamados(props) {
     return (
         <div className="body-main">
             <InputGroup className="mb-3">
-                <Form.Control onChange={e => setPesquisa(e.target.value)}/>
+                <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
+                <Form.Control  placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de pesquisa: {parametro}
+                        Filtro de Pesquisa: {parametro}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item as="button" onClick={() => setParametro("todos")}>todos os campos</Dropdown.Item>
@@ -39,7 +42,7 @@ export default function Consultar_Chamados(props) {
                 </Dropdown>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
-                        parâmetro de ordenação: {parametroOrd}
+                        Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item as="button" onClick={() => setParametroOrd("todos")}>todos os campos</Dropdown.Item>
@@ -106,10 +109,16 @@ export default function Consultar_Chamados(props) {
                                 <p key={`${chamado.id}_data`}>DATA PREVISTA: {chamado.previsao_atendimento}</p>
                                 <p key={`${chamado.id}_atendente`}>ATENDENTE: {chamado.atendente_id}</p>
                                 <p key={`${chamado.id}_cliente`}>CLIENTE: {chamado.cliente_id}</p>
-                                <Button onClick={() => {
-                                    setChamado(key)
-                                    setShow(true)
-                                }}>Editar</Button>
+                                
+                                <ButtonGroup>
+                                    <Button onClick={() => {
+                                        setChamado(key)
+                                        setShow(true)
+                                    }}>Editar</Button>
+                                    <Button variant="danger" onClick={() => {
+                                        }}>Excluir</Button>
+                                </ButtonGroup>
+                                
                             </div>
                         );
                     })

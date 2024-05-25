@@ -12,9 +12,9 @@ function ChamadoModal(props) {
         return (
         <>
            <Modal {...props} >
-               <Form id="cadchamado-form" method="GET" action="/chamados">
+               <Form method="GET" action="/chamados">
                     <Modal.Header closeButton>
-                        <Modal.Title>Editar chamado</Modal.Title>
+                        <Modal.Title>Editar Chamado</Modal.Title>
                     </Modal.Header>
                    <Modal.Body>
                            <Form.Group as={Row} className="mb-3">
@@ -35,7 +35,7 @@ function ChamadoModal(props) {
                            </Form.Group>
                            <Form.Group as={Row} className="mb-3">
                                <Form.Label column sm={2}>previsão de atendimento</Form.Label>
-                               <Col sm={10}><Form.Control type="date" defaultValue={new Date("03/04/2024").toISOString().substring(0,10)}/></Col>
+                               <Col sm={10}><Form.Control type="date" defaultValue={new Date(dados.previsao_atendimento).toISOString().substring(0,10)}/></Col>
                            </Form.Group>
                            <Form.Group as={Row} className="mb-3">
                                <Form.Label column sm={2}>código atendente</Form.Label>

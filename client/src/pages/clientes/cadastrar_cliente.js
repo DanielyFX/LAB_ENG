@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import '../../css/clientes/cadclientes.css';
+import { ButtonGroup } from "react-bootstrap";
 
 function limpa_formulário_cep() {
     document.getElementById('rua').value = "";
@@ -60,23 +61,23 @@ export default function Cadastrar_cliente() {
             <Form id="cadcliente-form" method="GET" action="/clientes/cadastrar">
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome Completo</Form.Label>
-                    <Col sm={10}><Form.Control type="text" /></Col>
+                    <Col sm={10}><Form.Control required type="text" /></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>CPF/CNPJ</Form.Label>
-                    <Col sm={10}><Form.Control type="text"/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00 ou 00.000.000/0000-00" type="text" maxLength={18} /></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Telefone</Form.Label>
-                    <Col sm={10}><Form.Control type="text"/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: (00) 0000-0000" type="text" maxLength={14}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Celular</Form.Label>
-                    <Col sm={10}><Form.Control type="text"/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: (00) 00000-0000" type="text" maxLength={15}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>CEP</Form.Label>
-                    <Col sm={10}><Form.Control type="text" value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque}/></Col>
+                    <Col sm={10}><Form.Control required placeholder="Ex.: 00000-000" maxLength={9} value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Rua</Form.Label>
@@ -96,13 +97,18 @@ export default function Cadastrar_cliente() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>E-mail</Form.Label>
-                    <Col sm={10}><Form.Control type="email"/></Col>
+                    <Col sm={10}><Form.Control required  placeholder="Ex.: exemplo@email.com" type="email"/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Dados de Cadastro</Form.Label>
-                    <Col sm={10}><Form.Control type="datetime-local" /></Col>
+                    <Form.Label column sm={2}>Data de Cadastro</Form.Label>
+                    <Col sm={10}><Form.Control required type="datetime-local" /></Col>
                 </Form.Group>
-                <Button variant="primary" type="submit">Cadastro</Button>
+
+                <ButtonGroup>
+                    <Button variant="primary" type="submit">Cadastrar</Button>
+                    <Button variant="secondary" href="/inicio">Cancelar</Button>
+                </ButtonGroup>
+
             </Form>
         </div>
     );

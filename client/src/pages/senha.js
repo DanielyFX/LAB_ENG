@@ -24,8 +24,9 @@ export default function RecuperaSenha() {
     return (
         <div id="login-raiz">
             <div id="login-container">
-                <h1>Recuperar Senha</h1>
-                <p>Com o email informado abaixo,será enviado a senha no mesmo!</p>
+                <h1>Sistema Controle de Chamados</h1>
+                <h3>Recuperar Senha</h3>
+                <p>Com o email informado abaixo,será enviado uma nova senha no mesmo!</p>
                 <Form id="login-form" onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Email:</Form.Label>
@@ -41,7 +42,8 @@ export default function RecuperaSenha() {
                     </Form.Group>
 
                     <ButtonGroup>
-                        <Button variant="secondary" type="submit" size='sm' href='/'>Voltar</Button>                         <Button variant="primary" type="submit" size='sm'>Enviar</Button>
+                        <Button variant="secondary" type="submit" size='lg' href='/'>Voltar</Button>                         
+                        <Button variant="primary" type="submit" size='lg'>Enviar</Button>
                     </ButtonGroup>                    
                 </Form>
             </div>
