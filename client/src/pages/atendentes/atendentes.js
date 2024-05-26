@@ -105,14 +105,14 @@ export default function Consultar_Atendentes() {
                     }).map((atendente, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${atendente.id}_nome`}>NOME: {atendente.nome}</p>
-                                <p key={`${atendente.id}`}>ID: {atendente.id}</p>
-                                <p key={`${atendente.id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p>
-                                <p key={`${atendente.id}_cpf`}>CPF: {atendente.cpf}</p>
-                                <p key={`${atendente.id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p>
-                                <p key={`${atendente.id}_email`}>EMAIL: {atendente.email}</p>
-                                <p key={`${atendente.id}_telefone`}>TELEFONE: {atendente.telefone}</p>
-                                <p key={`${atendente.id}_celular`}>CELULAR: {atendente.celular}</p>
+                                <p key={`${atendente.id}_nome`}>NOME: {atendente.nome}</p><hr/>
+                                <p key={`${atendente.id}`}>ID: {atendente.id}</p><hr/>
+                                <p key={`${atendente.id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p><hr/>
+                                <p key={`${atendente.id}_cpf`}>CPF: {atendente.cpf}</p><hr/>
+                                <p key={`${atendente.id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p><hr/>
+                                <p key={`${atendente.id}_email`}>EMAIL: {atendente.email}</p><hr/>
+                                <p key={`${atendente.id}_telefone`}>TELEFONE: {atendente.telefone}</p><hr/>
+                                <p key={`${atendente.id}_celular`}>CELULAR: {atendente.celular}</p><hr/>
                                 
                                 <ButtonGroup>
                                     <Button onClick={() => {

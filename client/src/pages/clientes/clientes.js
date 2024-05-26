@@ -122,18 +122,18 @@ export default function Consultar_Clientes() {
                     }).map((cliente, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${cliente.id}_nome`}>NOME: {cliente.nome}</p>
-                                <p key={`${cliente.id}`}>ID: {cliente.id}</p>
-                                <p key={`${cliente.id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p>
-                                <p key={`${cliente.id}_documento`}>DOCUMENTO: {cliente.documento}</p>
-                                <p key={`${cliente.id}_email`}>EMAIL: {cliente.email}</p>
-                                <p key={`${cliente.id}_telefone`}>TELEFONE: {cliente.telefone}</p>
-                                <p key={`${cliente.id}_celular`}>CELULAR: {cliente.celular}</p>
-                                <p key={`${cliente.id}_cep`}>CEP: {cliente.cep}</p>
-                                <p key={`${cliente.id}_rua`}>RUA: {cliente.rua}</p>
-                                <p key={`${cliente.id}_bairro`}>BAIRRO: {cliente.bairro}</p>
-                                <p key={`${cliente.id}_numero`}>NUMERO: {cliente.numero}</p>
-                                <p key={`${cliente.id}_cidade`}>CIDADE: {cliente.cidade}</p>
+                                <p key={`${cliente.id}_nome`}>NOME: {cliente.nome}</p><hr/>
+                                <p key={`${cliente.id}`}>ID: {cliente.id}</p><hr/>
+                                <p key={`${cliente.id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p><hr/>
+                                <p key={`${cliente.id}_documento`}>DOCUMENTO: {cliente.documento}</p><hr/>
+                                <p key={`${cliente.id}_email`}>EMAIL: {cliente.email}</p><hr/>
+                                <p key={`${cliente.id}_telefone`}>TELEFONE: {cliente.telefone}</p><hr/>
+                                <p key={`${cliente.id}_celular`}>CELULAR: {cliente.celular}</p><hr/>
+                                <p key={`${cliente.id}_cep`}>CEP: {cliente.cep}</p><hr/>
+                                <p key={`${cliente.id}_rua`}>RUA: {cliente.rua}</p><hr/>
+                                <p key={`${cliente.id}_bairro`}>BAIRRO: {cliente.bairro}</p><hr/>
+                                <p key={`${cliente.id}_numero`}>NUMERO: {cliente.numero}</p><hr/>
+                                <p key={`${cliente.id}_cidade`}>CIDADE: {cliente.cidade}</p><hr/>
                                 
                                 <ButtonGroup>
                                     <Button onClick={() => {
