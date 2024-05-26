@@ -98,12 +98,12 @@ export default function Consultar_Clientes() {
                     }).map((servico, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${servico.id}_nome`}>NOME: {servico.nome}</p>
-                                <p key={`${servico.id}`}>ID: {servico.id}</p>
-                                <p key={`${servico.id}_tipo`}>Tipo: {servico.tipo}</p>
-                                <p key={`${servico.id}_descricao`}>Tipo: {servico.descricao}</p>
-                                <p key={`${servico.id}_preco`}>Tipo: {servico.preco}</p>
-                                <p key={`${servico.id}_dataCriacao`}>DATA CRIAÇÃO: {servico.dataCriacao}</p>
+                                <p key={`${servico.id}_nome`}>NOME: {servico.nome}</p><hr/>
+                                <p key={`${servico.id}`}>ID: {servico.id}</p><hr/>
+                                <p key={`${servico.id}_tipo`}>Tipo: {servico.tipo}</p><hr/>
+                                <p key={`${servico.id}_descricao`}>Tipo: {servico.descricao}</p><hr/>
+                                <p key={`${servico.id}_preco`}>Tipo: {servico.preco}</p><hr/>
+                                <p key={`${servico.id}_dataCriacao`}>DATA CRIAÇÃO: {servico.dataCriacao}</p><hr/>
                                 
                                 <ButtonGroup>
                                     <Button onClick={() => {
