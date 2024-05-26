@@ -106,21 +106,23 @@ export default function Consultar_Tecnicos() {
                     }).map((tecnico, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${tecnico._id}_nome`}>NOME: {tecnico.nome}</p>
-                                <p key={`${tecnico._id}`}>ID: {tecnico._id}</p>
-                                <p key={`${tecnico._id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico.dataCriacao}</p>
-                                <p key={`${tecnico._id}_cpf`}>CPF: {tecnico.cpf}</p>
-                                <p key={`${tecnico._id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p>
-                                <p key={`${tecnico._id}_email`}>EMAIL: {tecnico.email}</p>
-                                <p key={`${tecnico._id}_telefone`}>TELEFONE: {tecnico.telefone}</p>
-                                <p key={`${tecnico._id}_celular`}>CELULAR: {tecnico.celular}</p>
+                                <p key={`${tecnico._id}_nome`}>NOME: {tecnico.nome}</p><hr/>
+                                <p key={`${tecnico._id}`}>ID: {tecnico._id}</p><hr/>
+                                <p key={`${tecnico._id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico.dataCriacao}</p><hr/>
+                                <p key={`${tecnico._id}_cpf`}>CPF: {tecnico.cpf}</p><hr/>
+                                <p key={`${tecnico._id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p><hr/>
+                                <p key={`${tecnico._id}_email`}>EMAIL: {tecnico.email}</p><hr/>
+                                <p key={`${tecnico._id}_telefone`}>TELEFONE: {tecnico.telefone}</p><hr/>
+                                <p key={`${tecnico._id}_celular`}>CELULAR: {tecnico.celular}</p><hr/>
 
                                 <ButtonGroup>
                                     <Button onClick={() => {
                                         setTecnico(key)
                                         setShow(true)
                                     }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {handleExcluir(tecnico._id)}}>Excluir</Button>
+                                    <Button variant="danger" onClick={() => {
+                                        handleExcluir(tecnico._id)
+                                    }}>Excluir</Button>
                                 </ButtonGroup>
                             </div>
                         );
