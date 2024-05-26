@@ -102,13 +102,13 @@ export default function Consultar_Tecnicos() {
                     }).map((tecnico, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${tecnico.id}_nome`}>NOME: {tecnico.nome}</p>
-                                <p key={`${tecnico.id}`}>ID: {tecnico.id}</p>
-                                <p key={`${tecnico.id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico.dataCriacao}</p>
-                                <p key={`${tecnico.id}_cpf`}>CPF: {tecnico.cpf}</p>
-                                <p key={`${tecnico.id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p>
-                                <p key={`${tecnico.id}_email`}>EMAIL: {tecnico.email}</p>
-                                <p key={`${tecnico.id}_telefone`}>TELEFONE: {tecnico.telefone}</p>
+                                <p key={`${tecnico.id}_nome`}>NOME: {tecnico.nome}</p><hr/>
+                                <p key={`${tecnico.id}`}>ID: {tecnico.id}</p><hr/>
+                                <p key={`${tecnico.id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico.dataCriacao}</p><hr/>
+                                <p key={`${tecnico.id}_cpf`}>CPF: {tecnico.cpf}</p><hr/>
+                                <p key={`${tecnico.id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p><hr/>
+                                <p key={`${tecnico.id}_email`}>EMAIL: {tecnico.email}</p><hr/>
+                                <p key={`${tecnico.id}_telefone`}>TELEFONE: {tecnico.telefone}</p><hr/>
                                 
                                 <ButtonGroup>
                                     <Button onClick={() => {

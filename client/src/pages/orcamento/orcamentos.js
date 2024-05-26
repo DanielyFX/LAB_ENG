@@ -118,18 +118,18 @@ export default function Consultar_Tecnicos() {
                     }).map((orcamento, key) => {
                         return (
                             <div className="tecnico">
-                                <p key={`${orcamento.id}`}>ID: {orcamento.id}</p>
-                                <p key={`${orcamento.id}_tecnico`}>NOME: {orcamento.tecnico}</p>
-                                <p key={`${orcamento.id}_descricao`}>NOME: {orcamento.descricao}</p>
-                                <p key={`${orcamento.id}_tipo`}>NOME: {orcamento.tipo}</p>
-                                <p key={`${orcamento.id}_execucao`}>NOME: {orcamento.execucao}</p>
-                                <p key={`${orcamento.id}_garantia`}>NOME: {orcamento.garantia}</p>
-                                <p key={`${orcamento.id}_dataCriacao`}>NOME: {orcamento.dataCriacao}</p>
-                                <p key={`${orcamento.id}_endereco`}>NOME: {orcamento.endereco}</p>
-                                <p key={`${orcamento.id}_situacao`}>NOME: {orcamento.situacao}</p>
-                                <p key={`${orcamento.id}_observacao`}>NOME: {orcamento.observacao}</p>
-                                <p key={`${orcamento.id}_desconto`}>NOME: {orcamento.desconto}</p>
-                                <p key={`${orcamento.id}_preco`}>NOME: {orcamento.preco}</p>
+                                <p key={`${orcamento.id}`}>ID: {orcamento.id}</p><hr/>
+                                <p key={`${orcamento.id}_tecnico`}>NOME: {orcamento.tecnico}</p><hr/>
+                                <p key={`${orcamento.id}_descricao`}>NOME: {orcamento.descricao}</p><hr/>
+                                <p key={`${orcamento.id}_tipo`}>NOME: {orcamento.tipo}</p><hr/>
+                                <p key={`${orcamento.id}_execucao`}>NOME: {orcamento.execucao}</p><hr/>
+                                <p key={`${orcamento.id}_garantia`}>NOME: {orcamento.garantia}</p><hr/>
+                                <p key={`${orcamento.id}_dataCriacao`}>NOME: {orcamento.dataCriacao}</p><hr/>
+                                <p key={`${orcamento.id}_endereco`}>NOME: {orcamento.endereco}</p><hr/>
+                                <p key={`${orcamento.id}_situacao`}>NOME: {orcamento.situacao}</p><hr/>
+                                <p key={`${orcamento.id}_observacao`}>NOME: {orcamento.observacao}</p><hr/>
+                                <p key={`${orcamento.id}_desconto`}>NOME: {orcamento.desconto}</p><hr/>
+                                <p key={`${orcamento.id}_preco`}>NOME: {orcamento.preco}</p><hr/>
                                 
                                 <ButtonGroup>
                                     <Button onClick={() => {

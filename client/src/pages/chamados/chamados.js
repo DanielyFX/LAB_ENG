@@ -102,13 +102,13 @@ export default function Consultar_Chamados(props) {
                     }).map((chamado, key) => {
                         return (
                             <div className="chamado">
-                                <p key={`${chamado.id}_chamado`}>CHAMADO: {chamado.chamado}</p>
-                                <p key={`${chamado.id}`}>ID: {chamado._id}</p>
-                                <p key={`${chamado.id}_urgencia`}>URGENCIA: {chamado.urgencia}</p>
-                                <p key={`${chamado.id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p>
-                                <p key={`${chamado.id}_data`}>DATA PREVISTA: {chamado.previsao_atendimento}</p>
-                                <p key={`${chamado.id}_atendente`}>ATENDENTE: {chamado.atendente_id}</p>
-                                <p key={`${chamado.id}_cliente`}>CLIENTE: {chamado.cliente_id}</p>
+                                <p key={`${chamado.id}_chamado`}>CHAMADO: {chamado.chamado}</p><hr/>
+                                <p key={`${chamado.id}`}>ID: {chamado._id}</p><hr/>
+                                <p key={`${chamado.id}_urgencia`}>URGENCIA: {chamado.urgencia}</p><hr/>
+                                <p key={`${chamado.id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
+                                <p key={`${chamado.id}_data`}>DATA PREVISTA: {chamado.previsao_atendimento}</p><hr/>
+                                <p key={`${chamado.id}_atendente`}>ATENDENTE: {chamado.atendente_id}</p><hr/>
+                                <p key={`${chamado.id}_cliente`}>CLIENTE: {chamado.cliente_id}</p><hr/>
                                 
                                 <ButtonGroup>
                                     <Button onClick={() => {

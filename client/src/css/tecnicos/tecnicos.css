@@ -10,6 +10,7 @@
     flex-wrap: wrap;
     overflow: auto;
     max-height: 85vh;
+    justify-content: center; /* Centraliza as divs */
 }
 
 .tecnico {
@@ -18,4 +19,11 @@
     margin: 5px;
     padding: 10px;
     width: 30%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1408px) {
+    .tecnico {
+        width: 98%; 
+    }
 }
