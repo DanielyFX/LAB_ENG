@@ -10,7 +10,7 @@ export default function Cadastrar_chamado() {
         <div id="cadchamado-main">
             <Form id="cadchamado-form" method="GET" action="/chamados/cadastrar">
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>CPF Cliente</Form.Label>  {/*busca cpf do cliente , caso não encontre deve mostrar uma mensagem de não encontrado cliente */} 
+                    <Form.Label column sm={2}>CPF/CNPJ Cliente</Form.Label>  {/*busca cpf do cliente , caso não encontre deve mostrar uma mensagem de não encontrado cliente */}
                     <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00" maxLength={14} type="text" rows={3}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">

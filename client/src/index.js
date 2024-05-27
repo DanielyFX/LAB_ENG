@@ -58,7 +58,9 @@ const router = createBrowserRouter([
   {
     path: "/servicos/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+      return fetch('http://localhost:3001/servicos/consultar', {
+          method: "GET"
+      })
     },
     element: (
       <div id="servicos-raiz">
@@ -114,7 +116,9 @@ const router = createBrowserRouter([
   {
     path: "/atendentes/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+        return fetch('http://localhost:3001/atendentes/consultar', {
+            method: "GET"
+        })
     },
     element: (
       <div id="atendentes-raiz">
@@ -140,9 +144,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/clientes/consultar",
-    loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
-    },
+      loader: async () => {
+          return fetch('http://localhost:3001/clientes/consultar', {
+              method: "GET"
+          });
+      },
     element: (
       <div id="clientes-raiz">
         <Header titulo="Consultar Clientes" />

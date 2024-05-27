@@ -13,7 +13,7 @@ export default function Consultar_Chamados(props) {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
-    const [chamado, setChamado] = useState(0);
+    const [chamado, setChamado] = useState(chamados > 0 ? '' : chamados[0]._id );
     const [show, setShow] = useState(false);
 
     const sort_string = (a, b) => {
@@ -82,8 +82,29 @@ export default function Consultar_Chamados(props) {
                             default:
                                 return true;
                         }
+                    }).map((chamado, key) => {
+                        return (
+                            <div className="chamado">
+                                <p key={`${chamado._id}_chamado`}>CHAMADO: {chamado.chamado}</p><hr/>
+                                <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
+                                <p key={`${chamado._id}_urgencia`}>URGENCIA: {chamado.urgencia}</p><hr/>
+                                <p key={`${chamado._id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
+                                <p key={`${chamado._id}_data`}>DATA PREVISTA: {chamado.previsao_atendimento}</p><hr/>
+                                <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente_id}</p><hr/>
+                                <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente_id}</p><hr/>
+
+                                <ButtonGroup>
+                                    <Button onClick={() => {
+                                        setChamado(chamado._id)
+                                        setShow(true)
+                                    }}>Editar</Button>
+                                    <Button variant="danger" onClick={() => {
+                                    }}>Excluir</Button>
+                                </ButtonGroup>
+
+                            </div>
+                        );
                     }).sort((a,b) => {
-                        console.log(parametroOrd);
                         switch (parametroOrd) {
                             case "chamado":
                             case "urgencia":
@@ -99,32 +120,10 @@ export default function Consultar_Chamados(props) {
                             default:
                                 return true;
                         }
-                    }).map((chamado, key) => {
-                        return (
-                            <div className="chamado">
-                                <p key={`${chamado.id}_chamado`}>CHAMADO: {chamado.chamado}</p><hr/>
-                                <p key={`${chamado.id}`}>ID: {chamado._id}</p><hr/>
-                                <p key={`${chamado.id}_urgencia`}>URGENCIA: {chamado.urgencia}</p><hr/>
-                                <p key={`${chamado.id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
-                                <p key={`${chamado.id}_data`}>DATA PREVISTA: {chamado.previsao_atendimento}</p><hr/>
-                                <p key={`${chamado.id}_atendente`}>ATENDENTE: {chamado.atendente_id}</p><hr/>
-                                <p key={`${chamado.id}_cliente`}>CLIENTE: {chamado.cliente_id}</p><hr/>
-                                
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        setChamado(key)
-                                        setShow(true)
-                                    }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {
-                                        }}>Excluir</Button>
-                                </ButtonGroup>
-                                
-                            </div>
-                        );
                     })
                 }
             </div>
-            <ChamadoModal show={show} chamados={chamados} chamado_key={chamado} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
+            <ChamadoModal show={show} chamados={chamados} chamado_key={chamado} onHide={() => {setShow(false)}} handleClose={() => {setShow(false)}}/>
         </div>
     )
 }

@@ -7,14 +7,60 @@ import { ButtonGroup, Dropdown, InputGroup } from "react-bootstrap";
 import ServicoModal from "../../components/ServicoModal";
 import searchIcon from "../../css/Icons";
 
+const ServicoBox = (props) => {
+    const [show, setShow] = useState(false);
+    const {servico} = props;
+
+    const handleExcluir = (servico_id) => {
+        fetch('http://localhost:3001/servicos/deletar', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({servico_id})
+        })
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if (response.success) window.location.reload();
+            else alert("Erro ao deletar Serviço");
+        })
+    }
+    return (
+        <div className="tecnico">
+            <p key={`${servico._id}_nome`}>NOME: {servico.nome}</p>
+            <hr/>
+            <p key={`${servico._id}`}>ID: {servico._id}</p>
+            <hr/>
+            <p key={`${servico._id}_tipo`}>Tipo: {servico.tipo}</p>
+            <hr/>
+            <p key={`${servico._id}_descricao`}>Descrição: {servico.descricao}</p>
+            <hr/>
+            <p key={`${servico._id}_preco`}>Preço: {servico.preco}</p>
+            <hr/>
+            <p key={`${servico._id}_dataCriacao`}>DATA CRIAÇÃO: {servico.dataCriacao}</p>
+            <hr/>
+
+            <ButtonGroup>
+                <Button onClick={() => {
+                    setShow(true)
+                }}>Editar</Button>
+                <Button variant="danger" onClick={() => {
+                    handleExcluir(servico._id)
+                }}>Excluir</Button>
+            </ButtonGroup>
+            <ServicoModal show={show} servico={servico} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+        </div>
+    );
+
+}
+
 export default function Consultar_Clientes() {
 
-    let { servicos } = useLoaderData();
+    let servicos = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
-    const [servico, setServico] = useState(0);
-    const [show, setShow] = useState(false);
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -58,7 +104,7 @@ export default function Consultar_Clientes() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {
+                {servicos.length > 0 &&
                     servicos.filter((servico) => {
                         switch (parametro) {
                             case "todos":
@@ -67,7 +113,7 @@ export default function Consultar_Clientes() {
                                 }
                                 break;
                             case "_id":
-                                return servico.id.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
+                                return servico._id.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             case "nome":
                                 return servico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             case "tipo":
@@ -95,31 +141,13 @@ export default function Consultar_Clientes() {
                             default:
                                 return true;
                         }
-                    }).map((servico, key) => {
+                    }).map((servico) => {
                         return (
-                            <div className="tecnico">
-                                <p key={`${servico.id}_nome`}>NOME: {servico.nome}</p><hr/>
-                                <p key={`${servico.id}`}>ID: {servico.id}</p><hr/>
-                                <p key={`${servico.id}_tipo`}>Tipo: {servico.tipo}</p><hr/>
-                                <p key={`${servico.id}_descricao`}>Tipo: {servico.descricao}</p><hr/>
-                                <p key={`${servico.id}_preco`}>Tipo: {servico.preco}</p><hr/>
-                                <p key={`${servico.id}_dataCriacao`}>DATA CRIAÇÃO: {servico.dataCriacao}</p><hr/>
-                                
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        setServico(key)
-                                        setShow(true)
-                                    }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {
-                                    }}>Excluir</Button>
-                                </ButtonGroup>
-                                
-                            </div>
+                            <ServicoBox servico={servico}/>
                         );
                     })
                 }
             </div>
-            <ServicoModal show={show} servicos={servicos} servico_key={servico} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
         </div>
     )
 }

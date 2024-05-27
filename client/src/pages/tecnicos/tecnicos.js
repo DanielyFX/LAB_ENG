@@ -1,5 +1,5 @@
 import "../../css/tecnicos/tecnicos.css"
-import {useLoaderData} from "react-router-dom";
+import {useLoaderData, useNavigate} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
@@ -7,14 +7,68 @@ import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import TecnicoModal from "../../components/TecnicoModal";
 import searchIcon from "../../css/Icons";
 
+function TecnicoBox(props) {
+
+    const [show, setShow] = useState(false);
+    const { tecnico_modal } = props
+    //console.log(tecnico_modal)
+
+    const handleExcluir = (tecnico_id) => {
+        fetch('http://localhost:3001/tecnicos/deletar', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({tecnico_id})
+        })
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if (response.success) window.location.reload();
+            else alert("Erro ao deletar Técnico");
+        })
+    }
+
+    return (
+        <div className="tecnico">
+            <p key={`${tecnico_modal._id}_nome`}>NOME: {tecnico_modal.nome}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}`}>ID: {tecnico_modal._id}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico_modal.dataCriacao}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_cpf`}>CPF: {tecnico_modal.cpf}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_dataContrato`}>DATA CONTRATO: {tecnico_modal.dataContrato}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_email`}>EMAIL: {tecnico_modal.email}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_telefone`}>TELEFONE: {tecnico_modal.telefone}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_celular`}>CELULAR: {tecnico_modal.celular}</p>
+            <hr/>
+
+            <ButtonGroup>
+                <Button onClick={() => {
+                    setShow(true)
+                }}>Editar</Button>
+                <Button variant="danger" onClick={() => {
+                    handleExcluir(tecnico_modal._id)
+                }}>Excluir</Button>
+            </ButtonGroup>
+
+            <TecnicoModal show={show} tecnico_box={tecnico_modal} onHide={() => setShow(false)} handleClose={() => {setShow(false);}}/>
+        </div>
+    );
+}
+
+
 export default function Consultar_Tecnicos() {
 
-    let tecnicos = useLoaderData();
+    const tecnicos = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
-    const [tecnico, setTecnico] = useState(0);
-    const [show, setShow] = useState(false);
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -39,22 +93,6 @@ export default function Consultar_Tecnicos() {
 
     const sort_string = (a, b) => {
         return a > b ? a === b ? 1 : 0 : -1;
-    }
-
-    const handleExcluir = (tecnico_id) => {
-        fetch('http://localhost:3001/tecnicos/deletar', {
-            method: 'DELETE',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            mode: "cors",
-            body: JSON.stringify({tecnico_id: tecnico_id})
-        })
-            .then((resultado) => resultado.json())
-            .then((response) => {
-                if (response.success) window.location.reload();
-                else alert("Erro ao deletar Técnico");
-            })
     }
 
     return (
@@ -103,29 +141,6 @@ export default function Consultar_Tecnicos() {
                             default:
                                 return true;
                         }
-                    }).map((tecnico, key) => {
-                        return (
-                            <div className="tecnico">
-                                <p key={`${tecnico._id}_nome`}>NOME: {tecnico.nome}</p><hr/>
-                                <p key={`${tecnico._id}`}>ID: {tecnico._id}</p><hr/>
-                                <p key={`${tecnico._id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico.dataCriacao}</p><hr/>
-                                <p key={`${tecnico._id}_cpf`}>CPF: {tecnico.cpf}</p><hr/>
-                                <p key={`${tecnico._id}_dataContrato`}>DATA CONTRATO: {tecnico.dataContrato}</p><hr/>
-                                <p key={`${tecnico._id}_email`}>EMAIL: {tecnico.email}</p><hr/>
-                                <p key={`${tecnico._id}_telefone`}>TELEFONE: {tecnico.telefone}</p><hr/>
-                                <p key={`${tecnico._id}_celular`}>CELULAR: {tecnico.celular}</p><hr/>
-
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        setTecnico(key)
-                                        setShow(true)
-                                    }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {
-                                        handleExcluir(tecnico._id)
-                                    }}>Excluir</Button>
-                                </ButtonGroup>
-                            </div>
-                        );
                     }).sort((a,b) => {
                         switch (parametroOrd) {
                             case "nome":
@@ -141,16 +156,13 @@ export default function Consultar_Tecnicos() {
                             default:
                                 return true;
                         }
+                    }).map((tecnico) => {
+                        return (
+                            <TecnicoBox tecnico_modal={tecnico}/>
+                        );
                     })
                 }
             </div>
-            {tecnicos.length > 0 &&
-                <TecnicoModal show={show} tecnicos={tecnicos} tecnico_key={tecnico} onHide={() => setShow(false)}
-                           handleClose={() => {
-                               setShow(false)
-                               window.location.reload()
-                           }}/>
-            }
         </div>
     )
 }

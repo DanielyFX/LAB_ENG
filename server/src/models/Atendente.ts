@@ -1,40 +1,29 @@
-import { Schema, model, Document } from 'mongoose';
-import crypto from 'crypto'
+import mongoose, { Document, Schema } from 'mongoose';
+import crypto from 'crypto';
 
-interface Tecnico {
+interface Atendente extends Document {
     nome: string;
-    dataCriacao: Date;
-    dataContrato: Date;
     cpf: string;
-    celular: string;
     telefone: string;
+    celular: string;
     email: string;
     hash: string;
     salt: string;
+    dataContrato: Date;
+    dataCriacao: Date;
 }
 
-const TecnicoSchema = new Schema({
+const AtendenteSchema = new Schema({
     nome: {
         type: String,
         default: '',
         required: true,
-    },
-    dataCriacao: {
-        type: Date,
-        default: Date.now()
-    },
-    dataContrato: {
-        type: Date
     },
     cpf: {
         type: String,
         default: '',
         required: true,
     },
-
-    hash: String,
-    salt: String,
-
     telefone: {
         type: String,
         default: '',
@@ -49,13 +38,20 @@ const TecnicoSchema = new Schema({
         type: String,
         default: '',
         required: true,
-    }
+    },
+    dataCriacao: {
+        type: Date,
+        default: Date.now()
+    },
+    hash: String,
+    salt: String,
+    dataContrato: Date
 });
 
-TecnicoSchema.methods.validarSenha = function (senha: string) {
+AtendenteSchema.methods.validarSenha = function (senha: string) {
     const hash = crypto.pbkdf2Sync(senha, this.salt, 10000, 64, 'sha512').toString('base64');
     return this.hash === hash;
 }
 
-const TecnicoModel = model<Tecnico>('Tecnico', TecnicoSchema);
-export { TecnicoModel, Tecnico };
+const AtendenteModel = mongoose.model<Atendente>('Atendente', AtendenteSchema);
+export { AtendenteModel, Atendente };

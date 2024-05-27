@@ -1,9 +1,10 @@
 import {Request, Response} from 'express';
 import {TecnicoModel, Tecnico} from "../models/Tecnico";
+import crypto from 'crypto';
 import {Document} from "mongoose";
 
 class TecnicoController {
-    async createTecnico(request: Request, response: Response) {
+    async create(request: Request, response: Response) {
 
         const new_tecnico = new TecnicoModel();
         new_tecnico.cpf = request.body.cpf;
@@ -12,6 +13,9 @@ class TecnicoController {
         new_tecnico.telefone = request.body.telefone;
         new_tecnico.celular = request.body.celular;
         new_tecnico.email = request.body.email;
+
+        new_tecnico.salt = crypto.randomBytes(16).toString('base64');
+        new_tecnico.hash = crypto.pbkdf2Sync(request.body.senha, new_tecnico.salt, 1000, 64, 'sha512').toString('base64');
 
         const existe = await TecnicoModel.exists({ cpf: new_tecnico.cpf })
 
@@ -28,20 +32,17 @@ class TecnicoController {
         }
     }
 
-    async getAllTecnicos(request: Request, response: Response) {
+    async getAll(request: Request, response: Response) {
         let tecnicos = await TecnicoModel.find({})
         return response.status(200).json(tecnicos);
     }
 
-    async editTecnico(request: Request, response: Response) {
+    async edit(request: Request, response: Response) {
         const { alterados, dados_novos } = request.body;
+        if (alterados.length == 0) return response.status(200).json({success: true, msg: "Nada alterado"});
 
-        if (alterados.length == 0 ) {
-            return response.status(200).json({success: true, msg: "Nada alterado"});
-        }
-
-        // console.log(dados_novos, alterados);
         let tecnico = await TecnicoModel.findById(dados_novos._id).exec();
+
         if (tecnico === null) return response.status(404).json({success: false})
         try {
             for (let propriedade of alterados) {
@@ -49,21 +50,20 @@ class TecnicoController {
             }
             tecnico.save().then();
         } catch (error) {
-            // console.log(error);
             return response.status(500).json({success: false})
         }
         return response.status(200).json({success: true})
     }
 
-    async deleteTecnico(request: Request, response: Response) {
+    async delete(request: Request, response: Response) {
         const { tecnico_id } = request.body;
-        console.log(request.body)
+        console.log(request.body);
         try {
             TecnicoModel.findByIdAndDelete(tecnico_id, { useFindAndModify: false }).exec()
-                .finally(() => { return response.status(200).json({ success: true })})
+                .finally(() => { return response.status(200).json({ success: true })});
         } catch (error) {
             console.error(error);
-            return response.status(500).json({success: false})
+            return response.status(500).json({success: false});
         }
     }
 }
