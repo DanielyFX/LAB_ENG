@@ -48,17 +48,24 @@ function ChamadoModal(props) {
         let alterados = [];
 
         for(let propriedade in dados_novos) {
-            if(propriedade === "atendente")
-                if (chamado.atendente._id !== dados_novos.atendente) alterados.push(propriedade)
-            else if (propriedade === "cliente")
-                if (chamado.cliente._id !== dados_novos.cliente) alterados.push(propriedade)
-            else if (chamado[propriedade] !== dados_novos[propriedade])
-                alterados.push(propriedade)
+            if(propriedade === "atendente") {
+                if (chamado.atendente._id !== dados_novos.atendente) {
+                    alterados.push(propriedade)
+                }
+            } else if (propriedade === "cliente") {
+                if (chamado.cliente._id !== dados_novos.cliente) {
+                    alterados.push(propriedade)
+                }
+            } else if (chamado[propriedade] !== dados_novos[propriedade]) {
+                    alterados.push(propriedade)
+            }
+            console.log(propriedade)
         }
         let body = {
                 alterados: alterados,
                 dados_novos: dados_novos
         }
+        console.log(body)
         fetch('http://localhost:3001/chamados/editar', {
                 method: 'POST',
                 headers: {

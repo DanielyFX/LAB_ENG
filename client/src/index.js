@@ -255,6 +255,9 @@ const router = createBrowserRouter([
 
   {
     path: "/servicos_realizados",
+    loader: async () => {
+      return fetch('http://localhost:3001/orcamentos/consultar')
+    },
     element: (
       <div id="servicos-raiz">
         <Header titulo="Serviços Realizados" />

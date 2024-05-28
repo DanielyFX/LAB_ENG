@@ -1,38 +1,30 @@
 import React, { useState } from 'react';
 import { Table, InputGroup, Form, Dropdown } from 'react-bootstrap';
-import AtendenteModal from '../../components/AtendenteModal';
 import searchIcon from '../../css/Icons';
 import '../../css/atendentes/atendentes.css';
+import {useLoaderData} from "react-router-dom";
 
 export default function Servico_Realizado() {
-  // Dados de EXEMPLO para renderização
-  const servicos = [
-    {
-      id_chamado: '12478347eotuiutor2344',
-      id_orcamento: 'A001',
-      tecnico: 'Carlos Oliveira',
-      cliente: 'João Silva',
-      cpf_cnpj: '123.456.789-00',
-      servico: 'Manutenção de Computador',
-      tipo_servico: 'Manutenção',
-      status_chamado: 'Concluído',
-      status_orcamento: 'Aprovado',
-      valor_total: 'R$ 250,00'
-    },
-    {
-      id_chamado: '67890',
-      id_orcamento: 'B002',
-      tecnico: 'Ana Costa',
-      cliente: 'Maria Souza',
-      cpf_cnpj: '987.654.321-00',
-      servico: 'Instalação de Software',
-      tipo_servico: 'Instalação',
-      status_chamado: 'Em Andamento',
-      status_orcamento: 'Pendente',
-      valor_total: 'R$ 150,00'
-    },
-    // Adicione mais dados conforme necessário
-  ];
+
+  const orcamentos = useLoaderData()
+  console.log(orcamentos)
+
+  let servicos = orcamentos.map((orcamento) => {
+    let {chamado, tecnico, servico} = orcamento
+    let {cliente} = chamado
+    return {
+      id_chamado: chamado._id,
+      id_orcamento: orcamento._id,
+      tecnico: tecnico.nome,
+      cliente: cliente.nome,
+      cpf_cnpj: cliente.documento,
+      servico: servico.nome,
+      tipo_servico: servico.tipo,
+      status_chamado: chamado.status,
+      status_orcamento: orcamento.situacao,
+      valor_total: orcamento.precoTotal,
+    }
+  })
 
   const [pesquisa, setPesquisa] = useState('');
   const [parametro, setParametro] = useState('cliente');

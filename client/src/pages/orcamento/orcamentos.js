@@ -37,7 +37,7 @@ function OrcamentoBox(props) {
             <p key={`${orcamento._id}_garantia`}>GARANTIA: {orcamento.garantia}</p><hr/>
             <p key={`${orcamento._id}_enderecoServico`}>ENDEREÇO: {orcamento.enderecoServico}</p><hr/>
             <p key={`${orcamento._id}_observacao`}>OBSERVAÇÃO: {orcamento.observacao}</p><hr/>
-            <p key={`${orcamento._id}_situacaoOrcamento`}>SITUAÇÃO: {orcamento.situacaoOrcamento}</p><hr/>
+            <p key={`${orcamento._id}_situacaoOrcamento`}>SITUAÇÃO: {orcamento.situacao}</p><hr/>
             <p key={`${orcamento._id}_descontoServico`}>DESCONTO: {orcamento.descontoServico}</p><hr/>
             <p key={`${orcamento._id}_precoTotal`}>PREÇO TOTAL: {orcamento.precoTotal}</p><hr/>
 
