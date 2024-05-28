@@ -9,6 +9,7 @@ import "./css/index.css";
 import Login from "./pages/login";
 import RecuperaSenha from "./pages/senha";
 import Inicio from "./pages/inicio";
+import Servico_Realizado from "./pages/servico_realizado/relatorio_servicos_realizados";
 
 import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
 import Consultar_Servicos from "./pages/servicos/servicos";
@@ -251,6 +252,20 @@ const router = createBrowserRouter([
       </div>
     ),
   },
+
+  {
+    path: "/servicos_realizados",
+    element: (
+      <div id="servicos-raiz">
+        <Header titulo="Serviços Realizados" />
+        <div id="body-container">
+          <Sidebar />
+          <Servico_Realizado />
+        </div>
+      </div>
+    ),
+  },
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
