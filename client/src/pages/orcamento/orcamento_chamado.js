@@ -27,7 +27,7 @@ export default function Orcamento_chamado() {
     const [enderecoServico, setEnderecoServico] = useState('');
     const [observacao, setObservacao] = useState('');
     const [descontoServico, setDescontoServico] = useState('');
-    const [situacaoOrcamento, setSituacaoOrcamento] = useState('');
+    const [situacaoOrcamento, setSituacaoOrcamento] = useState('Selecione...');
     const [precoTotal, setPrecoTotal] = useState('');
 
     const handleSubmit = (e) => {
@@ -40,7 +40,7 @@ export default function Orcamento_chamado() {
             "garantia": garantia,
             "enderecoServico": enderecoServico,
             "observacao": observacao,
-            "situacao": situacaoOrcamento,
+            "situacaoOrcamento": situacaoOrcamento,
             "descontoServico": descontoServico,
             "precoTotal": precoTotal
         }
@@ -126,7 +126,7 @@ export default function Orcamento_chamado() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Observação</Form.Label>
-                    <Col sm={10}><Form.Control required  as="textarea" rows={3}
+                    <Col sm={10}><Form.Control  as="textarea" rows={3}
                                                onChange={e => setObservacao(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -144,6 +144,7 @@ export default function Orcamento_chamado() {
                     <Col sm={10}>
                     <Form.Control as="select" onChange={e => setSituacaoOrcamento(e.target.value)} value={situacaoOrcamento}>
                         <option selected disabled >Selecione...</option>
+                        <option value="Realizado">Realizado</option>
                         <option value="Aprovado">Aprovado</option>
                         <option value="Reprovado">Reprovado</option>
                         <option value="Cancelado">Cancelado</option>

@@ -113,7 +113,7 @@ export default function Cadastrar_chamado() {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm={2}>Orçamento</Form.Label> 
+                <Form.Label column sm={2}>Status Orçamento</Form.Label> 
                     <Col sm={10}>
                         <Form.Control as="select" onChange={e=> setOrcamento(e.target.value)} value={orcamento}>
                             <option selected disabled >Selecione...</option> 

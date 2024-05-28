@@ -21,7 +21,7 @@ export default function OrcamentoModal(props) {
     const [enderecoServico, setEnderecoServico] = useState(orcamento.enderecoServico);
     const [observacao, setObservacao] = useState(orcamento.observacao);
     const [descontoServico, setDescontoServico] = useState(orcamento.descontoServico);
-    const [situacaoOrcamento, setSituacaoOrcamento] = useState(orcamento.situacao);
+    const [situacaoOrcamento, setSituacaoOrcamento] = useState(orcamento.situacaoOrcamento);
     const [precoTotal, setPrecoTotal] = useState(orcamento.precoTotal);
 
     const dados_novos = {
@@ -165,7 +165,7 @@ export default function OrcamentoModal(props) {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Situação</Form.Label>
                             <Col sm={10}>
-                                <Form.Control as="select" onChange={e => setSituacaoOrcamento(e.target.value)} value={situacaoOrcamento}>
+                                <Form.Control as="select" onChange={e => setSituacaoOrcamento(e.target.value)} defaultValue={situacaoOrcamento}>
                                     <option disabled value="Selecione...">Selecione...</option>
                                     <option value="Aprovado">Aprovado</option>
                                     <option value="Reprovado">Reprovado</option>

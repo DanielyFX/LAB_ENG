@@ -58,9 +58,14 @@ export default function ClienteModal(props) {
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Código</Form.Label>
+                            <Form.Label column sm={2}>ID</Form.Label>
                             <Col sm={10}><Form.Control type="text" defaultValue={cliente._id}
                                                        disabled={true} readOnly={true}/></Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={2}>Nome</Form.Label>
+                            <Col sm={10}><Form.Control type="text" defaultValue={cliente.nome}
+                                                       onChange={(e) => dados_novos.nome = e.target.value} disabled/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>CPF/CNPJ</Form.Label>
@@ -68,9 +73,9 @@ export default function ClienteModal(props) {
                                                        disabled={true} readOnly={true}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Nome</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={cliente.nome}
-                                                       onChange={(e) => dados_novos.nome = e.target.value}/></Col>
+                            <Form.Label column sm={2}>Email</Form.Label>
+                            <Col sm={10}><Form.Control type="email" defaultValue={cliente.email}
+                                                       onChange={(e) => dados_novos.email = e.target.value}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Telefone</Form.Label>
@@ -106,11 +111,6 @@ export default function ClienteModal(props) {
                             <Form.Label column sm={2}>Cidade</Form.Label>
                             <Col sm={10}><Form.Control type="text" defaultValue={cliente.cidade}
                                                        onChange={(e) => dados_novos.cidade = e.target.value}/></Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Email</Form.Label>
-                            <Col sm={10}><Form.Control type="email" defaultValue={cliente.email}
-                                                       onChange={(e) => dados_novos.email = e.target.value}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Data Cadastro</Form.Label>

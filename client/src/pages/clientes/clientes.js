@@ -29,10 +29,9 @@ function ClienteBox(props) {
 
     return (
         <div className="tecnico">
-            <p key={`${cliente._id}_nome`}>NOME: {cliente.nome}</p><hr/>
             <p key={`${cliente._id}`}>ID: {cliente._id}</p><hr/>
-            <p key={`${cliente._id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p><hr/>
-            <p key={`${cliente._id}_documento`}>DOCUMENTO: {cliente.documento}</p><hr/>
+            <p key={`${cliente._id}_nome`}>NOME: {cliente.nome}</p><hr/>
+            <p key={`${cliente._id}_documento`}>CPF/CNPJ: {cliente.documento}</p><hr/>
             <p key={`${cliente._id}_email`}>EMAIL: {cliente.email}</p><hr/>
             <p key={`${cliente._id}_telefone`}>TELEFONE: {cliente.telefone}</p><hr/>
             <p key={`${cliente._id}_celular`}>CELULAR: {cliente.celular}</p><hr/>
@@ -41,6 +40,7 @@ function ClienteBox(props) {
             <p key={`${cliente._id}_bairro`}>BAIRRO: {cliente.bairro}</p><hr/>
             <p key={`${cliente._id}_numero`}>NUMERO: {cliente.numero}</p><hr/>
             <p key={`${cliente._id}_cidade`}>CIDADE: {cliente.cidade}</p><hr/>
+            <p key={`${cliente._id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {setShow(true)}}>Editar</Button>
                 <Button variant="danger" onClick={() => {

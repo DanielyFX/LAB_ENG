@@ -29,13 +29,15 @@ function ChamadoBox(props) {
     return (
         <div className="chamado">
             <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
+            <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente.nome}</p><hr/>
+            <p key={`${chamado._id}_cliente`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
             <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
             <p key={`${chamado._id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
+            <p key={`${chamado._id}_status`}>STATUS CHAMADO: {chamado.status}</p><hr/>
             <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsaoAtendimento}</p><hr/>
             <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataCriacao}</p><hr/>
             <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
-            <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente.nome}</p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {
                     setShow(true)

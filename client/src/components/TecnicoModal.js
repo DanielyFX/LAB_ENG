@@ -60,46 +60,40 @@ export default function TecnicoModal(props) {
                         </Modal.Header>
                         <Modal.Body>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>codigo</Form.Label>
+                                <Form.Label column sm={2}>ID</Form.Label>
                                 <Col sm={10}><Form.Control type="text" defaultValue={dados._id} readOnly={true}
                                                            disabled={true}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>nome</Form.Label>
+                                <Form.Label column sm={2}>Nome</Form.Label>
                                 <Col sm={10}><Form.Control type="text" defaultValue={dados.nome}
-                                                           onChange={(e) => dados_novos.nome = e.target.value}/></Col>
+                                                           onChange={(e) => dados_novos.nome = e.target.value} disabled/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>telefone</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.telefone}
-                                                           onChange={(e) => dados_novos.telefone = e.target.value}/></Col>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>celular</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.celular}
-                                                           onChange={(e) => dados_novos.celular = e.target.value}/></Col>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>cpf</Form.Label>
+                                <Form.Label column sm={2}>CPF</Form.Label>
                                 <Col sm={10}><Form.Control type="text" defaultValue={dados.cpf} readOnly={true}
                                                            disabled={true}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>data criação</Form.Label>
-                                <Col sm={10}><Form.Control type="date"
-                                                           defaultValue={new Date(dados.dataCriacao).toISOString().substring(0, 10)}
-                                                           disabled={true} readOnly={true}/></Col>
+                                <Form.Label column sm={2}>Telefone</Form.Label>
+                                <Col sm={10}><Form.Control type="text" defaultValue={dados.telefone}
+                                                           onChange={(e) => dados_novos.telefone = e.target.value}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>data contrato</Form.Label>
-                                <Col sm={10}><Form.Control type="date"
-                                                           defaultValue={new Date(dados.dataContrato).toISOString().substring(0, 10)}
-                                                           onChange={(e) => dados_novos.dataContrato = e.target.value}/></Col>
+                                <Form.Label column sm={2}>Celular</Form.Label>
+                                <Col sm={10}><Form.Control type="text" defaultValue={dados.celular}
+                                                           onChange={(e) => dados_novos.celular = e.target.value}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>email</Form.Label>
+                                <Form.Label column sm={2}>Email</Form.Label>
                                 <Col sm={10}><Form.Control type="text" defaultValue={dados.email}
                                                            onChange={(e) => dados_novos.email = e.target.value}/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>Data contrato</Form.Label>
+                                <Col sm={10}><Form.Control type="date"
+                                                           defaultValue={new Date(dados.dataContrato).toISOString().substring(0, 10)}
+                                                           onChange={(e) => dados_novos.dataContrato = e.target.value} disabled/></Col>
                             </Form.Group>
 
                         </Modal.Body>

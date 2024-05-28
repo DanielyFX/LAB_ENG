@@ -56,11 +56,11 @@ function ServicoModal(props) {
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>codigo</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={servico._id}/></Col>
+                            <Form.Label column sm={2}>ID</Form.Label>
+                            <Col sm={10}><Form.Control type="text" defaultValue={servico._id} disabled/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>nome</Form.Label>
+                            <Form.Label column sm={2}>Nome</Form.Label>
                             <Col sm={10}><Form.Control type="text" defaultValue={servico.nome}
                                                        onChange={(e) => dados_novos.nome = e.target.value}/></Col>
                         </Form.Group>
@@ -75,12 +75,12 @@ function ServicoModal(props) {
                                                        onChange={(e) => dados_novos.descricao = e.target.value}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Preço Unitário</Form.Label>
+                            <Form.Label column sm={2}>Preço</Form.Label>
                             <Col sm={10}><Form.Control type="number" defaultValue={parseFloat(servico.preco)}
                                                        onChange={(e) => dados_novos.preco = parseFloat(e.target.value)}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>data criação</Form.Label>
+                            <Form.Label column sm={2}>Data criação</Form.Label>
                             <Col sm={10}><Form.Control type="date" defaultValue={new Date(servico.dataCriacao).toISOString().substring(0,10)}/></Col>
                         </Form.Group>
                     </Modal.Body>

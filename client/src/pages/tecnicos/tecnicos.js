@@ -31,21 +31,19 @@ function TecnicoBox(props) {
 
     return (
         <div className="tecnico">
-            <p key={`${tecnico_modal._id}_nome`}>NOME: {tecnico_modal.nome}</p>
-            <hr/>
             <p key={`${tecnico_modal._id}`}>ID: {tecnico_modal._id}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_dataCriacao`}>DATA CRIAÇÃO: {tecnico_modal.dataCriacao}</p>
+            <p key={`${tecnico_modal._id}_nome`}>NOME: {tecnico_modal.nome}</p>
             <hr/>
             <p key={`${tecnico_modal._id}_cpf`}>CPF: {tecnico_modal.cpf}</p>
-            <hr/>
-            <p key={`${tecnico_modal._id}_dataContrato`}>DATA CONTRATO: {tecnico_modal.dataContrato}</p>
-            <hr/>
-            <p key={`${tecnico_modal._id}_email`}>EMAIL: {tecnico_modal.email}</p>
             <hr/>
             <p key={`${tecnico_modal._id}_telefone`}>TELEFONE: {tecnico_modal.telefone}</p>
             <hr/>
             <p key={`${tecnico_modal._id}_celular`}>CELULAR: {tecnico_modal.celular}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_email`}>EMAIL: {tecnico_modal.email}</p>
+            <hr/>
+            <p key={`${tecnico_modal._id}_dataContrato`}>DATA CONTRATO: {tecnico_modal.dataContrato}</p>
             <hr/>
 
             <ButtonGroup>
