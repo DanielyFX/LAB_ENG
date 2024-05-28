@@ -22,7 +22,8 @@ class ChamadoController {
     }
 
     async getAll(request: Request, response: Response) {
-        let chamados = await ChamadoModel.find({}).populate('cliente').populate('atendente');
+        let chamados = await ChamadoModel.find({})
+            .populate('cliente').populate('atendente');
         return response.status(200).json(chamados);
     }
 

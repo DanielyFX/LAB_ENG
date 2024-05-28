@@ -173,6 +173,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/chamados/cadastrar",
+    loader: async () => {
+        const [clientes, atendentes] = await Promise.all([
+            fetch('http://localhost:3001/clientes/consultar').then(res => res.json()),
+            fetch('http://localhost:3001/atendentes/consultar').then(res => res.json())
+        ])
+        return { clientes, atendentes }
+    },
     element: (
       <div id="cadchamado-raiz">
         <Header titulo="Cadastrar Chamado" />
@@ -186,7 +193,12 @@ const router = createBrowserRouter([
   {
     path: "/chamados/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+        const [chamados, clientes, atendentes] = await Promise.all([
+          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/clientes/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/atendentes/consultar').then(res => res.json())
+        ])
+        return { chamados, clientes, atendentes }
     },
     element: (
       <div id="chamados-raiz">
@@ -200,6 +212,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/orcamento/cadastrar",
+    loader: async () => {
+      const [tecnicos, chamados, servicos] = await Promise.all([
+          fetch('http://localhost:3001/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/servicos/consultar').then(res => res.json())
+      ])
+      return { tecnicos, chamados, servicos }
+    },
     element: (
       <div id="chamados-raiz">
         <Header titulo="Realizar Orçamento" />
@@ -213,7 +233,13 @@ const router = createBrowserRouter([
   {
     path: "/orcamento/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+      const [tecnicos, chamados, servicos, orcamentos] = await Promise.all([
+          fetch('http://localhost:3001/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/servicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/orcamentos/consultar').then(res => res.json())
+      ])
+      return { tecnicos, chamados, servicos, orcamentos }
     },
     element: (
       <div id="chamados-raiz">

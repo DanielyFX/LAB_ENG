@@ -6,13 +6,11 @@ class OrcamentoController {
         const new_orcamento = new OrcamentoModel();
         new_orcamento.tecnico = request.body.tecnico;
         new_orcamento.chamado = request.body.chamado;
-        new_orcamento.descricaoServico = request.body.descricaoServico;
-        new_orcamento.tipoServico = request.body.tipoServico;
+        new_orcamento.servico = request.body.servico;
         new_orcamento.tempoExecucao = request.body.tempoExecucao;
         new_orcamento.garantia = request.body.garantia;
-        new_orcamento.dataSolicitacao = request.body.dataSolicitacao;
+        new_orcamento.situacao = request.body.situacao;
         new_orcamento.enderecoServico = request.body.enderecoServico;
-        new_orcamento.situacaoOrcamento = request.body.situacaoOrcamento;
         new_orcamento.observacao = request.body.observacao;
         new_orcamento.descontoServico = request.body.descontoServico;
         new_orcamento.precoTotal = request.body.precoTotal;
@@ -27,7 +25,8 @@ class OrcamentoController {
     }
 
     async getAll(request: Request, response: Response) {
-        let orcamentos = await OrcamentoModel.find({}).populate('tecnico').populate('chamado');
+        let orcamentos = await OrcamentoModel.find({})
+            .populate('tecnico').populate('chamado').populate('servico');
         return response.status(200).json(orcamentos);
     }
 

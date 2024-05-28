@@ -39,7 +39,6 @@ function ServicoModal(props) {
         })
             .then((resultado) => resultado.json())
             .then((response) => {/*console.log(response)*/})
-        //console.log("esperando 1 segundo")
         setTimeout(() => {
             onHide()
         }, 500);

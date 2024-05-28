@@ -7,14 +7,81 @@ import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ChamadoModal from "../../components/ChamadoModal";
 import searchIcon from "../../css/Icons";
 
+function ChamadoBox(props) {
+    const [show, setShow] = useState(false);
+    const {chamado, clientes, atendentes} = props
+
+    const handleExcluir = (chamado_id) => {
+        fetch('http://localhost:3001/chamados/deletar', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({chamado_id})
+        })
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if (response.success) window.location.reload();
+                else alert("Erro ao deletar Chamado");
+            })
+    }
+    return (
+        <div className="chamado">
+            <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
+            <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
+            <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
+            <p key={`${chamado._id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
+            <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsaoAtendimento}</p><hr/>
+            <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataCriacao}</p><hr/>
+            <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
+            <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente.nome}</p><hr/>
+            <ButtonGroup>
+                <Button onClick={() => {
+                    setShow(true)
+                }}>Editar</Button>
+                <Button variant="danger" onClick={() => {
+                    handleExcluir(chamado._id)
+                }}>Excluir</Button>
+            </ButtonGroup>
+            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+        </div>
+    );
+}
+
 export default function Consultar_Chamados(props) {
 
-    let { chamados } = useLoaderData();
+
+    const {chamados, atendentes, clientes} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
-    const [chamado, setChamado] = useState(chamados > 0 ? '' : chamados[0]._id );
-    const [show, setShow] = useState(false);
+
+    // console.log("chamados", chamados)
+    // console.log("clientes", clientes)
+    // console.log("atendentes", atendentes)
+
+    const dropdown = (dropdown) => {
+        let funcao, todos = true;
+        if (dropdown === "ord") {
+            todos = false
+            funcao = setParametroOrd;
+        } else funcao = setParametro;
+        return (
+            <Dropdown.Menu>
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>todos os campos</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("_id")}>_id</Dropdown.Item>}
+                <Dropdown.Item as="button" onClick={() => funcao("descricao")}>descrição</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("prioridade")}>prioridade</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("status")}>status</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("orcamento")}>orçamento</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("previsaoAtendimento")}>previsão</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>data criação</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("atendente")}>atendente</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("cliente")}>cliente</Dropdown.Item>
+            </Dropdown.Menu>
+        )
+    }
 
     const sort_string = (a, b) => {
         return a > b ? a === b ? 1 : 0 : -1;
@@ -29,35 +96,17 @@ export default function Consultar_Chamados(props) {
                     <Dropdown.Toggle variant="info">
                         Filtro de Pesquisa: {parametro}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item as="button" onClick={() => setParametro("todos")}>todos os campos</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("_id")}>_id</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("chamado")}>chamado</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("urgencia")}>urgencia</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("orcamento")}>orçamento</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("data")}>data</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("atendente")}>atendente</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametro("cliente")}>cliente</Dropdown.Item>
-                    </Dropdown.Menu>
+                    {dropdown("")}
                 </Dropdown>
                 <Dropdown>
                     <Dropdown.Toggle variant="info">
                         Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("todos")}>todos os campos</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("_id")}>_id</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("chamado")}>chamado</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("urgencia")}>urgencia</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("orcamento")}>orçamento</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("data")}>data</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("atendente")}>atendente</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => setParametroOrd("cliente")}>cliente</Dropdown.Item>
-                    </Dropdown.Menu>
+                    {dropdown("ord")}
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {
+                {chamados.length > 0 &&
                     chamados.filter((chamado) => {
                         switch (parametro) {
                             case "todos":
@@ -67,63 +116,50 @@ export default function Consultar_Chamados(props) {
                                 break;
                             case "_id":
                                 return chamado._id.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
-                            case "chamado":
-                                return chamado.chamado.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
-                            case "urgencia":
-                                return chamado.urgencia.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                            case "descricao":
+                                return chamado.descricao.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                            case "prioridade":
+                                return chamado.prioridade.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "orcamento":
                                 return chamado.orcamento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
-                            case "data":
-                                return chamado.previsao_atendimento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                            case "previsaoAtendimento":
+                                return chamado.previsaoAtendimento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "atendente":
-                                return chamado.atendente_id.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                                return chamado.atendente.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                            case "status":
+                                return chamado.status.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "cliente":
-                                return chamado.cliente_id.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                                return chamado.cliente.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             default:
                                 return true;
                         }
-                    }).map((chamado, key) => {
-                        return (
-                            <div className="chamado">
-                                <p key={`${chamado._id}_chamado`}>CHAMADO: {chamado.chamado}</p><hr/>
-                                <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
-                                <p key={`${chamado._id}_urgencia`}>URGENCIA: {chamado.urgencia}</p><hr/>
-                                <p key={`${chamado._id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
-                                <p key={`${chamado._id}_data`}>DATA PREVISTA: {chamado.previsao_atendimento}</p><hr/>
-                                <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente_id}</p><hr/>
-                                <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente_id}</p><hr/>
-
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        setChamado(chamado._id)
-                                        setShow(true)
-                                    }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {
-                                    }}>Excluir</Button>
-                                </ButtonGroup>
-
-                            </div>
-                        );
                     }).sort((a,b) => {
                         switch (parametroOrd) {
-                            case "chamado":
-                            case "urgencia":
+                            case "descricao":
+                            case "prioridade":
                             case "orcamento":
+                            case "status":
                             case "atendente":
                             case "cliente":
                                 sort_string(a[parametroOrd], b[parametroOrd]);
                                 break;
                             case "_id":
                                 return parseInt(a["_id"]) - parseInt(b["_id"])
-                            case "data":
-                                return new Date(a["previsao_atendimento"]) - new Date(b["previsao_atendimento"]);
+                            case "dataCriacao":
+                                return new Date(a["dataCriacao"]) - new Date(b["dataCriacao"]);
+                            case "previsaoAtendimento":
+                                return new Date(a["previsaoAtendimento"]) - new Date(b["previsaoAtendimento"]);
                             default:
                                 return true;
                         }
+                    }).map((chamado) => {
+                        // console.log(chamado)
+                        return (
+                            <ChamadoBox chamado={chamado} clientes={clientes} atendentes={atendentes}/>
+                        );
                     })
                 }
             </div>
-            <ChamadoModal show={show} chamados={chamados} chamado_key={chamado} onHide={() => {setShow(false)}} handleClose={() => {setShow(false)}}/>
         </div>
     )
 }

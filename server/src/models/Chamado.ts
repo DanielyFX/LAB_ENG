@@ -4,10 +4,10 @@ interface Chamado {
     cliente: Types.ObjectId;
     atendente: Types.ObjectId;
     prioridade: string;
-    previsaoAtendimento: Date;
     orcamento: string;
     status: string;
     descricao: string;
+    previsaoAtendimento: Date;
     dataCriacao: Date;
 }
 

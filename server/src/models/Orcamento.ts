@@ -3,16 +3,14 @@ import mongoose, {Document, Schema, Types} from 'mongoose';
 interface Orcamento extends Document {
     tecnico: Types.ObjectId;
     chamado: Types.ObjectId;
-    descricaoServico: string;
-    tipoServico: string;
+    servico: Types.ObjectId;
+    situacao: string;
     tempoExecucao: string;
     garantia: string;
-    dataSolicitacao: Date;
-    dataCriacao: Date;
     enderecoServico: string;
-    situacaoOrcamento: string;
     observacao: string;
-    descontoServico: number;
+    dataCriacao: Date;
+    descontoServico: string;
     precoTotal: number;
 }
 
@@ -27,11 +25,12 @@ const OrcamentoSchema = new Schema({
         ref: 'Chamado',
         required: true
     },
-    descricaoServico: {
-        type: String,
-        required: true,
+    servico: {
+        type: Types.ObjectId,
+        ref: 'Servico',
+        required: true
     },
-    tipoServico: {
+    situacao: {
         type: String,
         required: true,
     },
@@ -43,15 +42,7 @@ const OrcamentoSchema = new Schema({
         type: String,
         required: true,
     },
-    dataSolicitacao: {
-        type: Date,
-        required: true,
-    },
     enderecoServico: {
-        type: String,
-        required: true,
-    },
-    situacaoOrcamento: {
         type: String,
         required: true,
     },
@@ -60,7 +51,7 @@ const OrcamentoSchema = new Schema({
         required: false,
     },
     descontoServico: {
-        type: Number,
+        type: String,
         required: false,
     },
     precoTotal: {
