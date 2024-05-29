@@ -40,7 +40,7 @@ export default function Orcamento_chamado() {
             "garantia": garantia,
             "enderecoServico": enderecoServico,
             "observacao": observacao,
-            "situacaoOrcamento": situacaoOrcamento,
+            "situacao": situacaoOrcamento,
             "descontoServico": descontoServico,
             "precoTotal": precoTotal
         }
@@ -120,12 +120,12 @@ export default function Orcamento_chamado() {
                                                onChange={e => setGarantia(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Endereço</Form.Label>
+                    <Form.Label column sm={2}>Endereço do Serviço</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
                                                onChange={e => setEnderecoServico(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Observação</Form.Label>
+                    <Form.Label column sm={2}>Descrição</Form.Label>
                     <Col sm={10}><Form.Control  as="textarea" rows={3}
                                                onChange={e => setObservacao(e.target.value)}/></Col>
                 </Form.Group>

@@ -101,7 +101,7 @@ export default function OrcamentoModal(props) {
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Chamado</Form.Label>
                             <Col sm={10}>
-                                <Form.Control required as="select" onChange={e=> setChamado(e.target.value)} value={chamado}>
+                                <Form.Control required as="select" onChange={e=> setChamado(e.target.value)} value={chamado} disabled>
                                     {chamados_alfabetico.length > 0 ?
                                         <><option selected disabled >Selecione...</option>
                                             {chamados_alfabetico.map((chamado) => {
@@ -168,6 +168,7 @@ export default function OrcamentoModal(props) {
                             <Col sm={10}>
                                 <Form.Control as="select" onChange={e => setSituacaoOrcamento(e.target.value)} value={situacaoOrcamento} >
                                     <option disabled value="Selecione...">Selecione...</option>
+                                    <option value="Realizado">Realizado</option>
                                     <option value="Aprovado">Aprovado</option>
                                     <option value="Reprovado">Reprovado</option>
                                     <option value="Cancelado">Cancelado</option>

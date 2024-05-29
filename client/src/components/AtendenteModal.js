@@ -57,46 +57,46 @@ export default function AtendenteModal(props) {
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>codigo</Form.Label>
+                            <Form.Label column sm={2}>ID</Form.Label>
                             <Col sm={10}><Form.Control type="text" defaultValue={atendente._id} readOnly={true}
                                                        disabled={true}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>nome</Form.Label>
+                            <Form.Label column sm={2}>Nome</Form.Label>
                             <Col sm={10}><Form.Control type="text" defaultValue={atendente.nome}
-                                                       onChange={(e) => dados_novos.nome = e.target.value}/></Col>
+                                                       onChange={(e) => dados_novos.nome = e.target.value} disabled={true}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>telefone</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.telefone}
-                                                       onChange={(e) => dados_novos.telefone = e.target.value}/></Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>celular</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.celular}
-                                                       onChange={(e) => dados_novos.celular = e.target.value}/></Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>cpf</Form.Label>
+                            <Form.Label column sm={2}>CPF</Form.Label>
                             <Col sm={10}><Form.Control type="text" defaultValue={atendente.cpf} readOnly={true}
                                                        disabled={true}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>data criação</Form.Label>
+                            <Form.Label column sm={2}>Telefone</Form.Label>
+                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.telefone}
+                                                       onChange={(e) => dados_novos.telefone = e.target.value}/></Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={2}>Celular</Form.Label>
+                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.celular}
+                                                       onChange={(e) => dados_novos.celular = e.target.value}/></Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={2}>Email</Form.Label>
+                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.email}
+                                                       onChange={(e) => dados_novos.email = e.target.value}/></Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={2}>Data criação</Form.Label>
                             <Col sm={10}><Form.Control type="date"
                                                        defaultValue={new Date(atendente.dataCriacao).toISOString().substring(0, 10)}
                                                        disabled={true} readOnly={true}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>data contrato</Form.Label>
+                            <Form.Label column sm={2}>Data contrato</Form.Label>
                             <Col sm={10}><Form.Control type="date"
                                                        defaultValue={new Date(atendente.dataContrato).toISOString().substring(0, 10)}
                                                        onChange={(e) => dados_novos.dataContrato = e.target.value}/></Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>email</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.email}
-                                                       onChange={(e) => dados_novos.email = e.target.value}/></Col>
                         </Form.Group>
 
                     </Modal.Body>

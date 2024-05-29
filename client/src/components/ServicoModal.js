@@ -81,7 +81,7 @@ function ServicoModal(props) {
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Data criação</Form.Label>
-                            <Col sm={10}><Form.Control type="date" defaultValue={new Date(servico.dataCriacao).toISOString().substring(0,10)}/></Col>
+                            <Col sm={10}><Form.Control type="date" defaultValue={new Date(servico.dataCriacao).toISOString().substring(0,10)} disabled /></Col>
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>

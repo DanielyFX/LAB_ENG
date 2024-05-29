@@ -70,18 +70,18 @@ export default function Consultar_Clientes() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                {todos && <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>}
                 <Dropdown.Item as="button" onClick={() => funcao("nome")}>Nome</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criacao</Dropdown.Item>
-                {todos && <Dropdown.Item as="button" onClick={() => funcao("documento")}>Documento</Dropdown.Item>}
+                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criação</Dropdown.Item>
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("documento")}>CPF/CNPJ</Dropdown.Item>}
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>}
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("celular")}>Telefone</Dropdown.Item>}
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("email")}>Email</Dropdown.Item>}
                 <Dropdown.Item as="button" onClick={() => funcao("cep")}>CEP</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("rua")}>rua</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("numero")}>numero</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("bairro")}>bairro</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("cidade")}>cidade</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("rua")}>Rua</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("numero")}>Numero</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("bairro")}>Bairro</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("cidade")}>Cidade</Dropdown.Item>
             </Dropdown.Menu>
         )
     }
@@ -118,7 +118,7 @@ export default function Consultar_Clientes() {
                                 }
                                 break;
                             case "_id":
-                                return cliente.id.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
+                                return cliente._id.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "nome":
                                 return cliente.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "dataCriacao":

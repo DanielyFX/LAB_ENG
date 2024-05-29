@@ -77,9 +77,9 @@ export default function Consultar_Tecnicos() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("nome")}>Nome</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criacao</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criação</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("cpf")}>CPF</Dropdown.Item>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>}
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("celular")}>Celular</Dropdown.Item>}

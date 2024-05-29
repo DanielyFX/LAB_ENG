@@ -73,17 +73,17 @@ export default function Consultar_orcamento() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("chamado")}>chamado</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("tecnico")}>técnico</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("servico")}>serviço</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("tempoExecucao")}>tempo de execução</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("garantia")}>garantia</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("enderecoServico")}>endereço</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("observacao")}>observação</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("situacao")}>situação</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("descontoServico")}>desconto</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("precoTotal")}>preço</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("chamado")}>Chamado</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("tecnico")}>Técnico</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("servico")}>Serviço</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("tempoExecucao")}>Tempo de execução</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("garantia")}>Garantia</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("enderecoServico")}>Endereço</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("observacao")}>Observação</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("situacao")}>Situação</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("descontoServico")}>Desconto</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("precoTotal")}>Preço</Dropdown.Item>
             </Dropdown.Menu>
         )
     }

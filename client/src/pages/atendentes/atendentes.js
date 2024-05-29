@@ -29,21 +29,21 @@ function AtendenteBox(props) {
 
     return (
         <div className="tecnico">
-            <p key={`${atendente._id}_nome`}>NOME: {atendente.nome}</p>
-            <hr/>
             <p key={`${atendente._id}`}>ID: {atendente._id}</p>
             <hr/>
-            <p key={`${atendente._id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p>
+            <p key={`${atendente._id}_nome`}>NOME: {atendente.nome}</p>
             <hr/>
             <p key={`${atendente._id}_cpf`}>CPF: {atendente.cpf}</p>
-            <hr/>
-            <p key={`${atendente._id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p>
-            <hr/>
-            <p key={`${atendente._id}_email`}>EMAIL: {atendente.email}</p>
             <hr/>
             <p key={`${atendente._id}_telefone`}>TELEFONE: {atendente.telefone}</p>
             <hr/>
             <p key={`${atendente._id}_celular`}>CELULAR: {atendente.celular}</p>
+            <hr/>
+            <p key={`${atendente._id}_email`}>EMAIL: {atendente.email}</p>
+            <hr/>
+            <p key={`${atendente._id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p>
+            <hr/>
+            <p key={`${atendente._id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p>
             <hr/>
 
             <ButtonGroup>
@@ -76,7 +76,7 @@ export default function Consultar_Atendentes() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("nome")}>Nome</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criacao</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("cpf")}>CPF</Dropdown.Item>

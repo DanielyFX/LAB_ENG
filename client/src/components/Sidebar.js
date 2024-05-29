@@ -98,11 +98,11 @@ export default function Sidebar() {
 
             <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic" style={{ width: "100%" }}>
-                   Realizados
+                   Relatório
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu show={expandedMenu === "chamado"} style={{ width: "100%" }}>
-                    <Dropdown.Item href="/servicos_realizados">Consultar Serviço <br></br> Realizado</Dropdown.Item> {/* uso de quebra de linha com a tag <br> */}
+                    <Dropdown.Item href="/servicos_realizados">Chamados/Orçamentos</Dropdown.Item> {/* uso de quebra de linha com a tag <br> */}
                 </Dropdown.Menu>
             </Dropdown> 
         </div>

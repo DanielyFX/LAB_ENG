@@ -71,7 +71,7 @@ export default function Consultar_Clientes() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("nome")}>Nome</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("tipo")}>Tipo</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criação</Dropdown.Item>
