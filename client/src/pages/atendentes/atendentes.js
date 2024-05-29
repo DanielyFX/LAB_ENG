@@ -7,14 +7,65 @@ import {Dropdown, InputGroup, ButtonGroup} from "react-bootstrap";
 import AtendenteModal from "../../components/AtendenteModal";
 import searchIcon from "../../css/Icons";
 
+function AtendenteBox(props) {
+    const [show, setShow] = useState(false);
+    const {atendente} = props;
+
+    const handleExcluir = (atendente_id) => {
+        fetch('http://localhost:3001/atendentes/deletar', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({atendente_id})
+        })
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if (response.success) window.location.reload();
+                else alert("Erro ao deletar atendente");
+            })
+    }
+
+    return (
+        <div className="tecnico">
+            <p key={`${atendente._id}`}>ID: {atendente._id}</p>
+            <hr/>
+            <p key={`${atendente._id}_nome`}>NOME: {atendente.nome}</p>
+            <hr/>
+            <p key={`${atendente._id}_cpf`}>CPF: {atendente.cpf}</p>
+            <hr/>
+            <p key={`${atendente._id}_telefone`}>TELEFONE: {atendente.telefone}</p>
+            <hr/>
+            <p key={`${atendente._id}_celular`}>CELULAR: {atendente.celular}</p>
+            <hr/>
+            <p key={`${atendente._id}_email`}>EMAIL: {atendente.email}</p>
+            <hr/>
+            <p key={`${atendente._id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p>
+            <hr/>
+            <p key={`${atendente._id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p>
+            <hr/>
+
+            <ButtonGroup>
+                <Button onClick={() => {
+                    setShow(true)
+                }}>Editar</Button>
+                <Button variant="danger" onClick={() => {
+                    handleExcluir(atendente._id)
+                }}>Excluir</Button>
+            </ButtonGroup>
+            <AtendenteModal show={show} atendente={atendente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
+        </div>
+    )
+
+}
+
 export default function Consultar_Atendentes() {
 
-    let { atendentes } = useLoaderData();
+    let atendentes = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
-    const [atendente, setAtendente] = useState(0);
-    const [show, setShow] = useState(false);
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -25,12 +76,12 @@ export default function Consultar_Atendentes() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("nome")}>Nome</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criacao</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("cpf")}>CPF</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("celular")}>Telefone</Dropdown.Item>
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("celular")}>Celular</Dropdown.Item>}
                 <Dropdown.Item as="button" onClick={() => funcao("email")}>Email</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("dataContrato")}>Data de Contrato</Dropdown.Item>
             </Dropdown.Menu>
@@ -69,7 +120,7 @@ export default function Consultar_Atendentes() {
                                 }
                                 break;
                             case "_id":
-                                return atendente.id.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
+                                return atendente._id.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "nome":
                                 return atendente.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "dataCriacao":
@@ -102,33 +153,14 @@ export default function Consultar_Atendentes() {
                             default:
                                 return true;
                         }
-                    }).map((atendente, key) => {
+                    }).map((atendente) => {
                         return (
-                            <div className="tecnico">
-                                <p key={`${atendente.id}_nome`}>NOME: {atendente.nome}</p><hr/>
-                                <p key={`${atendente.id}`}>ID: {atendente.id}</p><hr/>
-                                <p key={`${atendente.id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p><hr/>
-                                <p key={`${atendente.id}_cpf`}>CPF: {atendente.cpf}</p><hr/>
-                                <p key={`${atendente.id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p><hr/>
-                                <p key={`${atendente.id}_email`}>EMAIL: {atendente.email}</p><hr/>
-                                <p key={`${atendente.id}_telefone`}>TELEFONE: {atendente.telefone}</p><hr/>
-                                <p key={`${atendente.id}_celular`}>CELULAR: {atendente.celular}</p><hr/>
-                                
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        setAtendente(key)
-                                        setShow(true)
-                                    }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {
-                                        }}>Excluir</Button>
-                                </ButtonGroup>
-                                
-                            </div>
+                            <AtendenteBox atendente={atendente} />
                         );
                     })
                 }
             </div>
-            <AtendenteModal show={show} atendentes={atendentes} atendente_key={atendente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
+
         </div>
     )
 }

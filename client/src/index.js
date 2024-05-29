@@ -6,9 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/index.css";
 // PAGINAS
-import Login from "./pages/login";
-import RecuperaSenha from "./pages/senha";
 import Inicio from "./pages/inicio";
+import Servico_Realizado from "./pages/servico_realizado/relatorio_servicos_realizados";
 
 import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
 import Consultar_Servicos from "./pages/servicos/servicos";
@@ -30,18 +29,28 @@ import Consultar_orcamento from "./pages/orcamento/orcamentos";
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-// ARQUIVO JSON PARA TESTE
-import dados from "./assets/dados.json";
 
 //ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
-  {
+  /*{
     path: "/",
     element: <Login />,
   },
   {
     path: "/recupera-senha",
     element: <RecuperaSenha />,
+  },*/
+  {
+      path: "/",
+      element: (
+          <div id="servicos-raiz">
+              <Header titulo="Início" />
+              <div id="body-container">
+                  <Sidebar />
+                  <Inicio />
+              </div>
+          </div>
+      )
   },
   {
     path: "/inicio",
@@ -58,7 +67,9 @@ const router = createBrowserRouter([
   {
     path: "/servicos/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+      return fetch('http://localhost:3001/servicos/consultar', {
+          method: "GET"
+      })
     },
     element: (
       <div id="servicos-raiz">
@@ -85,7 +96,9 @@ const router = createBrowserRouter([
   {
     path: "/tecnicos/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+      return fetch('http://localhost:3001/tecnicos/consultar', {
+                method: "GET"
+            });
     },
     element: (
       <div id="tecnicos-raiz">
@@ -112,7 +125,9 @@ const router = createBrowserRouter([
   {
     path: "/atendentes/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+        return fetch('http://localhost:3001/atendentes/consultar', {
+            method: "GET"
+        })
     },
     element: (
       <div id="atendentes-raiz">
@@ -138,9 +153,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/clientes/consultar",
-    loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
-    },
+      loader: async () => {
+          return fetch('http://localhost:3001/clientes/consultar', {
+              method: "GET"
+          });
+      },
     element: (
       <div id="clientes-raiz">
         <Header titulo="Consultar Clientes" />
@@ -165,6 +182,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/chamados/cadastrar",
+    loader: async () => {
+        const [clientes, atendentes] = await Promise.all([
+            fetch('http://localhost:3001/clientes/consultar').then(res => res.json()),
+            fetch('http://localhost:3001/atendentes/consultar').then(res => res.json())
+        ])
+        return { clientes, atendentes }
+    },
     element: (
       <div id="cadchamado-raiz">
         <Header titulo="Cadastrar Chamado" />
@@ -178,7 +202,12 @@ const router = createBrowserRouter([
   {
     path: "/chamados/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+        const [chamados, clientes, atendentes] = await Promise.all([
+          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/clientes/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/atendentes/consultar').then(res => res.json())
+        ])
+        return { chamados, clientes, atendentes }
     },
     element: (
       <div id="chamados-raiz">
@@ -192,6 +221,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/orcamento/cadastrar",
+    loader: async () => {
+      const [tecnicos, chamados, servicos] = await Promise.all([
+          fetch('http://localhost:3001/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/servicos/consultar').then(res => res.json())
+      ])
+      return { tecnicos, chamados, servicos }
+    },
     element: (
       <div id="chamados-raiz">
         <Header titulo="Realizar Orçamento" />
@@ -205,7 +242,13 @@ const router = createBrowserRouter([
   {
     path: "/orcamento/consultar",
     loader: async () => {
-      return JSON.parse(JSON.stringify(dados));
+      const [tecnicos, chamados, servicos, orcamentos] = await Promise.all([
+          fetch('http://localhost:3001/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/servicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/orcamentos/consultar').then(res => res.json())
+      ])
+      return { tecnicos, chamados, servicos, orcamentos }
     },
     element: (
       <div id="chamados-raiz">
@@ -217,11 +260,24 @@ const router = createBrowserRouter([
       </div>
     ),
   },
+  {
+    path: "/servicos_realizados",
+    loader: async () => {
+      return fetch('http://localhost:3001/orcamentos/consultar')
+    },
+    element: (
+      <div id="servicos-raiz">
+        <Header titulo="Análise de Chamados/Orçamentos" />
+        <div id="body-container">
+          <Sidebar />
+          <Servico_Realizado />
+        </div>
+      </div>
+    ),
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );

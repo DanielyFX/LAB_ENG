@@ -4,30 +4,61 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import '../../css/servicos/cadservicos.css'
 import { ButtonGroup } from "react-bootstrap";
+import {useState} from "react";
 
 export default function Cadastrar_servico() {
+
+    const [nome, setNome] = useState('');
+    const [tipo, setTipo] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [preco, setPreco] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const dados = {
+            "nome": nome,
+            "tipo": tipo,
+            "descricao": descricao,
+            "preco": preco
+        }
+        fetch('http://localhost:3001/servicos/novo', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dados),
+            mode: 'cors'
+        })
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if(response.success) {
+                    alert("Serviço cadastrado com sucesso!")
+                    window.location.reload()
+                } else {
+                    alert("Erro ao cadastrar o serviço!")
+                }
+            })
+    }
+
     return (
         <div id="cadservico-main">
-            <Form id="cadservico-form" method="GET" action="/servicos/cadastrar">
+            <Form id="cadservico-form" onSubmit={handleSubmit}>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome do Serviço</Form.Label>
-                    <Col sm={10}><Form.Control required type="text"/></Col>
+                    <Col sm={10}><Form.Control required type="text"
+                                               onChange={(e) => setNome(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Tipo Serviço</Form.Label>
-                    <Col sm={10}><Form.Control required type="text"/></Col>
+                    <Col sm={10}><Form.Control required type="text" onChange={(e) => setTipo(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Descrição</Form.Label>
-                    <Col sm={10}><Form.Control required as="textarea" rows={3}/></Col>
+                    <Col sm={10}><Form.Control required as="textarea" rows={3} onChange={(e) => setDescricao(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Preço Unitário</Form.Label>
-                    <Col sm={10}><Form.Control required type="number"/></Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Data de cadastro</Form.Label>
-                    <Col sm={10}><Form.Control required type="datetime-local"/></Col>
+                    <Col sm={10}><Form.Control required type="number" onChange={(e) => setPreco(e.target.value)}/></Col>
                 </Form.Group>
                 
                 <ButtonGroup>

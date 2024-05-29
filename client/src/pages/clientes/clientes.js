@@ -7,14 +7,59 @@ import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ClienteModal from "../../components/ClienteModal";
 import searchIcon from "../../css/Icons";
 
+function ClienteBox(props) {
+    const [show, setShow] = useState(false)
+    const {cliente} = props;
+
+    const handleExcluir = (cliente_id) => {
+        fetch('http://localhost:3001/clientes/deletar', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({cliente_id})
+        })
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if (response.success) window.location.reload();
+            else alert("Erro ao deletar cliente.");
+        })
+    }
+
+    return (
+        <div className="tecnico">
+            <p key={`${cliente._id}`}>ID: {cliente._id}</p><hr/>
+            <p key={`${cliente._id}_nome`}>NOME: {cliente.nome}</p><hr/>
+            <p key={`${cliente._id}_documento`}>CPF/CNPJ: {cliente.documento}</p><hr/>
+            <p key={`${cliente._id}_email`}>EMAIL: {cliente.email}</p><hr/>
+            <p key={`${cliente._id}_telefone`}>TELEFONE: {cliente.telefone}</p><hr/>
+            <p key={`${cliente._id}_celular`}>CELULAR: {cliente.celular}</p><hr/>
+            <p key={`${cliente._id}_cep`}>CEP: {cliente.cep}</p><hr/>
+            <p key={`${cliente._id}_rua`}>RUA: {cliente.rua}</p><hr/>
+            <p key={`${cliente._id}_bairro`}>BAIRRO: {cliente.bairro}</p><hr/>
+            <p key={`${cliente._id}_numero`}>NUMERO: {cliente.numero}</p><hr/>
+            <p key={`${cliente._id}_cidade`}>CIDADE: {cliente.cidade}</p><hr/>
+            <p key={`${cliente._id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p><hr/>
+            <ButtonGroup>
+                <Button onClick={() => {setShow(true)}}>Editar</Button>
+                <Button variant="danger" onClick={() => {
+                    handleExcluir(cliente._id)
+                }}>Excluir</Button>
+            </ButtonGroup>
+            <ClienteModal show={show} cliente={cliente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
+        </div>
+    )
+
+}
+
+
 export default function Consultar_Clientes() {
 
-    let { clientes } = useLoaderData();
+    let clientes = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
-    const [cliente, setCliente] = useState(0);
-    const [show, setShow] = useState(false);
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -25,18 +70,18 @@ export default function Consultar_Clientes() {
         return (
             <Dropdown.Menu>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("todos")}>Todos os Campos</Dropdown.Item>}
-                <Dropdown.Item as="button" onClick={() => funcao("_id")}>id</Dropdown.Item>
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>}
                 <Dropdown.Item as="button" onClick={() => funcao("nome")}>Nome</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criacao</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("documento")}>Documento</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("celular")}>Telefone</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("email")}>Email</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criação</Dropdown.Item>
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("documento")}>CPF/CNPJ</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("celular")}>Telefone</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("email")}>Email</Dropdown.Item>}
                 <Dropdown.Item as="button" onClick={() => funcao("cep")}>CEP</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("rua")}>rua</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("numero")}>numero</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("bairro")}>bairro</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("cidade")}>cidade</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("rua")}>Rua</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("numero")}>Numero</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("bairro")}>Bairro</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("cidade")}>Cidade</Dropdown.Item>
             </Dropdown.Menu>
         )
     }
@@ -64,7 +109,7 @@ export default function Consultar_Clientes() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {
+                {clientes.length > 0 &&
                     clientes.filter((cliente) => {
                         switch (parametro) {
                             case "todos":
@@ -73,7 +118,7 @@ export default function Consultar_Clientes() {
                                 }
                                 break;
                             case "_id":
-                                return cliente.id.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
+                                return cliente._id.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "nome":
                                 return cliente.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "dataCriacao":
@@ -119,37 +164,13 @@ export default function Consultar_Clientes() {
                             default:
                                 return true;
                         }
-                    }).map((cliente, key) => {
+                    }).map((cliente) => {
                         return (
-                            <div className="tecnico">
-                                <p key={`${cliente.id}_nome`}>NOME: {cliente.nome}</p><hr/>
-                                <p key={`${cliente.id}`}>ID: {cliente.id}</p><hr/>
-                                <p key={`${cliente.id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p><hr/>
-                                <p key={`${cliente.id}_documento`}>DOCUMENTO: {cliente.documento}</p><hr/>
-                                <p key={`${cliente.id}_email`}>EMAIL: {cliente.email}</p><hr/>
-                                <p key={`${cliente.id}_telefone`}>TELEFONE: {cliente.telefone}</p><hr/>
-                                <p key={`${cliente.id}_celular`}>CELULAR: {cliente.celular}</p><hr/>
-                                <p key={`${cliente.id}_cep`}>CEP: {cliente.cep}</p><hr/>
-                                <p key={`${cliente.id}_rua`}>RUA: {cliente.rua}</p><hr/>
-                                <p key={`${cliente.id}_bairro`}>BAIRRO: {cliente.bairro}</p><hr/>
-                                <p key={`${cliente.id}_numero`}>NUMERO: {cliente.numero}</p><hr/>
-                                <p key={`${cliente.id}_cidade`}>CIDADE: {cliente.cidade}</p><hr/>
-                                
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        setCliente(key)
-                                        setShow(true)
-                                    }}>Editar</Button>
-                                    <Button variant="danger" onClick={() => {
-                                        }}>Excluir</Button>
-                                </ButtonGroup>
-
-                            </div>
+                            <ClienteBox cliente={cliente}/>
                         );
                     })
                 }
             </div>
-            <ClienteModal show={show} clientes={clientes} cliente_key={cliente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
         </div>
     )
 }

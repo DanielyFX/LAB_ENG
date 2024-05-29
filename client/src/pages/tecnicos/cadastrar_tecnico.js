@@ -14,6 +14,7 @@ export default function Cadastrar_tecnico() {
     const [telefone, setTelefone] = useState('');
     const [celular, setCelular] = useState('');
     const [dataContrato, setDataContrato] = useState('');
+    const [senha, setSenha] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,7 +24,8 @@ export default function Cadastrar_tecnico() {
             "telefone": telefone,
             "celular": celular,
             "dataContrato": dataContrato,
-            "email": email
+            "email": email,
+            "senha": senha
         }
         fetch('http://localhost:3001/tecnicos/novo', {
             method: "POST",
@@ -34,7 +36,15 @@ export default function Cadastrar_tecnico() {
             mode: 'cors'
         })
             .then((resultado) => resultado.json())
-            .then((response) => { console.log(response) })
+            .then((response) => {
+                //console.log(response)
+                if(response.success) {
+                    alert("Técnico Cadastrado com Sucesso!")
+                    window.location.reload()
+                } else {
+                    alert("Erro ao cadastrar o técnico!")
+                }
+            })
     }
 
     return (
@@ -62,7 +72,7 @@ export default function Cadastrar_tecnico() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Senha</Form.Label>
-                    <Col sm={10}><Form.Control required maxLength={8} onChange={(e) => setEmail(e.target.value)} type="password" /></Col>
+                    <Col sm={10}><Form.Control required maxLength={8} onChange={(e) => setSenha(e.target.value)} type="password" /></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Data de contrato</Form.Label>
