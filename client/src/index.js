@@ -6,8 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/index.css";
 // PAGINAS
-import Login from "./pages/login";
-import RecuperaSenha from "./pages/senha";
 import Inicio from "./pages/inicio";
 import Servico_Realizado from "./pages/servico_realizado/relatorio_servicos_realizados";
 
@@ -31,18 +29,28 @@ import Consultar_orcamento from "./pages/orcamento/orcamentos";
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-// ARQUIVO JSON PARA TESTE
-import dados from "./assets/dados.json";
 
 //ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
-  {
+  /*{
     path: "/",
     element: <Login />,
   },
   {
     path: "/recupera-senha",
     element: <RecuperaSenha />,
+  },*/
+  {
+      path: "/",
+      element: (
+          <div id="servicos-raiz">
+              <Header titulo="Início" />
+              <div id="body-container">
+                  <Sidebar />
+                  <Inicio />
+              </div>
+          </div>
+      )
   },
   {
     path: "/inicio",
@@ -252,7 +260,6 @@ const router = createBrowserRouter([
       </div>
     ),
   },
-
   {
     path: "/servicos_realizados",
     loader: async () => {
@@ -267,13 +274,10 @@ const router = createBrowserRouter([
         </div>
       </div>
     ),
-  },
-
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
