@@ -9,19 +9,31 @@ class ServicoController {
         new_servico.descricao = request.body.descricao;
         new_servico.preco = request.body.preco;
 
-        const existe = await ServicoModel.exists({ nome: new_servico.nome })
+        try{
+            const existe = await ServicoModel.exists({nome: new_servico.nome});
 
-        if (existe) {
-            return response.status(400).json({success: false})
+            if (existe){
+                return response.status(409).json({
+                    success: false,
+                    message: "Serviço já cadastrado com esse nome."
+                });
+            }
+
+            await new_servico.save();
+
+            return response.status(201).json({
+                success: true,
+                message: "Serviço cadastrado com sucesso!"
+            });
+
+        }
+        catch (error){
+            return response.status(500).json({
+                 success: false,
+                 message: "Erro ao tentar cadastrar o serviço"
+            });
         }
 
-        try {
-            new_servico.save().then();
-            return response.status(200).json({success: true})
-        } catch (error) {
-            console.log(error);
-            return response.status(400).json({success: false})
-        }
     }
 
     async getAll(request: Request, response: Response) {

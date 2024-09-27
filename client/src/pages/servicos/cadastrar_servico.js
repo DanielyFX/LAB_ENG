@@ -29,33 +29,38 @@ export default function Cadastrar_servico() {
             body: JSON.stringify(dados),
             mode: 'cors'
         })
-            .then((resultado) => {
-                  if (!resultado.ok){
-                       throw new Error(`HTTP status ${resultado.status}`);
-                  }
-                  return resultado.json();
-            })
-            .then((response) => {
-                if(response.success) {
-                    alert("Serviço cadastrado com sucesso!")
-                    window.location.reload()
-                } else {
-                    alert(`Erro ${response.message || "Erro desconhecido ao cadastrar o serviço."}`);
-                }
-            })
 
-            .catch((error) => {
-                 if (error.message.includes('400')){
-                     alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
-                 }
-                 else if(error.message.includes('500')){
-                     alert("Erro: Falha no servidor. Tente novamente mais tarde.");
-                 }
-                 else{
-                     alert(`Erro: ${error.message}`);
-                 }
-            });
-        }
+        .then((resultado) => {
+              if (!resultado.ok){
+                    if (resultado.status == 409){
+                        throw new Error("Serviço já cadastrado com esse nome.");
+                    }
+                    throw new Error("Erro interno do servidor! Tente novamente mais tarde.")
+               }
+              return resultado.json();
+        })
+
+        .then((response) => {
+            if(response.success) {
+                alert("Serviço cadastrado com sucesso!")
+                window.location.reload()
+            } else {
+                alert(`Erro ${response.message || "Erro desconhecido ao cadastrar o serviço."}`);
+            }
+        })
+
+        .catch((error) => {
+             if (error.message.includes('400')){
+                 alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
+             }
+             else if(error.message.includes('500')){
+                 alert("Erro: Falha no servidor. Tente novamente mais tarde.");
+             }
+             else{
+                 alert(`Erro: ${error.message}`);
+             }
+        });
+    }
 
     return (
         <div id="cadservico-main">
