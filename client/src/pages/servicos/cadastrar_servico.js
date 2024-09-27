@@ -29,16 +29,33 @@ export default function Cadastrar_servico() {
             body: JSON.stringify(dados),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
+            .then((resultado) => {
+                  if (!resultado.ok){
+                       throw new Error(`HTTP status ${resultado.status}`);
+                  }
+                  return resultado.json();
+            })
             .then((response) => {
                 if(response.success) {
                     alert("Serviço cadastrado com sucesso!")
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o serviço!")
+                    alert(`Erro ${response.message || "Erro desconhecido ao cadastrar o serviço."}`);
                 }
             })
-    }
+
+            .catch((error) => {
+                 if (error.message.includes('400')){
+                     alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
+                 }
+                 else if(error.message.includes('500')){
+                     alert("Erro: Falha no servidor. Tente novamente mais tarde.");
+                 }
+                 else{
+                     alert(`Erro: ${error.message}`);
+                 }
+            });
+        }
 
     return (
         <div id="cadservico-main">
