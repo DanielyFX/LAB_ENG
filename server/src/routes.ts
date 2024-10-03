@@ -9,13 +9,38 @@ import { ClienteController } from "./controllers/ClienteController";
 import { OrcamentoController } from "./controllers/OrcamentoController";
 import { ChamadoController } from "./controllers/ChamadoController";
 
-mongoose.connect(process.env.MONGOURI!).catch(err => {
-    console.error(err);
-    return Promise.reject(err);
-}).then(onfulfilled => console.log("CONECTADO AO BANCO"), (erro) => {
-    console.log("ERRO AO CONECTAR AO BANCO");
-    console.error(erro);
-})
+// Função para conectar ao banco de dados
+async function conectarBanco(uri: string, descricao: string) {
+    try {
+        await mongoose.connect(uri);
+        console.log(`CONECTADO AO ${descricao}`);
+    } catch (err) {
+        console.error(`ERRO AO CONECTAR AO ${descricao}:`, err);
+        throw err; // Lança o erro para capturar e tentar outra conexão
+    }
+}
+
+// Função para tentar conectar com tempo de espera entre tentativas
+async function tentarConectar() {
+    const onlineURI = process.env.MONGOURI!;
+    const localURI = process.env.MONGOURI_LOCAL!;
+
+    // Tentativa de conectar ao banco online
+    try {
+        await conectarBanco(onlineURI, "BANCO ONLINE");
+    } catch (err) {
+        console.log("Tentando conectar ao banco local em 10 segundos...");
+        setTimeout(async () => {
+            try {
+                await conectarBanco(localURI, "BANCO LOCAL");
+            } catch (err) {
+                console.error("FALHA AO CONECTAR AOS DOIS BANCOS.");
+            }
+        }, 10000); // 10 segundos de espera
+    }
+}
+
+tentarConectar()
 
 // TECNICOS
 const tecnicoController = new TecnicoController();
