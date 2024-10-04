@@ -21,7 +21,7 @@ export default function Cadastrar_servico() {
             "descricao": descricao,
             "preco": preco
         }
-        fetch('http://localhost:3001/servicos/novo', {
+        fetch('http://localhost:3001/inicio/servicos/novo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

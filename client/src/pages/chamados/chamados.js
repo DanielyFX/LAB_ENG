@@ -12,7 +12,7 @@ function ChamadoBox(props) {
     const {chamado, clientes, atendentes} = props
 
     const handleExcluir = (chamado_id) => {
-        fetch('http://localhost:3001/chamados/deletar', {
+        fetch('http://localhost:3001/inicio/chamados/deletar', {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",

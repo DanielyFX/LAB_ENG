@@ -26,31 +26,23 @@ import Consultar_Chamados from "./pages/chamados/chamados";
 
 import Orcamento_chamado from "./pages/orcamento/orcamento_chamado";
 import Consultar_orcamento from "./pages/orcamento/orcamentos";
+
+import Login from "./pages/login";
+import RecuperaSenha from "./pages/senha";
+
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
 //ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
-  /*{
+  {
     path: "/",
     element: <Login />,
   },
   {
     path: "/recupera-senha",
     element: <RecuperaSenha />,
-  },*/
-  {
-      path: "/",
-      element: (
-          <div id="servicos-raiz">
-              <Header titulo="Início" />
-              <div id="body-container">
-                  <Sidebar />
-                  <Inicio />
-              </div>
-          </div>
-      )
   },
   {
     path: "/inicio",
@@ -65,9 +57,9 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/servicos/consultar",
+    path: "/inicio/servicos/consultar",
     loader: async () => {
-      return fetch('http://localhost:3001/servicos/consultar', {
+      return fetch('http://localhost:3001/inicio/servicos/consultar', {
           method: "GET"
       })
     },
@@ -82,7 +74,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/servicos/cadastrar",
+    path: "/inicio/servicos/cadastrar",
     element: (
       <div id="cadservico-raiz">
         <Header titulo="Cadastrar Serviço" />
@@ -94,9 +86,9 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/tecnicos/consultar",
+    path: "/inicio/tecnicos/consultar",
     loader: async () => {
-      return fetch('http://localhost:3001/tecnicos/consultar', {
+      return fetch('http://localhost:3001/inicio/tecnicos/consultar', {
                 method: "GET"
             });
     },
@@ -111,7 +103,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/tecnicos/cadastrar",
+    path: "/inicio/tecnicos/cadastrar",
     element: (
       <div id="cadtecnico-raiz">
         <Header titulo="Cadastrar Técnico" />
@@ -123,9 +115,9 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/atendentes/consultar",
+    path: "/inicio/atendentes/consultar",
     loader: async () => {
-        return fetch('http://localhost:3001/atendentes/consultar', {
+        return fetch('http://localhost:3001/inicio/atendentes/consultar', {
             method: "GET"
         })
     },
@@ -140,7 +132,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/atendentes/cadastrar",
+    path: "/inicio/atendentes/cadastrar",
     element: (
       <div id="cadatendente-raiz">
         <Header titulo="Cadastrar Atendente" />
@@ -152,9 +144,9 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/clientes/consultar",
+    path: "Qinicio/clientes/consultar",
       loader: async () => {
-          return fetch('http://localhost:3001/clientes/consultar', {
+          return fetch('http://localhost:3001/inicio/clientes/consultar', {
               method: "GET"
           });
       },
@@ -169,7 +161,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/clientes/cadastrar",
+    path: "/inicio/clientes/cadastrar",
     element: (
       <div id="cadcliente-raiz">
         <Header titulo="Cadastrar Cliente" />
@@ -181,11 +173,11 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/chamados/cadastrar",
+    path: "/inicio/chamados/cadastrar",
     loader: async () => {
         const [clientes, atendentes] = await Promise.all([
-            fetch('http://localhost:3001/clientes/consultar').then(res => res.json()),
-            fetch('http://localhost:3001/atendentes/consultar').then(res => res.json())
+            fetch('http://localhost:3001/inicio/clientes/consultar').then(res => res.json()),
+            fetch('http://localhost:3001/inicio/atendentes/consultar').then(res => res.json())
         ])
         return { clientes, atendentes }
     },
@@ -200,12 +192,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/chamados/consultar",
+    path: "/inicio/chamados/consultar",
     loader: async () => {
         const [chamados, clientes, atendentes] = await Promise.all([
-          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/clientes/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/atendentes/consultar').then(res => res.json())
+          fetch('http://localhost:3001/inicio/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/clientes/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/atendentes/consultar').then(res => res.json())
         ])
         return { chamados, clientes, atendentes }
     },
@@ -220,12 +212,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/orcamento/cadastrar",
+    path: "/inicio/orcamento/cadastrar",
     loader: async () => {
       const [tecnicos, chamados, servicos] = await Promise.all([
-          fetch('http://localhost:3001/tecnicos/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/servicos/consultar').then(res => res.json())
+          fetch('http://localhost:3001/inicio/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/servicos/consultar').then(res => res.json())
       ])
       return { tecnicos, chamados, servicos }
     },
@@ -240,13 +232,13 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/orcamento/consultar",
+    path: "/inicio/orcamento/consultar",
     loader: async () => {
       const [tecnicos, chamados, servicos, orcamentos] = await Promise.all([
-          fetch('http://localhost:3001/tecnicos/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/chamados/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/servicos/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/orcamentos/consultar').then(res => res.json())
+          fetch('http://localhost:3001/inicio/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/chamados/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/servicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/orcamentos/consultar').then(res => res.json())
       ])
       return { tecnicos, chamados, servicos, orcamentos }
     },
@@ -261,9 +253,9 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/servicos_realizados",
+    path: "/inicio/servicos_realizados",
     loader: async () => {
-      return fetch('http://localhost:3001/orcamentos/consultar')
+      return fetch('http://localhost:3001/inicio/orcamentos/consultar')
     },
     element: (
       <div id="servicos-raiz">

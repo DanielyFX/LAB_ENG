@@ -5,18 +5,43 @@ import "../css/login.css";
 import { ButtonGroup } from "react-bootstrap";
 import { Image } from "react-bootstrap";
 import logo_empresa from "../assets/image/logo_empresa.jpeg";
+import { useNavigate, Link } from 'react-router-dom'; 
+import axios from "axios";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState(""); 
   const [senhaError, setSenhaError] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setEmailError("");
     setSenhaError("");
+
+    
+
+    try{
+      const response = await axios.post("http://localhost:3000/login/novo", {
+        email,
+        senha,
+      });
+    
+    if (response.data.success){
+      navigate("/inicio");
+    }
+        else{
+          setErrorMessage("Usuário não encontrado. Deseja se cadastrar?");
+        }  
+    } catch(error){
+      console.error("Erro ao fazer login", error);
+      setErrorMessage("Erro ao realizar login. Tente novamente.");
+    }
 
     const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
     if (!emailRegex.test(email)) {
@@ -27,6 +52,8 @@ export default function Login() {
       setSenhaError("Por favor, insira sua senha.");
       return;
     }
+
+    navigate("/inicio");
   };
 
   return (
@@ -65,23 +92,23 @@ export default function Login() {
           </Form.Group>
           <ButtonGroup>
             <Button
-              variant="secondary"
-              type="button"
-              size="lg"
-              href="/recupera-senha"
-            >
-              Esqueci Senha
-            </Button>
-            <Button
               variant="primary"
               type="submit"
               size="lg"
-              href="/inicio"
-              onClick={handleSubmit}
             >
               Entrar
             </Button>
+            <Link to="/cadastrar">
+                <Button variant="secondary" size="lg">
+                  Cadastrar
+                </Button>
+            </Link>
           </ButtonGroup>
+          <div className="text-center">
+            <Link to="/recupera-senha" className="forgot-password-link">
+               Esqueci a Senha
+            </Link>
+          </div>
         </Form>
       </div>
     </div>

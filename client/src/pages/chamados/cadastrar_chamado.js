@@ -38,7 +38,7 @@ export default function Cadastrar_chamado() {
             "status": status,
             "cliente": clienteObj._id
         }
-        fetch('http://localhost:3001/chamados/novo', {
+        fetch('http://localhost:3001/inicio/chamados/novo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

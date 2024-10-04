@@ -12,7 +12,7 @@ function OrcamentoBox(props) {
     const {orcamento, tecnicos, chamados, servicos} = props
 
     const handleExcluir = (orcamento_id) => {
-        fetch('http://localhost:3001/orcamentos/deletar', {
+        fetch('http://localhost:3001/inicio/orcamentos/deletar', {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",

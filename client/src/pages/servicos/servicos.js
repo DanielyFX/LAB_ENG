@@ -12,7 +12,7 @@ const ServicoBox = (props) => {
     const {servico} = props;
 
     const handleExcluir = (servico_id) => {
-        fetch('http://localhost:3001/servicos/deletar', {
+        fetch('http://localhost:3001/inicio/servicos/deletar', {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",

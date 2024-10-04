@@ -44,7 +44,7 @@ export default function Orcamento_chamado() {
             "descontoServico": descontoServico,
             "precoTotal": precoTotal
         }
-        fetch('http://localhost:3001/orcamentos/novo', {
+        fetch('http://localhost:3001/inicio/orcamentos/novo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

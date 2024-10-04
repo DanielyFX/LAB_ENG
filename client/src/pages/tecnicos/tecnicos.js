@@ -14,7 +14,7 @@ function TecnicoBox(props) {
     //console.log(tecnico_modal)
 
     const handleExcluir = (tecnico_id) => {
-        fetch('http://localhost:3001/tecnicos/deletar', {
+        fetch('http://localhost:3001/inicio/tecnicos/deletar', {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",

@@ -12,7 +12,7 @@ function ClienteBox(props) {
     const {cliente} = props;
 
     const handleExcluir = (cliente_id) => {
-        fetch('http://localhost:3001/clientes/deletar', {
+        fetch('http://localhost:3001/inicio/clientes/deletar', {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",

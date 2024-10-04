@@ -97,7 +97,7 @@ export default function Cadastrar_cliente() {
 
         // console.log(dados)
 
-        fetch('http://localhost:3001/clientes/novo', {
+        fetch('http://localhost:3001/inicio/clientes/novo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

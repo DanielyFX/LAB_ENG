@@ -27,7 +27,7 @@ export default function Cadastrar_tecnico() {
             "email": email,
             "senha": senha
         }
-        fetch('http://localhost:3001/tecnicos/novo', {
+        fetch('http://localhost:3001/inicio/tecnicos/novo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

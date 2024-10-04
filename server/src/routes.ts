@@ -8,6 +8,7 @@ import { AtendenteController } from "./controllers/AtendenteController";
 import { ClienteController } from "./controllers/ClienteController";
 import { OrcamentoController } from "./controllers/OrcamentoController";
 import { ChamadoController } from "./controllers/ChamadoController";
+import { LoginController } from "./controllers/LoginController";
 
 // Função para conectar ao banco de dados
 async function conectarBanco(uri: string, descricao: string) {
@@ -44,46 +45,48 @@ tentarConectar()
 
 // TECNICOS
 const tecnicoController = new TecnicoController();
-router.post('/tecnicos/novo', tecnicoController.create)
-router.get('/tecnicos/consultar', tecnicoController.getAll)
-router.post('/tecnicos/editar', tecnicoController.edit)
-router.delete('/tecnicos/deletar', tecnicoController.delete)
+router.post('/inicio/tecnicos/novo', tecnicoController.create)
+router.get('/inicio/tecnicos/consultar', tecnicoController.getAll)
+router.post('/inicio/tecnicos/editar', tecnicoController.edit)
+router.delete('/inicio/tecnicos/deletar', tecnicoController.delete)
 
 // SERVIÇOS
 const servicoController = new ServicoController();
-router.post('/servicos/novo', servicoController.create)
-router.get('/servicos/consultar', servicoController.getAll)
-router.post('/servicos/editar', servicoController.edit)
-router.delete('/servicos/deletar', servicoController.delete)
+router.post('/inicio/servicos/novo', servicoController.create)
+router.get('/inicio/servicos/consultar', servicoController.getAll)
+router.post('/inicio/servicos/editar', servicoController.edit)
+router.delete('/inicio/servicos/deletar', servicoController.delete)
 
 // ORÇAMENTOS
 const orcamentoController = new OrcamentoController();
-router.post('/orcamentos/novo', orcamentoController.create)
-router.get('/orcamentos/consultar', orcamentoController.getAll)
-router.post('/orcamentos/editar', orcamentoController.edit)
-router.delete('/orcamentos/deletar', orcamentoController.delete)
+router.post('/inicio/orcamentos/novo', orcamentoController.create)
+router.get('/inicio/orcamentos/consultar', orcamentoController.getAll)
+router.post('/inicio/orcamentos/editar', orcamentoController.edit)
+router.delete('/inicio/orcamentos/deletar', orcamentoController.delete)
 
 // CLIENTES
 const clienteController = new ClienteController();
-router.post('/clientes/novo', clienteController.create)
-router.get('/clientes/consultar', clienteController.getAll)
-router.post('/clientes/editar', clienteController.edit)
-router.delete('/clientes/deletar', clienteController.delete)
+router.post('/inicio/clientes/novo', clienteController.create)
+router.get('/inicio/clientes/consultar', clienteController.getAll)
+router.post('/inicio/clientes/editar', clienteController.edit)
+router.delete('/inicio/clientes/deletar', clienteController.delete)
 
 // CHAMADOS
 const chamadoController = new ChamadoController();
-router.post('/chamados/novo', chamadoController.create)
-router.get('/chamados/consultar', chamadoController.getAll)
-router.post('/chamados/editar', chamadoController.edit)
-router.delete('/chamados/deletar', chamadoController.delete)
+router.post('/inicio/chamados/novo', chamadoController.create)
+router.get('/inicio/chamados/consultar', chamadoController.getAll)
+router.post('/inicio/chamados/editar', chamadoController.edit)
+router.delete('/inicio/chamados/deletar', chamadoController.delete)
 
 // ATENDENTES
 const atendenteController = new AtendenteController();
-router.post('/atendentes/novo', atendenteController.create)
-router.get('/atendentes/consultar', atendenteController.getAll)
-router.post('/atendentes/editar', atendenteController.edit)
-router.delete('/atendentes/deletar', atendenteController.delete)
+router.post('/inicio/atendentes/novo', atendenteController.create)
+router.get('/inicio/atendentes/consultar', atendenteController.getAll)
+router.post('/inicio/atendentes/editar', atendenteController.edit)
+router.delete('/inicio/atendentes/deletar', atendenteController.delete)
 
 // LOGIN e OUTRAS ROTAS
+const loginController = new LoginController();
+router.post('/login/novo', loginController.create)
 
 export { router };
