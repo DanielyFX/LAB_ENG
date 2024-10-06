@@ -88,5 +88,7 @@ router.delete('/inicio/atendentes/deletar', atendenteController.delete)
 // LOGIN e OUTRAS ROTAS
 const loginController = new LoginController();
 router.post('/login/novo', loginController.create)
+router.post('/login/entrar', loginController.loginEntrar)
+router.post('/login/recuperar', loginController.recSenha)
 
 export { router };

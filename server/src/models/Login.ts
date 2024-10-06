@@ -4,6 +4,9 @@ interface Login {
     email: string;
     senha: string;
     permission: string;
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Number;
+
 }
 
 const LoginSchema = new Schema<Login>({
@@ -21,6 +24,14 @@ const LoginSchema = new Schema<Login>({
         type: String,
         default: '',
         required: true,
+    },
+    resetPasswordToken: {
+        type: String,
+        required: false,
+    },
+    resetPasswordExpires: {
+        type: Number,
+        required: false,
     }
 });
 

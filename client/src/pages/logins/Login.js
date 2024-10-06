@@ -1,63 +1,77 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "../css/login.css";
+import "../../css/login.css";
 import { ButtonGroup } from "react-bootstrap";
 import { Image } from "react-bootstrap";
-import logo_empresa from "../assets/image/logo_empresa.jpeg";
+import logo_empresa from "../../assets/image/logo_empresa.jpeg";
 import { useNavigate, Link } from 'react-router-dom'; 
-import axios from "axios";
+
 
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(""); 
   const [senhaError, setSenhaError] = useState("");
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+
+  const handleSubmit =  (e) => {
     e.preventDefault();
+    const dados = {
+      "email": email,
+      "senha": senha
+    };
 
     setEmailError("");
     setSenhaError("");
 
-    
-
-    try{
-      const response = await axios.post("http://localhost:3000/login/novo", {
-        email,
-        senha,
-      });
-    
-    if (response.data.success){
-      navigate("/inicio");
-    }
-        else{
-          setErrorMessage("Usuário não encontrado. Deseja se cadastrar?");
-        }  
-    } catch(error){
-      console.error("Erro ao fazer login", error);
-      setErrorMessage("Erro ao realizar login. Tente novamente.");
-    }
-
-    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i; 
     if (!emailRegex.test(email)) {
       setEmailError("Por favor, insira um e-mail válido.");
       return;
     }
+
     if (!senha.trim()) {
       setSenhaError("Por favor, insira sua senha.");
       return;
     }
 
-    navigate("/inicio");
-  };
+  fetch('http://localhost:3001/login/entrar', {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dados),
+      mode: 'cors'
+  })
+   
+  .then((response) => response.json())
+  .then((data) => {
+      if(data.success) {
+          alert("Bem vindo!")
+          navigate("/inicio")
+      } else {
+          alert(`Erro ${data.message || "Erro desconhecido ao cadastrar o serviço."}`);
+      }
+  })
 
+  .catch((error) => {
+       if (error.message.includes('400')){
+           alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
+       }
+       else if(error.message.includes('500')){
+           alert("Erro: Falha no servidor. Tente novamente mais tarde.");
+       }
+       else{
+           alert(`Erro: ${error.message}`);
+       }
+    });
+  };
   return (
-    <div id="login-raiz">
+    <div id="login-main">
       <div id="login-container">
         <h1>Sistema Controle de Chamados</h1>
         <br></br>

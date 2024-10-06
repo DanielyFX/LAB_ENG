@@ -27,8 +27,9 @@ import Consultar_Chamados from "./pages/chamados/chamados";
 import Orcamento_chamado from "./pages/orcamento/orcamento_chamado";
 import Consultar_orcamento from "./pages/orcamento/orcamentos";
 
-import Login from "./pages/login";
-import RecuperaSenha from "./pages/senha";
+import Login from "./pages/logins/Login";
+import RecuperaSenha from "./pages/logins/recuperar_senha";
+import CadastrarLogin from "./pages/logins/cadastrar_login";
 
 // COMPONENTES
 import Header from "./components/Header";
@@ -39,10 +40,41 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+  
   },
   {
+    path: "/login/entrar",
+    element: (
+      <div id="entrarlogin-main">
+        <Header titulo="Entrar" />
+        <div id="body-container">
+          <Login />
+        </div>
+      </div>
+    ),
+  },
+  
+  {
     path: "/recupera-senha",
-    element: <RecuperaSenha />,
+    element: (
+      <div id="recsenha-main">
+        <Header titulo="Recuperar Senha" />
+        <div id="body-container">
+          <RecuperaSenha />
+        </div>
+      </div>
+    ),
+  },
+  {
+    path:"/cadastrar",
+    element: (
+      <div id="cadlogin-main">
+        <Header titulo="Cadastrar Login" />
+        <div id="body-container">
+          <CadastrarLogin />
+        </div>
+      </div>
+    ),
   },
   {
     path: "/inicio",
