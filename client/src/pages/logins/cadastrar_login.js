@@ -27,6 +27,9 @@ export default function CadastrarLogin() {
     setEmailError("");
     setSenhaError("");
     setConfirmarSenhaError("");
+    setEmail("");
+    setSenha("");
+    setConfirmarSenha("");
 
 
     const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i; 
@@ -100,6 +103,7 @@ export default function CadastrarLogin() {
                onChange={(e) => setEmail(e.target.value)}
                isInvalid={!!emailError}
                className="input-field"
+               placeholder="Insira o seu e-mail"
              />
              <Form.Control.Feedback type="invalid">
                {emailError}
@@ -113,6 +117,7 @@ export default function CadastrarLogin() {
               onChange={(e) => setSenha(e.target.value)}
               isInvalid={!!senhaError}
               className="input-field"
+              placeholder="Insira a sua senha"
             />
             <Form.Control.Feedback type="invalid">
               {senhaError}
@@ -126,6 +131,7 @@ export default function CadastrarLogin() {
               onChange={(e) => setConfirmarSenha(e.target.value)}
               isInvalid={!!confirmarSenhaError}
               className="input-field"
+              placeholder="Insira novamente a sua senha"
             />
             <Form.Control.Feedback type="invalid">
               {confirmarSenhaError}

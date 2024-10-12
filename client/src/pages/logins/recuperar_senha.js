@@ -12,6 +12,7 @@ export default function RecuperaSenha() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setEmail("");
     setEmailError("");
 
     const dados = {
@@ -93,7 +94,7 @@ export default function RecuperaSenha() {
               size="lg"
               className="custom-button"
             >
-              Cadastrar
+              Enviar
             </Button>
             <Button 
               variant="secondary" 
