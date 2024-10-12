@@ -1,0 +1,54 @@
+/* Estilo do container principal */
+
+#cad-login {
+    background-color: #f9f9f9; /* Cor de fundo suave */
+    border-radius: 10px; /* Bordas arredondadas */
+    padding: 30px; /* Espaçamento interno */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 800px; /* Largura máxima */
+    margin: 20px auto; /* Centralizar horizontalmente */
+  }
+  
+  /* Estilo para o título */
+  #cad-user h1 {
+    margin-top: 0;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--bs-heading-color);
+  }
+  
+  /* Estilo para o texto dos labels */
+  #cadlogin-form label {
+    font-weight: bold;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /* Estilo dos inputs */
+  #cadlogin-form .form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  /* Estilo dos botões */
+  .button-group .custom-button {
+    width: 120px;
+    background-color: #007bff; /* Cor do botão primário */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px 5px; /* Espaçamento entre botões */
+  }
+  
+  .button-group .custom-button:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
+  }
+  
+  /* Estilo do botão secundário */
+  .button-group .btn-secondary {
+    background-color: #6c757d; /* Cor do botão cancelar */
+  }

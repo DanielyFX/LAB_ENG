@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "../../css/senha.css";
+import "../../css/rec_login.css";
 import { ButtonGroup } from "react-bootstrap";
 import { Image } from "react-bootstrap";
 import logo_empresa from "../../assets/image/logo_empresa.jpeg";
@@ -65,6 +65,54 @@ export default function RecuperaSenha() {
   };
 
   return (
+    <div id="cad-login" class=" container">
+      <div id="cad-user" class="row">
+        <div id="recuperar-senha" class="col-12 text-center">
+            <h1>Recuperar Senha</h1>
+            <Image src={logo_empresa} alt="rush_informatica" fluid />
+            <div id="cad-login" class="col-12 col-lg-6 text-center mx-auto">
+             <Form id="cadlogin-form" onSubmit={handleSubmit}>
+             <Form.Group className="mb-3">
+             <Form.Label>EMAIL:</Form.Label>
+             <Form.Control
+               type="email"
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
+               isInvalid={!!emailError}
+               className="input-field"
+               placeholder="Digite o seu e-mail"
+             />
+             <Form.Control.Feedback type="invalid">
+               {emailError}
+             </Form.Control.Feedback>
+           </Form.Group>
+          <ButtonGroup className="button-group">
+            <Button
+              variant="primary"
+              type="submit"
+              size="lg"
+              className="custom-button"
+            >
+              Cadastrar
+            </Button>
+            <Button 
+              variant="secondary" 
+              href="/"
+              size="lg"
+              className="custom-button"
+            >
+              Voltar
+            </Button>
+          </ButtonGroup>
+        </Form>
+         </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+  /*
+  return (
     <div id="login-raiz">
       <div id="login-container">
         <h1>Sistema Controle de Chamados</h1>
@@ -102,3 +150,4 @@ export default function RecuperaSenha() {
     </div>
   );
 }
+*/

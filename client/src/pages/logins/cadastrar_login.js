@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import "../../css/cad_login.css";
 import { ButtonGroup } from "react-bootstrap";
+import { Image } from "react-bootstrap";
+import logo_empresa from "../../assets/image/logo_empresa.jpeg";
+import { useNavigate, Link } from 'react-router-dom'; 
 
 
 export default function CadastrarLogin() {
@@ -82,24 +86,26 @@ export default function CadastrarLogin() {
   };
 
   return (
-    <div id="cadlogin-main" className="login-background">
-      <div id="login-container" className="login-box">
-        <h1 className="login-title">Sistema Controle de Chamados</h1>
-        <Form id="cadlogin-form" onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>EMAIL:</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              isInvalid={!!emailError}
-              className="input-field"
-            />
-            <Form.Control.Feedback type="invalid">
-              {emailError}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3">
+    <div id="cad-login" class=" container">
+      <div id="cad-user" class="row">
+        <div id="Cadastro" class="col-12 text-center">
+            <h1>Cadastro de Usuário</h1>
+            <div id="cad-login" class="col-12 col-lg-6 text-center mx-auto">
+             <Form id="cadlogin-form" onSubmit={handleSubmit}>
+             <Form.Group className="mb-3">
+             <Form.Label>EMAIL:</Form.Label>
+             <Form.Control
+               type="email"
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
+               isInvalid={!!emailError}
+               className="input-field"
+             />
+             <Form.Control.Feedback type="invalid">
+               {emailError}
+             </Form.Control.Feedback>
+           </Form.Group>
+           <Form.Group className="mb-3">
             <Form.Label>SENHA:</Form.Label>
             <Form.Control
               type="password"
@@ -137,12 +143,15 @@ export default function CadastrarLogin() {
             <Button 
               variant="secondary" 
               href="/"
+              size="lg"
               className="custom-button"
             >
-              Cancelar
+              Voltar
             </Button>
           </ButtonGroup>
         </Form>
+         </div>
+        </div>
       </div>
     </div>
   );

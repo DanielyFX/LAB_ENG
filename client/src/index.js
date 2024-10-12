@@ -46,7 +46,6 @@ const router = createBrowserRouter([
     path: "/login/entrar",
     element: (
       <div id="entrarlogin-main">
-        <Header titulo="Entrar" />
         <div id="body-container">
           <Login />
         </div>
@@ -58,7 +57,6 @@ const router = createBrowserRouter([
     path: "/recupera-senha",
     element: (
       <div id="recsenha-main">
-        <Header titulo="Recuperar Senha" />
         <div id="body-container">
           <RecuperaSenha />
         </div>
@@ -69,7 +67,6 @@ const router = createBrowserRouter([
     path:"/cadastrar",
     element: (
       <div id="cadlogin-main">
-        <Header titulo="Cadastrar Login" />
         <div id="body-container">
           <CadastrarLogin />
         </div>

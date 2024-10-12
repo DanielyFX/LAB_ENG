@@ -5,6 +5,9 @@ import {TecnicoModel, Tecnico} from "../models/Tecnico";
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class LoginController {
     constructor() {
@@ -83,7 +86,7 @@ class LoginController {
         
         //gera o token para recuperação do email
         const token = crypto.randomBytes(20).toString('hex');
-        const expireTime = Date.now() + 300000 // Token válido por 5 minutos
+        const expireTime = Date.now() + 300000; // Token válido por 5 minutos
         
         // Salva o token e o tempo de expiração no usuário
         try {
@@ -91,20 +94,21 @@ class LoginController {
             user.resetPasswordExpires = expireTime;
             await user.save();
         } catch (error) {
+            console.error('Erro ao salvar o token de recuperação:', error)
             return response.status(500).json({message: 'Erro ao salvar o token de recuperação'});
         }
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'seu_email@gmail.com',
-                pass: 'sua_senha'
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             }
         });
 
         const mailOptions = {
             to: user.email,
-            from: 'rush_informatica_trabalho@gmail.com',
+            from: process.env.EMAIL_USER,
             subject: 'Recuperação de Senha',
             text: `Você está recebendo este e-mail porque solicitou a redefinição da senha da sua conta.\n\n
                 Clique no link a seguir para redefinir sua senha:\n
@@ -116,6 +120,7 @@ class LoginController {
             await transporter.sendMail(mailOptions);
             return response.status(200).json({message: 'E-mail de recuperação enviado com sucesso'});
         } catch (error) {
+            console.error('Erro ao enviar o e-mail:', error);
             return response.status(500).json({message: 'Erro ao enviar o e-mail'});
         }
     }
