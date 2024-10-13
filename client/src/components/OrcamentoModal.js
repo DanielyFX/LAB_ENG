@@ -57,7 +57,7 @@ export default function OrcamentoModal(props) {
             dados_novos: dados_novos
         }
         console.log(body)
-        fetch('http://localhost:3001/orcamentos/editar', {
+        fetch('http://localhost:3001/inicio/orcamentos/editar', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

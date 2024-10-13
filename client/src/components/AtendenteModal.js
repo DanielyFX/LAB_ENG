@@ -30,7 +30,7 @@ export default function AtendenteModal(props) {
             alterados: alterados,
             dados_novos: dados_novos
         }
-        fetch('http://localhost:3001/atendentes/editar', {
+        fetch('http://localhost:3001/inicio/atendentes/editar', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

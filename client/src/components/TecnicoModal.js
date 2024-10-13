@@ -31,7 +31,7 @@ export default function TecnicoModal(props) {
             alterados: alterados,
             dados_novos: dados_novos
         }
-        fetch('http://localhost:3001/tecnicos/editar', {
+        fetch('http://localhost:3001/inicio/tecnicos/editar', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

@@ -27,7 +27,7 @@ export default function Cadastrar_atendente() {
             "email": email,
             "senha": senha
         }
-        fetch('http://localhost:3001/atendentes/novo', {
+        fetch('http://localhost:3001/inicio/atendentes/novo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

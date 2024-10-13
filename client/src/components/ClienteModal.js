@@ -30,7 +30,7 @@ function ClienteModal(props) {
             alterados: alterados,
             dados_novos: dados_novos
         }
-        fetch('http://localhost:3001/clientes/editar', {
+        fetch('http://localhost:3001/inicio/clientes/editar', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

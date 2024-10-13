@@ -29,7 +29,7 @@ function ServicoModal(props) {
             alterados: alterados,
             dados_novos: dados_novos
         }
-        fetch('http://localhost:3001/servicos/editar', {
+        fetch('http://localhost:3001/inicio/servicos/editar', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

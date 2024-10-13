@@ -12,7 +12,7 @@ function AtendenteBox(props) {
     const {atendente} = props;
 
     const handleExcluir = (atendente_id) => {
-        fetch('http://localhost:3001/atendentes/deletar', {
+        fetch('http://localhost:3001/inicio/atendentes/deletar', {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",
