@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../css/login.css";
@@ -17,6 +17,9 @@ export default function Login() {
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+    localStorage.removeItem("authToken");
+  }, []);
 
   const handleSubmit =  (e) => {
     e.preventDefault();
@@ -51,8 +54,10 @@ export default function Login() {
   .then((response) => response.json())
   .then((data) => {
       if(data.success) {
-          alert("Bem vindo!")
-          navigate("/inicio")
+          localStorage.setItem("authToken", data.token);
+          console.log("Token armazenado:", data.token);
+          alert("Bem vindo!");
+          navigate("/inicio");
       } else {
           alert(`Erro ${data.message || "Erro desconhecido ao cadastrar o serviço."}`);
       }

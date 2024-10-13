@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -185,7 +186,12 @@ class LoginController {
             const isMatch = await this.verifySenha(senha, user.senha);
 
             if (isMatch){
-                response.status(200).json({ success: true, message: 'Bem vindo!'});
+                const jwtSecret = process.env.JWT_SECRET;
+                if (!jwtSecret) {
+                    return response.status(500).json({ message: 'JWT_SECRET não está definido.' });
+                }
+                const token = jwt.sign({id: user._id}, jwtSecret, { expiresIn: '1h'});
+                return response.status(200).json({ success: true, message: 'Bem vindo!', token});
             }
             else{
                 response.status(200).json({ success: false, message: 'Erro ao fazer o login! Cadastre-se ou tente um email ou senha diferentes!'})

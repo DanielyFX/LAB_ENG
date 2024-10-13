@@ -1,10 +1,14 @@
 // BIBLIOTECAS E OUTROS
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Navigate, createBrowserRouter, RouterProvider } from "react-router-dom";
 // CSS
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/index.css";
+
+//jwt decode
+import jwt_decode from "jwt-decode";
+
 // PAGINAS
 import Inicio from "./pages/inicio";
 import Servico_Realizado from "./pages/servico_realizado/relatorio_servicos_realizados";
@@ -34,6 +38,41 @@ import CadastrarLogin from "./pages/logins/cadastrar_login";
 // COMPONENTES
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+
+//ROTA PRIVADA
+
+const PrivateRoute = ({ children }) => {
+  // Recupera o token JWT do armazenamento local (localStorage)
+  const token = localStorage.getItem("authToken");
+  console.log("PrivateRoute - Token encontrado:", token);
+
+  // Se o token não existir, redireciona para a página de login
+  if (!token) {
+    return <Navigate to="/" />;
+  }
+
+  try {
+    // Decodifica o token para verificar a validade
+    const decodedToken = jwt_decode(token);
+
+    // Verifica se o token está expirado
+    const currentTime = Date.now() / 1000;
+    if (decodedToken.exp < currentTime) {
+      // Se expirou, remove o token e redireciona para o login
+      localStorage.removeItem("authToken");
+      return <Navigate to="/" />;
+    }
+  } catch (error) {
+    // Se o token não for válido, redireciona para o login
+    return <Navigate to="/" />;
+  }
+
+  // Se o token é válido, renderiza a rota privada
+  return children;
+};
+
+export default PrivateRoute;
+
 
 //ROTAS NO NAVEGADOR
 const router = createBrowserRouter([
@@ -76,6 +115,7 @@ const router = createBrowserRouter([
   {
     path: "/inicio",
     element: (
+      <PrivateRoute>
       <div id="servicos-raiz">
         <Header titulo="Início" />
         <div id="body-container">
@@ -83,6 +123,7 @@ const router = createBrowserRouter([
           <Inicio />
         </div>
       </div>
+    </PrivateRoute>
     ),
   },
   {
