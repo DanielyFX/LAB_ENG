@@ -70,6 +70,82 @@ export default function Login() {
        }
     });
   };
+
+  return(
+    <div id="login-main" class="container">
+      <div id="login-inicio" class="row">
+        <div id="Entrar" class="col-12 text-center">
+          <h1>Sistema de Controle de Chamados</h1>
+          <br></br>
+          <div>
+          <Image src={logo_empresa} alt="rush_informatica" fluid />
+          <div id="entrar-login" class="col-12 col-lg-6 text-center mx-auto">
+              <br></br>
+              <Form id="login-form" onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>EMAIL:</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  isInvalid={!!emailError}
+                  className="input-field"
+                  placeholder="Insira o seu e-mail"
+                />
+                <Form.Control.Feedback type="invalid">
+                  {emailError}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>SENHA:</Form.Label>
+                <Form.Control
+                  type="password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  isInvalid={!!senhaError}
+                  className="input-field"
+                  placeholder="Insira a sua senha"
+                />
+                <Form.Control.Feedback type="invalid">
+                  {senhaError}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <ButtonGroup className="button-group">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  size="lg"
+                  className="custom-button"
+                >
+                  Entrar
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  href="/cadastrar"
+                  size="lg"
+                  className="custom-button"
+                >
+                  Cadastrar
+                </Button>
+              </ButtonGroup>
+              <div className="text-center">
+                <Link to="/recupera-senha" className="forgot-password-link">
+                  Esqueci a Senha
+                </Link>
+              </div>
+            </Form>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  );
+}
+
+
+
+/*
   return (
     <div id="login-main">
       <div id="login-container">
@@ -128,3 +204,5 @@ export default function Login() {
     </div>
   );
 }
+
+*/
