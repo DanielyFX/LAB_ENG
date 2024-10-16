@@ -134,6 +134,7 @@ const router = createBrowserRouter([
       })
     },
     element: (
+      <PrivateRoute>
       <div id="servicos-raiz">
         <Header titulo="Consultar Serviços" />
         <div id="body-container">
@@ -141,11 +142,13 @@ const router = createBrowserRouter([
           <Consultar_Servicos />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
     path: "/inicio/servicos/cadastrar",
     element: (
+      <PrivateRoute>
       <div id="cadservico-raiz">
         <Header titulo="Cadastrar Serviço" />
         <div id="body-container">
@@ -153,6 +156,7 @@ const router = createBrowserRouter([
           <Cadastrar_servico />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -163,6 +167,7 @@ const router = createBrowserRouter([
             });
     },
     element: (
+      <PrivateRoute>
       <div id="tecnicos-raiz">
         <Header titulo="Consultar Técnicos" />
         <div id="body-container">
@@ -170,11 +175,13 @@ const router = createBrowserRouter([
           <Consultar_Tecnicos />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
     path: "/inicio/tecnicos/cadastrar",
     element: (
+      <PrivateRoute>
       <div id="cadtecnico-raiz">
         <Header titulo="Cadastrar Técnico" />
         <div id="body-container">
@@ -182,6 +189,7 @@ const router = createBrowserRouter([
           <Cadastrar_tecnico />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -192,6 +200,7 @@ const router = createBrowserRouter([
         })
     },
     element: (
+      <PrivateRoute>
       <div id="atendentes-raiz">
         <Header titulo="Consultar Atendente" />
         <div id="body-container">
@@ -199,11 +208,13 @@ const router = createBrowserRouter([
           <Consultar_Atendentes />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
     path: "/inicio/atendentes/cadastrar",
     element: (
+      <PrivateRoute>
       <div id="cadatendente-raiz">
         <Header titulo="Cadastrar Atendente" />
         <div id="body-container">
@@ -211,16 +222,18 @@ const router = createBrowserRouter([
           <Cadastrar_atendente />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
-    path: "Qinicio/clientes/consultar",
+    path: "/inicio/clientes/consultar",
       loader: async () => {
           return fetch('http://localhost:3001/inicio/clientes/consultar', {
               method: "GET"
           });
       },
     element: (
+      <PrivateRoute>
       <div id="clientes-raiz">
         <Header titulo="Consultar Clientes" />
         <div id="body-container">
@@ -228,11 +241,13 @@ const router = createBrowserRouter([
           <Consultar_Clientes />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
     path: "/inicio/clientes/cadastrar",
     element: (
+      <PrivateRoute>
       <div id="cadcliente-raiz">
         <Header titulo="Cadastrar Cliente" />
         <div id="body-container">
@@ -240,6 +255,7 @@ const router = createBrowserRouter([
           <Cadastrar_cliente />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -252,6 +268,7 @@ const router = createBrowserRouter([
         return { clientes, atendentes }
     },
     element: (
+      <PrivateRoute>
       <div id="cadchamado-raiz">
         <Header titulo="Cadastrar Chamado" />
         <div id="body-container">
@@ -259,6 +276,7 @@ const router = createBrowserRouter([
           <Cadastrar_chamado />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -272,6 +290,7 @@ const router = createBrowserRouter([
         return { chamados, clientes, atendentes }
     },
     element: (
+      <PrivateRoute>
       <div id="chamados-raiz">
         <Header titulo="Consultar Chamados" />
         <div id="body-container">
@@ -279,6 +298,7 @@ const router = createBrowserRouter([
           <Consultar_Chamados />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -292,6 +312,7 @@ const router = createBrowserRouter([
       return { tecnicos, chamados, servicos }
     },
     element: (
+      <PrivateRoute>
       <div id="chamados-raiz">
         <Header titulo="Realizar Orçamento" />
         <div id="body-container">
@@ -299,6 +320,7 @@ const router = createBrowserRouter([
           <Orcamento_chamado />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -313,6 +335,7 @@ const router = createBrowserRouter([
       return { tecnicos, chamados, servicos, orcamentos }
     },
     element: (
+      <PrivateRoute>
       <div id="chamados-raiz">
         <Header titulo="Consultar Orçamentos" />
         <div id="body-container">
@@ -320,6 +343,7 @@ const router = createBrowserRouter([
           <Consultar_orcamento />
         </div>
       </div>
+      </PrivateRoute>
     ),
   },
   {
@@ -328,6 +352,7 @@ const router = createBrowserRouter([
       return fetch('http://localhost:3001/inicio/orcamentos/consultar')
     },
     element: (
+      <PrivateRoute>
       <div id="servicos-raiz">
         <Header titulo="Análise de Chamados/Orçamentos" />
         <div id="body-container">
@@ -335,6 +360,7 @@ const router = createBrowserRouter([
           <Servico_Realizado />
         </div>
       </div>
+      </PrivateRoute>
     ),
   }
 ]);
