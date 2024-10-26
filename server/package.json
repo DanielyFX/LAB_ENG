@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "CI=false npx tsc && npx update-browserslist-db@latest",
+    "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts"
   },
