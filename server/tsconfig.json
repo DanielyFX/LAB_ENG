@@ -2,14 +2,16 @@
   "compilerOptions": {
     "outDir": "./dist", // Para indicar onde os arquivos compilados devem ir
     "rootDir": "./src",
-    "target": "es6",
+    "target": "ES6",
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
 
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"],
+"exclude": ["node_modules", "**/*.spec.ts"],
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */
