@@ -3,7 +3,9 @@
     "outDir": "./dist", // Para indicar onde os arquivos compilados devem ir
     "rootDir": "./src",
     "target": "es6",
-    "module": "commonjs"
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
 
   },
   "include": ["src/**/*"],

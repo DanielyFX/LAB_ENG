@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import crypto from 'crypto';
+import  * as crypto from 'crypto';
 
 interface Atendente extends Document {
     nome: string;
