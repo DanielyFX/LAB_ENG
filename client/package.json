@@ -27,9 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "backend:start": "ts-node index.ts",
-    "backend:build": "tsc"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
