@@ -108,11 +108,25 @@ export default function Cadastrar_chamado() {
         const formattedDate = now.toISOString().slice(0, 16); // Retorna 'YYYY-MM-DDTHH:MM' no fuso horário local
         setDataAbertura(formattedDate);
         setHoraAbertura(formattedDate);
-    }, []);
+        
+        if (prioridade !== 'Selecione...') {
+            setPrevisaoAtendimento(calcularPrevisaoAtendimento(prioridade));
+        }
+    }, [prioridade]); // Adiciona a prioridade como dependência
 
     const calcularPrevisaoAtendimento = (prioridade) => {
         const hoje = new Date(); // Data atual
-        const diasParaAdicionar = prioridadePrazo[prioridade]; // Obtém os dias com base na prioridade
+        let diasParaAdicionar = 0;
+        switch (prioridade){
+            case "alta":
+                diasParaAdicionar = 20;
+                break;
+            case "media":
+                diasParaAdicionar = 12;
+                break;
+            case "baixa": 
+                diasParaAdicionar = 7;
+        }
 
         if (diasParaAdicionar) {
             hoje.setDate(hoje.getDate() + diasParaAdicionar);
@@ -145,9 +159,6 @@ export default function Cadastrar_chamado() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const novaPrevisao = calcularPrevisaoAtendimento(prioridade);
-        setPrevisaoAtendimento(novaPrevisao); // Atualiza o estado
 
         const dados = {
             "descricao": descricao,
@@ -273,8 +284,14 @@ export default function Cadastrar_chamado() {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Previsão de Atendimento</Form.Label>
-                    <Col sm={10}><Form.Control required type="datetime-local" onChange={e=> setPrevisaoAtendimento(e.target.value)}/></Col>
+                <Form.Label column sm={2}>Previsão de Atendimento</Form.Label>
+                <Col sm={10}>
+                    <Form.Control
+                        type="date"
+                        value={previsaoAtendimento}
+                        onChange={(e) => setPrevisaoAtendimento(e.target.value)} // Permite que o usuário altere o valor
+                    />
+                </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Atendente</Form.Label> {/*Deve trazer todos os atendentes cadastrados, em ordem alfabetica  */}
