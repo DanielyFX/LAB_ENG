@@ -4,9 +4,10 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import '../../css/chamados/cadchamados.css'
 import { ButtonGroup } from "react-bootstrap";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useLoaderData} from "react-router-dom";
 import { Table } from 'react-bootstrap';
+import enums  from "../../utils/enums";
 
 function limpa_formulário_cep() {
     document.getElementById('rua').value = "";
@@ -70,7 +71,7 @@ export default function Cadastrar_chamado() {
     
     const [documento, setDocumento] = useState('');
     const [clienteCampo, setClienteCampo] = useState('');
-    const [clienteNumero, setClienteNumero] = useState('');
+    const [clienteContato, setClienteContato] = useState('');
     const [clienteObj, setClienteObj] = useState();
     const [atendente, setAtendente] = useState('Selecione...');
 
@@ -82,9 +83,9 @@ export default function Cadastrar_chamado() {
 
     const [dataAbertura, setDataAbertura] = useState('');
     const [horaAbertura, setHoraAbertura] = useState('');
+    const[dataPrevisao, setDataPrevisao] = useState('');
 
     const [servico, setServico] = useState('');
-    const [valorServico, setValorServico] = useState(0); // Supondo que você tenha um valor associado a cada serviço
     const [servicosSelecionados, setServicosSelecionados] = useState([]);
     const [totalServicos, setTotalServicos] = useState(0);
 
@@ -92,8 +93,33 @@ export default function Cadastrar_chamado() {
     const [descricao, setDescricao] = useState('');
     const [prioridade, setPrioridade] = useState('Selecione...');
     const [atendimento, setAtendimento] = useState('Selecione...');
-    const [status, setStatus] = useState('Selecione...');
+    const [statusChamado, setStatusChamado] = useState('nao_iniciado');
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState('');
+
+    const prioridadePrazo = {
+        BAIXO: 7,
+        MEDIO: 12,
+        ALTO: 20
+    };
+
+    useEffect(() => {
+        // Define a data e hora atuais no formato necessário para `datetime-local`
+        const now = new Date();
+        const formattedDate = now.toISOString().slice(0, 16); // Retorna 'YYYY-MM-DDTHH:MM' no fuso horário local
+        setDataAbertura(formattedDate);
+        setHoraAbertura(formattedDate);
+    }, []);
+
+    const calcularPrevisaoAtendimento = (prioridade) => {
+        const hoje = new Date(); // Data atual
+        const diasParaAdicionar = prioridadePrazo[prioridade]; // Obtém os dias com base na prioridade
+
+        if (diasParaAdicionar) {
+            hoje.setDate(hoje.getDate() + diasParaAdicionar);
+            return hoje.toISOString().slice(0, 10); // Retorna a nova data no formato 'YYYY-MM-DD'
+        }
+        return ''; // Retorna string vazia se prioridade não for válida
+    };
 
     const handleAdicionarServico = () => {
         if (!servico) {
@@ -119,15 +145,18 @@ export default function Cadastrar_chamado() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const novaPrevisao = calcularPrevisaoAtendimento(prioridade);
+        setPrevisaoAtendimento(novaPrevisao); // Atualiza o estado
+
         const dados = {
             "descricao": descricao,
             "prioridade": prioridade,
             "atendimento": atendimento,
             "previsaoAtendimento": previsaoAtendimento,
             "atendente": atendente,
-            "status": status,
+            "status": statusChamado,
             "cliente": clienteObj._id,
-            "numero_cliente": clienteObj.numero,
             "data_abertura": dataAbertura,
             "hora_abertura": horaAbertura,
             "rua": rua,
@@ -137,6 +166,7 @@ export default function Cadastrar_chamado() {
             "previsao": previsaoAtendimento,
             "servicos": servicosSelecionados
         }
+        
         fetch('http://localhost:3001/inicio/chamados/novo', {
             method: "POST",
             headers: {
@@ -162,7 +192,14 @@ export default function Cadastrar_chamado() {
         else {
             setClienteObj(cliente_pesquisa)
             setClienteCampo(cliente_pesquisa.nome)
-            setClienteNumero(cliente_pesquisa.numero)
+
+            //primeiro verifica se tem celular cadastrado se não tiver busca telefone fixo
+            try{
+                setClienteContato(cliente_pesquisa.celular)
+            }
+            catch{
+                setClienteContato(cliente_pesquisa.telefone)
+            }
         }
     };
 
@@ -210,8 +247,8 @@ export default function Cadastrar_chamado() {
                     <Col sm={10}><Form.Control type="text" id="cidade" onChange={(e) => setCidade(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Numero telefone</Form.Label>
-                    <Col sm={10}><Form.Control type="text" id="cidade" onChange={(e) => setClienteNumero(e.target.value)}/></Col>
+                    <Form.Label column sm={2}>Numero telefone</Form.Label>  {/*Deve o numero do cliente pesquisado pelo cpf  */}
+                    <Col sm={10}><Form.Control required type="text" rows={3} value={clienteContato} disabled/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Descrição Chamado</Form.Label>
@@ -219,22 +256,20 @@ export default function Cadastrar_chamado() {
                                                onChange={e=> setDescricao(e.target.value)}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Data de Abertura</Form.Label>
-                    <Col sm={10}><Form.Control required onChange={(e) => setDataAbertura(e.target.value)} type="datetime-local"/></Col>
+                <Form.Label column sm={2}>Data de Abertura</Form.Label>
+                <Col sm={10}>
+                    <Form.Control required type="datetime-local" value={dataAbertura} onChange={(e) => setDataAbertura(e.target.value)} />
+                </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Hora de Abertura</Form.Label>
-                    <Col sm={10}><Form.Control required onChange={(e) => setHoraAbertura(e.target.value)} type="datetime-local"/></Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Prioridade</Form.Label>
-                    <Col sm={10} >
-                        <Form.Control as="select" onChange={e=> setPrioridade(e.target.value)} value={prioridade}>
-                            <option selected disabled >Selecione...</option>
-                            <option value="baixa">Baixa</option>
-                            <option value="média">Média</option>
-                            <option value="alta">Alta</option>
-                        </Form.Control>
+                <Form.Label column sm={2}>Prioridade</Form.Label> 
+                    <Col sm={10}>
+                    <Form.Control as="select" onChange={e => setPrioridade(e.target.value)} value={prioridade}>
+                    <option selected disabled>Selecione...</option>
+                    {Object.entries(enums.PrioridadeEnum).map(([key, value]) => (
+                        <option key={key} value={key}>{value}</option>
+                    ))}
+                    </Form.Control>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -258,12 +293,12 @@ export default function Cadastrar_chamado() {
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Atendimento</Form.Label> 
                     <Col sm={10}>
-                        <Form.Control as="select" onChange={e=> setAtendimento(e.target.value)} value={atendimento}>
-                            <option selected disabled >Selecione...</option> 
-                            <option value="contrato">Contrato</option>
-                            <option value="avulso">Avulso</option>
-                            <option value="garantia">Garantia</option>
-                        </Form.Control>
+                    <Form.Control as="select" onChange={e => setAtendimento(e.target.value)} value={atendimento}>
+                    <option selected disabled>Selecione...</option>
+                    {Object.entries(enums.AtendimentoEnum).map(([key, value]) => (
+                        <option key={key} value={key}>{value}</option>
+                    ))}
+                    </Form.Control>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -282,16 +317,13 @@ export default function Cadastrar_chamado() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Status Chamado</Form.Label> 
-                    <Col sm={10}>
-                        <Form.Control as="select" onChange={e=> setStatus(e.target.value)} value={status}>
-                            <option selected disabled >Selecione...</option> 
-                            <option value="nao_iniciado">Não iniciado</option>
-                            <option value="analise">Em análise</option>
-                            <option value="progresso">Em progresso</option>
-                            <option value="concluido">Concluído</option>
-                            <option value="cancelado">Cancelado</option>
-                        </Form.Control>
-                    </Col>
+                <Col sm={10}>
+                    <Form.Control
+                        type="text"
+                        value={enums.StatusChamadoEnum[statusChamado]} // Exibe o valor do enum
+                        readOnly
+                    />
+                </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Serviço</Form.Label>
@@ -299,7 +331,7 @@ export default function Cadastrar_chamado() {
                         <Form.Control as="select" value={servico} onChange={(e) => setServico(e.target.value)} required>
                             <option value="">Selecione um serviço...</option>
                             {servicos.map((s) => (
-                                <option key={s.id} value={s.nome}>{s.nome} - R$ {s.preco.toFixed(2)}</option>
+                                <option key={s.id} value={s.nome}>{s.nome}</option>
                             ))}
                         </Form.Control>
                     </Col>

@@ -43,3 +43,9 @@ export enum SituacaoEnum{
     reprovado = "REPROVADO",
     cancelado = "CANCELADO"
 }
+
+export enum PrioridadeEnum{
+    alta = "ALTA",
+    media = "MÉDIA",
+    baixa = "BAIXA"
+}
