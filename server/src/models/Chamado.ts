@@ -1,55 +1,86 @@
 import {Schema, model, Types} from 'mongoose';
+import {AtendimentoEnum, StatusChamadoEnum, PrioridadeEnum} from "../utils/enums"
+import {ServicoModel} from "../models/Servico"
 
-interface Chamado {
+interface Chamado{
     cliente: Types.ObjectId;
     atendente: Types.ObjectId;
-    prioridade: string;
-    orcamento: string;
-    status: string;
+    prioridade: PrioridadeEnum;
+    status: StatusChamadoEnum;
     descricao: string;
-    previsaoAtendimento: Date;
-    dataCriacao: Date;
+    previsao: Date;
+    atendimento: AtendimentoEnum;
+    dataAbertura: Date;
+    rua: string;
+    cidade: string;
+    bairro: string;
+    numero: number;
+    servicos: Types.ObjectId[];
 }
 
 const ChamadoSchema = new Schema({
     cliente: {
         type: Types.ObjectId,
         ref: 'Cliente',
-        required: true
+        required: true,
     },
     atendente: {
         type: Types.ObjectId,
         ref: 'Atendente',
-        required: true
+        required: true,
     },
     prioridade: {
         type: String,
         required: true,
-        default: ''
-    },
-    previsaoAtendimento: {
-        type: Date,
-        required: true,
-    },
-    orcamento: {
-        type: String,
-        required: true,
-        default: ''
+        default: '',
     },
     status: {
         type: String,
         required: true,
-        default: ''
+        default: '',
     },
     descricao: {
         type: String,
-        required: true,
-        default: ''
+        required: false,
+        default: '',
     },
-    dataCriacao: {
+    previsao: {
         type: Date,
-        default: Date.now()
-    }
+        required: true,
+    },
+    atendimento: {
+        type: String,
+        required: true,
+    },
+    dataAbertura: {
+        type: Date,
+        required: true,
+    },
+    rua: {
+        type: String,
+        required: true,
+        default: '',
+    },
+    cidade: {
+        type: String,
+        required: true,
+        default: '',
+    },
+    bairro: {
+        type: String,
+        required: true,
+        default: '',
+    },
+    numero: {
+        type: Number,
+        required: true,
+    },
+
+    servicos: [{
+        type: Types.ObjectId,
+        ref: 'Servico',
+        required: false
+    }]
 });
 
 const ChamadoModel = model<Chamado>('Chamado', ChamadoSchema);

@@ -95,7 +95,7 @@ export default function Cadastrar_cliente() {
             "cep": cep,
         }
 
-        // console.log(dados)
+        console.log(dados)
 
         fetch('http://localhost:3001/inicio/clientes/novo', {
             method: "POST",
