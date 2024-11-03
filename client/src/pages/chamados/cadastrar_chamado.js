@@ -138,7 +138,7 @@ export default function Cadastrar_chamado() {
         
         const servicoSelecionado = servicos.find(s => s.nome === servico);
         if (servicoSelecionado) {
-            const novoServico = { servico: servicoSelecionado.nome, valor: servicoSelecionado.preco };
+            const novoServico = { id: servicoSelecionado._id, servico: servicoSelecionado.nome, valor: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];
             setServicosSelecionados(novosServicos);
             setTotalServicos(novosServicos.reduce((acc, item) => acc + item.valor, 0));
@@ -195,12 +195,9 @@ export default function Cadastrar_chamado() {
             "cidade": cidade,
             "bairro": bairro,
             "numero": numero,
-            "servicos": servicosSelecionados,
+            "servicos": servicosSelecionados.map(s => s.id),
         }
 
-        console.log('Data previsao', dados.previsao);
-        console.log('Numero da casa', dados.numero);
-        console.log('dataAbertura', dados.dataAbertura);
         console.log('Servicos', dados.servicos);
         fetch('http://localhost:3001/inicio/chamados/novo', {
             method: "POST",
@@ -329,7 +326,7 @@ export default function Cadastrar_chamado() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Serviço</Form.Label>
                     <Col sm={8}>
-                        <Form.Control as="select" value={servico._id} onChange={(e) => setServico(e.target.value)}>
+                        <Form.Control as="select" value={servico} onChange={(e) => setServico(e.target.value)}>
                             <option value="">Selecione um serviço...</option>
                             {servicos.map((s) => (
                                 <option key={s.id} value={s.nome}>{s.nome}</option>
