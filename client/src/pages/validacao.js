@@ -1,7 +1,7 @@
 
 export class Validar {
-    static #nomeReg = /^[a-zA-Zãõáéíóúäïüëöâêîôû]{3,}[a-zA-Zãõáéíóúäïüëöâêîôû ]*$/;
-    static #nomeKeys = /[a-zA-Zãõáéíóúäïüëöâêîôû]| /;
+    static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû]{3,}[a-zãõáéíóúäïüëöâêîôû ]*$/i;
+    static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû]| /i;
 
     static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
     static #emailKeys = /\w|\.|-|@/;
