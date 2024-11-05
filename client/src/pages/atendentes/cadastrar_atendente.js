@@ -167,13 +167,13 @@ export default function Cadastrar_atendente() {
         e.preventDefault();
 
         const tudoValido = 
-            nomeError
-            && emailError
-            && cpfError
-            && telefoneError
-            && celularError
-            && dataContratoError
-            && senhaError;
+            !nomeError
+            && !emailError
+            && !cpfError
+            && !telefoneError
+            && !celularError
+            && !dataContratoError
+            && !senhaError;
         
         if(tudoValido === false){
             console.error("Formulário inválido:");
@@ -228,9 +228,10 @@ export default function Cadastrar_atendente() {
                             onChange={(e) => validarNome(e.target.value)} 
                             onKeyDown={(e) => handleKeyDownNome(e)}
                             isInvalid={nomeError}
-                            feedback={nomeError}
-                            feedbacktype={"invalid"}
                             type="text"/>
+                        <Form.Control.Feedback type="invalid">
+                            {nomeError}
+                        </Form.Control.Feedback>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -244,9 +245,11 @@ export default function Cadastrar_atendente() {
                             onChange={(e) => validarCPF(e.target.value)} 
                             onKeyDown={(e)=> handleKeyDownCpf(e)}
                             isInvalid={cpfError}
-                            feedback={cpfError}
-                            feedbacktype={"invalid"}
-                            type="text"/>
+                            type="text"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {cpfError}
+                        </Form.Control.Feedback>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -260,9 +263,10 @@ export default function Cadastrar_atendente() {
                             onChange={(e) => validarTel(e.target.value)} 
                             onKeyDown={(e) => handleKeyDownTelFixo(e)}
                             isInvalid={telefoneError}
-                            feedback={telefoneError}
-                            feedbacktype={"invalid"}
                             type="text"/>
+                        <Form.Control.Feedback type="invalid">
+                            {telefoneError}
+                        </Form.Control.Feedback>
                         </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -276,9 +280,10 @@ export default function Cadastrar_atendente() {
                             onChange={(e) => validarCel(e.target.value)} 
                             onKeyDown={(e) => handleKeyDownTelCel(e)}
                             isInvalid={celularError}
-                            feedback={celularError}
-                            feedbacktype={"invalid"}
                             type="text"/>
+                        <Form.Control.Feedback type="invalid">
+                            {celularError}
+                        </Form.Control.Feedback>
                         </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -290,9 +295,12 @@ export default function Cadastrar_atendente() {
                             onChange={(e) => validarEmail(e.target.value)}
                             onKeyDown={(e) => handleKeyDownEmail(e)}
                             isInvalid={emailError}
-                            feedback={emailError}
-                            feedbacktype={"invalid"}
-                            type="email"/></Col>
+                            type="email"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {emailError}
+                        </Form.Control.Feedback>
+                        </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Senha</Form.Label>
@@ -302,9 +310,12 @@ export default function Cadastrar_atendente() {
                             maxLength={8} 
                             onChange={(e) => validarSenha(e.target.value)}
                             isInvalid={senhaError}
-                            feedback={senhaError}
-                            feedbacktype={"invalid"}
-                            type="password" /></Col>
+                            type="password" 
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {senhaError}
+                        </Form.Control.Feedback>
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Data de contrato</Form.Label>
@@ -313,9 +324,12 @@ export default function Cadastrar_atendente() {
                             required 
                             onChange={(e) => validarDataContrato(e.target.value)}
                             isInvalid={dataContratoError}
-                            feedback={dataContratoError}
-                            feedbacktype={"invalid"}
-                            type="datetime-local"/></Col>
+                            type="datetime-local"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {dataContratoError}
+                        </Form.Control.Feedback>
+                    </Col>
                 </Form.Group>
 
                 <ButtonGroup>
