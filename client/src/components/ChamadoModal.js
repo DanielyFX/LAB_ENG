@@ -27,6 +27,17 @@ function ChamadoModal(props) {
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
+    useEffect(() => {
+        setDocumento(chamado.cliente.documento);
+        setClienteCampo(chamado.cliente.nome);
+        setClienteObj(chamado.cliente._id);
+        setAtendente(chamado.atendente._id);
+        setDescricao(chamado.descricao);
+        setPrioridade(chamado.prioridade);
+        setStatusChamado(chamado.status);
+        setPrevisaoAtendimento(chamado.previsao);
+    }, [chamado, props.show]); // Executa sempre que o chamado mudar
+
     const handleDocumento = () => {
         let cliente_pesquisa = clientes.find(cliente => cliente.documento === documento)
         if (cliente_pesquisa === undefined) setClienteCampo("Cliente não encontrado")
@@ -165,7 +176,7 @@ function ChamadoModal(props) {
                                 <Form.Label column sm={2}>CPF/CNPJ Cliente</Form.Label>  {/*busca cpf do cliente, caso não encontre deve mostrar uma mensagem de não encontrado cliente */}
                                 <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00 ou 00.000.000/0000-00" maxLength={18} type="text" rows={3} disabled
                                                            onChange={e=> setDocumento(e.target.value)}
-                                                           onBlur={handleDocumento} defaultValue={documento} /></Col>
+                                                           onBlur={handleDocumento} value={documento} /></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Cliente</Form.Label>  {/*Deve trazer o cliente pesquisado pelo cpf  */}
@@ -179,7 +190,7 @@ function ChamadoModal(props) {
                                 <Form.Label column sm={2}>Descrição Chamado</Form.Label>
                                 <Col sm={10}><Form.Control required  as="textarea" rows={3}
                                                            onChange={e=> setDescricao(e.target.value)}
-                                                           defaultValue={descricao}/></Col>
+                                                           value={descricao}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Prioridade</Form.Label> 
