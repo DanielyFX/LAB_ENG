@@ -27,6 +27,8 @@ function ChamadoModal(props) {
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
     const [statusChamadoOriginal, setStatusChamadoOriginal] = useState(chamado.status);
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
+
+    const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
     
 
     useEffect(() => {
@@ -110,7 +112,11 @@ function ChamadoModal(props) {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
+        setConfirmacaoAberta(true);
+    };
 
+    const confirmarAlteracoes = () => {
+        // Lógica para enviar os dados ao servidor
         let dados_novos = {
             "_id": chamado._id,
             "descricao": descricao,
@@ -119,45 +125,48 @@ function ChamadoModal(props) {
             "atendente": atendente,
             "status": statusChamado,
             "cliente": clienteObj
-        }
+        };
         let alterados = [];
-
-        for(let propriedade in dados_novos) {
-            if(propriedade === "atendente") {
+        for (let propriedade in dados_novos) {
+            if (propriedade === "atendente") {
                 if (chamado.atendente._id !== dados_novos.atendente) {
-                    alterados.push(propriedade)
+                    alterados.push(propriedade);
                 }
             } else if (propriedade === "cliente") {
                 if (chamado.cliente._id !== dados_novos.cliente) {
-                    alterados.push(propriedade)
+                    alterados.push(propriedade);
                 }
             } else if (chamado[propriedade] !== dados_novos[propriedade]) {
-                    alterados.push(propriedade)
+                alterados.push(propriedade);
             }
-            console.log(propriedade)
         }
         let body = {
-                alterados: alterados,
-                dados_novos: dados_novos
-        }
-        console.log(body)
+            alterados: alterados,
+            dados_novos: dados_novos
+        };
+
         fetch('http://localhost:3001/inicio/chamados/editar', {
-                method: 'POST',
-                headers: {
-                        "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-                mode: 'cors'
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+            mode: 'cors'
         })
             .then((resultado) => resultado.json())
-            .then((response) => {console.log(response)})
+            .then((response) => { console.log(response); });
         setTimeout(() => {
-                onHide()
+            onHide();
         }, 500);
         setTimeout(() => {
-                window.location.reload();
+            window.location.reload();
         }, 100);
-    }
+        setConfirmacaoAberta(false); // Fecha o modal de confirmação
+    };
+
+    const cancelarAlteracoes = () => {
+        setConfirmacaoAberta(false); // Fecha o modal sem salvar as alterações
+    };
 
     return (
         <>
@@ -217,15 +226,28 @@ function ChamadoModal(props) {
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCancelarChamado}>Cancelar Chamado</Button>
+                            <Button variant="secondary" onClick={handleCancelarChamado}>Cancelar Chamado</Button>
                             <Button variant="primary" type='submit'>Salvar</Button>
                             {/* Botão para aceitar o chamado */}
                             <Button variant="info" onClick={handleAceitarChamado}>Aceitar Chamado</Button>
                         </Modal.Footer>
                     </Form>
-                </Modal>
+                </Modal> 
             }
-        </>
+        {/* Modal de confirmação */}
+        <Modal show={confirmacaoAberta} onHide={cancelarAlteracoes}>
+        <Modal.Header closeButton>
+            <Modal.Title>Confirmar Alterações</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Tem certeza que deseja salvar as alterações?</p>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={cancelarAlteracoes}>Cancelar</Button>
+            <Button variant="primary" onClick={confirmarAlteracoes}>Confirmar</Button>
+        </Modal.Footer>
+    </Modal>
+    </>
     );
 }
 
