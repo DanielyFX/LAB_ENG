@@ -25,7 +25,9 @@ function ChamadoModal(props) {
     const [descricao, setDescricao] = useState(chamado.descricao);
     const [prioridade, setPrioridade] = useState(chamado.prioridade);
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
+    const [statusChamadoOriginal, setStatusChamadoOriginal] = useState(chamado.status);
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
+    
 
     useEffect(() => {
         setDocumento(chamado.cliente.documento);
@@ -59,11 +61,11 @@ function ChamadoModal(props) {
     };
    // Função para atualizar o status do chamado
    const handleAceitarChamado = () => {
-        if (statusChamado === enums.StatusChamadoEnum.nao_iniciado) {
+        if (statusChamadoOriginal === enums.StatusChamadoEnum.nao_iniciado) {
             setStatusChamado(enums.StatusChamadoEnum.em_analise);
             setMensagem("Status alterado para 'Em Análise' com sucesso.");
             setSucesso(true);
-        } else if (statusChamado === enums.StatusChamadoEnum.em_analise) {
+        } else if (statusChamadoOriginal === enums.StatusChamadoEnum.em_analise) {
             setMensagem("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
             setSucesso(false);
         } else {
