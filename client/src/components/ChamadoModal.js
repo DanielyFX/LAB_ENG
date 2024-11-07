@@ -3,7 +3,9 @@ import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import enums from "../utils/enums.json";
+import Alert from 'react-bootstrap/Alert';
 
 function ChamadoModal(props) {
 
@@ -17,11 +19,13 @@ function ChamadoModal(props) {
     const [clienteObj, setClienteObj] = useState(chamado.cliente._id);
     const [atendente, setAtendente] = useState(chamado.atendente._id);
 
+    const [mensagem, setMensagem] = useState("");
+    const [sucesso, setSucesso] = useState(false); 
+
     const [descricao, setDescricao] = useState(chamado.descricao);
     const [prioridade, setPrioridade] = useState(chamado.prioridade);
-    const [orcamento, setOrcamento] = useState(chamado.orcamento);
-    const [status, setStatus] = useState(chamado.status);
-    const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsaoAtendimento);
+    const [statusChamado, setStatusChamado] = useState(chamado.status); 
+    const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
     const handleDocumento = () => {
         let cliente_pesquisa = clientes.find(cliente => cliente.documento === documento)
@@ -32,19 +36,77 @@ function ChamadoModal(props) {
         }
     };
 
-    let dados_novos = {
-        "_id": chamado._id,
-        "descricao": descricao,
-        "prioridade": prioridade,
-        "orcamento": orcamento,
-        "previsaoAtendimento": previsaoAtendimento,
-        "atendente": atendente,
-        "status": status,
-        "cliente": clienteObj
-    }
+    const handleCancelarChamado = () => {
+        if (chamado.status !== enums.StatusChamadoEnum.cancelado) {
+            setStatusChamado(enums.StatusChamadoEnum.cancelado);
+            setMensagem("Status alterado para 'Cancelado' com sucesso.");
+            setSucesso(true);
+        } else {
+            setMensagem("Este chamado já está cancelado.");
+            setSucesso(false);
+        }
+    };
+   // Função para atualizar o status do chamado
+   const handleAceitarChamado = () => {
+        if (statusChamado === enums.StatusChamadoEnum.nao_iniciado) {
+            setStatusChamado(enums.StatusChamadoEnum.em_analise);
+            setMensagem("Status alterado para 'Em Análise' com sucesso.");
+            setSucesso(true);
+        } else if (statusChamado === enums.StatusChamadoEnum.em_analise) {
+            setMensagem("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
+            setSucesso(false);
+        } else {
+            setMensagem("Este chamado não pode ser alterado para outro status.");
+            setSucesso(false);
+        }
+    };
+    
+    useEffect(() => {
+        // Define a data e hora atuais no formato necessário para `datetime-local`
+        const now = new Date();
+        const formattedDate = now.toISOString().slice(0, 16); // Retorna 'YYYY-MM-DDTHH:MM' no fuso horário local
+        
+        if (prioridade && prioridade !== 'Selecione...') {
+            setPrevisaoAtendimento(calcularPrevisaoAtendimento(prioridade));
+        } else {
+            setPrevisaoAtendimento('');
+        }
+    }, [prioridade]); // Adiciona a prioridade como dependência
+
+    const calcularPrevisaoAtendimento = (prioridade) => {
+        const hoje = new Date(); // Data atual
+        let diasParaAdicionar = 0;
+
+        switch (prioridade){
+            case "alta":
+                diasParaAdicionar = 20;
+                break;
+            case "media":
+                diasParaAdicionar = 12;
+                break;
+            case "baixa": 
+                diasParaAdicionar = 7;
+                break;
+            default:
+                return '';
+        }
+        hoje.setDate(hoje.getDate() + diasParaAdicionar);
+        return hoje.toISOString().slice(0, 10); // Retorna a nova data no formato 'YYYY-MM-DD'
+        
+    };
 
     const handleSubmit = (e) =>{
         e.preventDefault();
+
+        let dados_novos = {
+            "_id": chamado._id,
+            "descricao": descricao,
+            "prioridade": prioridade,
+            "previsao": previsaoAtendimento,
+            "atendente": atendente,
+            "status": statusChamado,
+            "cliente": clienteObj
+        }
         let alterados = [];
 
         for(let propriedade in dados_novos) {
@@ -93,6 +155,12 @@ function ChamadoModal(props) {
                             <Modal.Title>Editar Chamado</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
+                            {/* Caixa de aviso condicional */}
+                            {mensagem && (
+                                <Alert variant={sucesso ? "success" : "danger"} onClose={() => setMensagem("")} dismissible>
+                                    {mensagem}
+                                </Alert>
+                            )}
                         <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>CPF/CNPJ Cliente</Form.Label>  {/*busca cpf do cliente, caso não encontre deve mostrar uma mensagem de não encontrado cliente */}
                                 <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00 ou 00.000.000/0000-00" maxLength={18} type="text" rows={3} disabled
@@ -104,71 +172,42 @@ function ChamadoModal(props) {
                                 <Col sm={10}><Form.Control required type="text" rows={3} value={clienteCampo} disabled/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>Status Chamado</Form.Label> 
+                                <Col sm={10}><Form.Control required type="text" rows={3} value={statusChamado} disabled/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Descrição Chamado</Form.Label>
                                 <Col sm={10}><Form.Control required  as="textarea" rows={3}
                                                            onChange={e=> setDescricao(e.target.value)}
                                                            defaultValue={descricao}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>Prioridade</Form.Label>
-                                <Col sm={10} >
-                                    <Form.Control as="select" onChange={e=> setPrioridade(e.target.value)} value={prioridade}>
-                                        <option selected disabled >Selecione...</option>
-                                        <option value="baixa">Baixa</option>
-                                        <option value="média">Média</option>
-                                        <option value="alta">Alta</option>
-                                    </Form.Control>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>Previsão de Atendimento</Form.Label>
-                                <Col sm={10}><Form.Control required type="date"
-                                                           onChange={e=> setPrevisaoAtendimento(e.target.value)}
-                                                           defaultValue={new Date(previsaoAtendimento).toISOString().substring(0,10)}/></Col>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>Atendente</Form.Label>
+                            <Form.Label column sm={2}>Prioridade</Form.Label> 
                                 <Col sm={10}>
-                                    <Form.Control required as="select" onChange={e=> setAtendente(e.target.value)} value={atendente}>
-                                        {atendentes_alfabetico.length > 0 ?
-                                            <><option selected disabled >Selecione...</option>
-                                                {atendentes_alfabetico.map((atendente) => {
-                                                    return (<option value={atendente._id}>{atendente.nome}</option>)
-                                                })}</> :
-                                            <option selected disabled>Não há nenhum atendente cadastrado.</option>
-                                        }
-                                    </Form.Control>
+                                <Form.Control required as="select" onChange={e => setPrioridade(e.target.value)} value={prioridade}>
+                                <option value="">Selecione...</option>
+                                {Object.entries(enums.PrioridadeEnum).map(([key, value]) => (
+                                    <option key={key} value={key}>{value}</option>
+                                ))}
+                                </Form.Control>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>Status Orçamento</Form.Label>
-                                <Col sm={10}>
-                                    <Form.Control as="select" onChange={e=> setOrcamento(e.target.value)} value={orcamento}>
-                                        <option selected disabled >Selecione...</option>
-                                        <option value="nao_iniciado">Não iniciado</option>
-                                        <option value="realizado">Realizado</option>
-                                        <option value="aprovado">Aprovado</option>
-                                        <option value="cancelado">Cancelado</option>
-                                    </Form.Control>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mb-3">
-                                <Form.Label column sm={2}>Status Chamado</Form.Label>
-                                <Col sm={10}>
-                                    <Form.Control as="select" onChange={e=> setStatus(e.target.value)} value={status}>
-                                        <option selected disabled >Selecione...</option>
-                                        <option value="nao_iniciado">Não iniciado</option>
-                                        <option value="analise">Em análise</option>
-                                        <option value="progresso">Em progresso</option>
-                                        <option value="concluido">Concluído</option>
-                                        <option value="cancelado">Cancelado</option>
-                                    </Form.Control>
-                                </Col>
+                            <Form.Label column sm={2}>Previsão de Atendimento</Form.Label>
+                            <Col sm={10}>
+                                <Form.Control
+                                    type="date"
+                                    onChange={(e) => setPrevisaoAtendimento(e.target.value)} 
+                                    value={previsaoAtendimento} // Permite que o usuário altere o valor
+                                />
+                            </Col>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
+                        <Button variant="secondary" onClick={handleCancelarChamado}>Cancelar Chamado</Button>
                             <Button variant="primary" type='submit'>Salvar</Button>
+                            {/* Botão para aceitar o chamado */}
+                            <Button variant="info" onClick={handleAceitarChamado}>Aceitar Chamado</Button>
                         </Modal.Footer>
                     </Form>
                 </Modal>

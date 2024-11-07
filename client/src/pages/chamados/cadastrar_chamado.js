@@ -86,12 +86,13 @@ export default function Cadastrar_chamado() {
     const [servico, setServico] = useState('');
     const [servicosSelecionados, setServicosSelecionados] = useState([]);
     const [totalServicos, setTotalServicos] = useState(0);
+    const [tecnico, setTecnico] = useState('');
 
 
     const [descricao, setDescricao] = useState('');
     const [prioridade, setPrioridade] = useState('Selecione...');
     const [atendimento, setAtendimento] = useState('Selecione...');
-    const [statusChamado] = useState('nao_iniciado');
+    const [statusChamado] = useState(enums.StatusChamadoEnum.nao_iniciado);
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState('');
 
 
@@ -195,10 +196,12 @@ export default function Cadastrar_chamado() {
             "cidade": cidade,
             "bairro": bairro,
             "numero": numero,
+            "tecnico": tecnico,
             "servicos": servicosSelecionados.map(s => s.id),
         }
 
         console.log('Servicos', dados.servicos);
+        console.log('Rua', dados.rua);
         fetch('http://localhost:3001/inicio/chamados/novo', {
             method: "POST",
             headers: {
@@ -312,16 +315,6 @@ export default function Cadastrar_chamado() {
                             }
                         </Form.Control>
                     </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm={2}>Status Chamado</Form.Label> 
-                <Col sm={10}>
-                    <Form.Control
-                        type="text"
-                        value={enums.StatusChamadoEnum[statusChamado]} // Exibe o valor do enum
-                        readOnly
-                    />
-                </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Serviço</Form.Label>

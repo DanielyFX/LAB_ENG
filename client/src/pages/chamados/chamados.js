@@ -33,10 +33,9 @@ function ChamadoBox(props) {
             <p key={`${chamado._id}_cliente`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
             <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
-            <p key={`${chamado._id}_status`}>STATUS ORÇAMENTO: {chamado.orcamento}</p><hr/>
             <p key={`${chamado._id}_status`}>STATUS CHAMADO: {chamado.status}</p><hr/>
-            <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsaoAtendimento}</p><hr/>
-            <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataCriacao}</p><hr/>
+            <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsao}</p><hr/>
+            <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataAbertura}</p><hr/>
             <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {
@@ -77,8 +76,8 @@ export default function Consultar_Chamados(props) {
                 <Dropdown.Item as="button" onClick={() => funcao("prioridade")}>Prioridade</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("status")}>Status</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("orcamento")}>Orçamento</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("previsaoAtendimento")}>Previsão</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data Criação</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("previsao")}>Previsão</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("dataAbertura")}>Data Criação</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("atendente")}>Atendente</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("cliente")}>Cliente</Dropdown.Item>
             </Dropdown.Menu>
