@@ -132,6 +132,9 @@ export class CadastroNacionalPessoaJuridica {
     static #incompleteMask = /^\d{0,2}\.?\d{0,3}\.?\d{0,3}\/?\d{0,4}-?\d{0,1}$/;
     static #validKeysMask = /\d|\.|-|\//;
 
+    static get maxLength () { return 18; }
+    static get minLength () { return 14; }
+
     static isNumericValid(cnpj){
         if(this.isFormatValid(cnpj)){
             const cnpjDigitos = this.getOnlyDigits(cnpj);
@@ -253,6 +256,9 @@ export class TelefoneFixo {
     static #incompleteMask = /^\+?\d{0,3}\(?\d{0,2}\)?\d{0,4}-?\d{0,3}$/;
     static #validFormatKeysMask = /[\d()+]/;
 
+    static get maxLength () { return 17; }
+    static get minLength () { return 10; }
+
     static isFormatValid(telefone){
         return this.#strictMask.test(telefone);
     }
@@ -321,6 +327,9 @@ export class TelefoneCelular {
     static #strictMask = /^\+?\d{0,3}\(?\d{2}\)?\d{5}-?\d{4}$/;
     static #incompleteMask = /^\+?\d{0,3}\(?\d{0,2}\)?\d{0,5}-?\d{0,3}$/;
     static #validFormatKeysMask = /[\d()+]/;
+
+    static get maxLength () { return 18; }
+    static get minLength () { return 11; }
 
     static isFormatValid(telefone){
         return this.#strictMask.test(telefone);
@@ -554,6 +563,76 @@ export class DataContrato {
     }
 }
 
+export class CEP {
+    static #strictMask = /^\d{5}-?\d{3}$/;
+    static #incompleteMask = /^\d{0,5}-?\d{0,2}$/;
+    static #validKeys = /^\d$|^-$/;
+
+    static get maxLength () { return 9; }
+    static get minLength () { return 8; }
+
+    static isFormatValid(telefone){
+        return this.#strictMask.test(telefone);
+    }
+
+    static isValidKey(key){
+        return this.#validKeys.test(key);
+    }
+
+    static getNextFormatKey(cep){
+        if(/^\d{5}$/.test(cep))
+            return "-";
+        else
+            return "";
+    }
+
+    static hasNextKey(telefone){
+        return this.#incompleteMask.test(telefone);
+    }
+
+    static getOnlyDigits(cep){
+        return cep.replace(/\D/g, "");
+    }
+
+    static getFormated(cep){
+        if(/^\d{8}$/.test(cep))
+            return cep.substr(0,5) + "-" + cep.substr(5,7);
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }else if(!this.hasNextKey(event.target.value)){
+                event.preventDefault();
+            }else{
+                event.target.value += this.getNextFormatKey(event.target.value);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(cep, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(cep)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.hasNextKey(cep)){
+                errorMsgSetter("Incompleto!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(this.getOnlyDigits(cep));
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+
 export class Validar {
     static CPF = CadastroPessoaFisica;
     static CNPJ = CadastroNacionalPessoaJuridica;
@@ -563,6 +642,7 @@ export class Validar {
     static Email = Email;
     static Senha = Senha;
     static DataContrato = DataContrato;
+    static CEP = CEP;
     
     static isCaracterDeControle(key){
         return key === "Backspace"
