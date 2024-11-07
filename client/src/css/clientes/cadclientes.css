@@ -15,3 +15,12 @@
     /*background-color: lightgray;*/
     border-radius: 15px;
 }
+
+#document, 
+#telefone,
+#celular,
+#cep,
+#cepNumber {
+    min-width: 170px;
+    max-width: 190px;
+}
