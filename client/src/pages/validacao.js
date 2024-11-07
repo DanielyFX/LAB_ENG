@@ -1,54 +1,4 @@
 
-export class Validar {
-    static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû]{3,}[a-zãõáéíóúäïüëöâêîôû ]*$/i;
-    static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû]| /i;
-
-    static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
-    static #emailKeys = /\w|\.|-|@/;
-
-    static #senhaReg = /[\d\w \W]{6,}/;
-    
-    static isCaracterDeControle(key){
-        return key === "Backspace"
-                || key === "ArrowLeft"
-                || key === "ArrowRight"
-                || key === "ArrowUp"
-                || key === "ArrowDown"
-                || key === "Enter"
-                || key === "Tab"
-                || key === "Home"
-                || key === "Insert"
-                || key === "Delete"
-                || key === "Control"
-                || key === "Shift"
-                || key === "End";
-    }
-
-    static isNotEmptyStr(str){
-        return str !== "" && str.trim() !== "";
-    }
-
-    static isNome(nome){
-        return this.#nomeReg.test(nome);
-    }
-
-    static isNomeKey(key){
-        return this.#nomeKeys.test(key);
-    }
-
-    static isEmail(email){
-        return this.#emailReg.test(email);
-    }
-
-    static isEmailKey(key){
-        return this.#emailKeys.test(key);
-    }
-
-    static isSenha(senha){
-        return this.#senhaReg.test(senha);
-    }
-}
-
 export class CadastroPessoaFisica {
     static #pesos = [
         11, 10, 9, 8, 7,
@@ -61,8 +11,8 @@ export class CadastroPessoaFisica {
     static #incompleteMask = /^\d{0,3}\.?\d{0,3}\.?\d{0,3}-?\d{0,1}$/;
     static #validKeysMask = /^[\d.-]{1}$/;
 
-    static get lenghtMin() {return 11;}
-    static get lenghtMax() {return 14;}
+    static get lengthMin() {return 11;}
+    static get lengthMax() {return 14;}
 
     static isNumericValid(cpf){
         if(this.isFormatValid(cpf)){
@@ -100,9 +50,41 @@ export class CadastroPessoaFisica {
     }
 
     static getOnlyDigits(cpf){
-        cpf = cpf.replaceAll(".", "");
-        cpf = cpf.replaceAll("-", "");
-        return cpf;
+        return cpf.replaceAll(".", "").replaceAll("-", "");
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }else if(!this.hasNextKey(event.target.value)){
+                event.preventDefault();
+            }else{
+                event.target.value += this.getNextFormatKey(event.target.value);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(cpf, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(cpf)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.hasNextKey(cpf)){
+                errorMsgSetter("Incompleto!");
+            }else if(!this.isNumericValid(cpf)){
+                errorMsgSetter("Inválido!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(this.getOnlyDigits(cpf));
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
     }
 
     static #calcPrimeiroDigito(cpf){
@@ -188,10 +170,41 @@ export class CadastroNacionalPessoaJuridica {
     }
 
     static getOnlyDigits(cnpj){
-        cnpj = cnpj.replaceAll(".", "");
-        cnpj = cnpj.replaceAll("-", "");
-        cnpj = cnpj.replaceAll("/", "");
-        return cnpj;
+        return cnpj.replaceAll(".", "").replaceAll("-", "").replaceAll("/", "");
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }else if(!this.hasNextKey(event.target.value)){
+                event.preventDefault();
+            }else{
+                event.target.value += this.getNextFormatKey(event.target.value);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(cpf, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(cpf)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.hasNextKey(cpf)){
+                errorMsgSetter("Incompleto!");
+            }else if(!this.isNumericValid(cpf)){
+                errorMsgSetter("Inválido!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(this.getOnlyDigits(cpf));
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
     }
 
     static #calcPrimeiroDigito(cnpj){
@@ -269,6 +282,38 @@ export class TelefoneFixo {
                     .replaceAll(")", "")
                     .replaceAll("-", "");
     }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }else if(!this.hasNextKey(event.target.value)){
+                event.preventDefault();
+            }else{
+                event.target.value += this.getNextFormatKey(event.target.value);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(telefone, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(telefone)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.hasNextKey(telefone)){
+                errorMsgSetter("Incompleto!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(this.getOnlyDigits(telefone));
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
 }
 
 export class TelefoneCelular {
@@ -306,4 +351,231 @@ export class TelefoneCelular {
                     .replaceAll(")", "")
                     .replaceAll("-", "");
     }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }else if(!this.hasNextKey(event.target.value)){
+                event.preventDefault();
+            }else{
+                event.target.value += this.getNextFormatKey(event.target.value);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(telefone, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(telefone)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.hasNextKey(telefone)){
+                errorMsgSetter("Incompleto!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(this.getOnlyDigits(telefone));
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class NomePessoa {
+    static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû]{3,}[a-zãõáéíóúäïüëöâêîôû ]*$/i;
+    static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû]| /i;
+
+    static isValid(nome){
+        return this.#nomeReg.test(nome);
+    }
+
+    static isValidKey(key){
+        return this.#nomeKeys.test(key);
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(nome, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(nome)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.isValid(nome)){
+                errorMsgSetter("Incompleto!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(nome);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class Email {
+    static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
+    static #emailKeys = /\w|\.|-|@/;
+
+    static isValid(email){
+        return this.#emailReg.test(email);
+    }
+
+    static isValidKey(key){
+        return this.#emailKeys.test(key);
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(email, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(email)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.isValid(email)){
+                errorMsgSetter("Incompleto!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(email);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class Senha {
+    static #senhaReg = /[\d\w \W]{6,}/;
+    static #lowerCaseLetters = /[a-z]+/;
+    static #upperCaseLetters = /[A-Z]+/;
+    static #numbers = /\d+/;
+    static #specialCharacters = /[_@-!?#]+/;
+
+    static isSenha(senha){
+        return this.#senhaReg.test(senha);
+    }
+
+    static hasLowerCaseLetters(senha){
+        return this.#lowerCaseLetters.test(senha);
+    }
+
+    static hasUpperCaseLetters(senha){
+        return this.#upperCaseLetters.test(senha);
+    }
+
+    static hasNumbers(senha){
+        return this.#numbers.test(senha);
+    }
+
+    static hasSpecialCharacters(senha){
+        return this.#specialCharacters.test(senha);
+    }
+
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(senha, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(senha)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(this.isValid(senha)){
+                errorMsgSetter("Mínimo 6 caracteres");
+            }else{
+                errorMsgSetter("");
+                valueSetter(senha);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class DataContrato {
+
+    static get TodayHTMLDatetimeLocalFormat() {
+        const today = new Date();
+        return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0]
+    }
+
+    static handleOnChange(date, valueSetter, errorMsgSetter){
+        try{
+            const today = new Date();
+            if(!Validar.isNotEmptyStr(date)){
+                errorMsgSetter("Obrigatória!");
+            }else if((today - date) < 0){
+                errorMsgSetter("Inválida!");
+            }else{
+                valueSetter(date);
+                errorMsgSetter("");
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class Validar {
+    static CPF = CadastroPessoaFisica;
+    static CNPJ = CadastroNacionalPessoaJuridica;
+    static TelFixo = TelefoneFixo;
+    static TelCel = TelefoneCelular;
+    static NomePessoa = NomePessoa;
+    static Email = Email;
+    static Senha = Senha;
+    static DataContrato = DataContrato;
+    
+    static isCaracterDeControle(key){
+        return key === "Backspace"
+                || key === "ArrowLeft"
+                || key === "ArrowRight"
+                || key === "ArrowUp"
+                || key === "ArrowDown"
+                || key === "Enter"
+                || key === "Tab"
+                || key === "Home"
+                || key === "Insert"
+                || key === "Delete"
+                || key === "Control"
+                || key === "Shift"
+                || key === "End";
+    }
+
+    static isNotEmptyStr(str){
+        return str !== "" && str.trim() !== "";
+    }
+
 }
