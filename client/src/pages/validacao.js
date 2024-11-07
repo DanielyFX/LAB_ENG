@@ -414,7 +414,7 @@ export class NomePessoa {
             if(!Validar.isNotEmptyStr(nome)){
                 errorMsgSetter("Obrigatório!");
             }
-            else if(this.isValid(nome)){
+            else if(!this.isValid(nome)){
                 errorMsgSetter("Incompleto!");
             }else{
                 errorMsgSetter("");
@@ -428,7 +428,7 @@ export class NomePessoa {
 
 export class Email {
     static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
-    static #emailKeys = /\w|\.|-|@/;
+    static #emailKeys = /\w|\.|-|@|\S/;
 
     static isValid(email){
         return this.#emailReg.test(email);
@@ -455,7 +455,7 @@ export class Email {
             if(!Validar.isNotEmptyStr(email)){
                 errorMsgSetter("Obrigatório!");
             }
-            else if(this.isValid(email)){
+            else if(!this.isValid(email)){
                 errorMsgSetter("Incompleto!");
             }else{
                 errorMsgSetter("");
@@ -468,14 +468,19 @@ export class Email {
 }
 
 export class Senha {
-    static #senhaReg = /[\d\w \W]{6,}/;
+    static #senhaReg = /[\d\w _@\-!?#]{6,}/;
+    static #senhaKeys = /[\d\w _@\-!?#]/i;
     static #lowerCaseLetters = /[a-z]+/;
     static #upperCaseLetters = /[A-Z]+/;
     static #numbers = /\d+/;
-    static #specialCharacters = /[_@-!?#]+/;
+    static #specialCharacters = /[_@\-!?#]+/;
 
-    static isSenha(senha){
+    static isValid(senha){
         return this.#senhaReg.test(senha);
+    }
+
+    static isValidKey(key){
+        return this.#senhaKeys.test(key);
     }
 
     static hasLowerCaseLetters(senha){
@@ -512,7 +517,7 @@ export class Senha {
             if(!Validar.isNotEmptyStr(senha)){
                 errorMsgSetter("Obrigatório!");
             }
-            else if(this.isValid(senha)){
+            else if(!this.isValid(senha)){
                 errorMsgSetter("Mínimo 6 caracteres");
             }else{
                 errorMsgSetter("");
@@ -534,9 +539,10 @@ export class DataContrato {
     static handleOnChange(date, valueSetter, errorMsgSetter){
         try{
             const today = new Date();
+            const convertedDate = new Date(Date.parse(date));
             if(!Validar.isNotEmptyStr(date)){
                 errorMsgSetter("Obrigatória!");
-            }else if((today - date) < 0){
+            }else if((today - convertedDate) < 0){
                 errorMsgSetter("Inválida!");
             }else{
                 valueSetter(date);
