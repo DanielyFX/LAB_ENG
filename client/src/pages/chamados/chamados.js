@@ -38,7 +38,9 @@ function ChamadoBox(props) {
             <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsao}</p><hr/>
             <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataAbertura}</p><hr/>
             <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
-            <p key={`${chamado._id}_tecnico`}>TECNICO: {chamado.tecnico.nome}</p><hr/>
+            <p key={`${chamado._id}_tecnico`}>
+            {chamado.tecnico && chamado.tecnico.nome ? `TECNICO: ${chamado.tecnico.nome}` : "TECNICO: Não atribuído"}
+            </p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {
                     setShow(true)

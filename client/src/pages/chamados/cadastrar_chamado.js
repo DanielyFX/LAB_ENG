@@ -77,7 +77,7 @@ export default function Cadastrar_chamado() {
     const [clienteCampo, setClienteCampo] = useState('');
     const [clienteContato, setClienteContato] = useState('');
     const [clienteObj, setClienteObj] = useState();
-    const [tecnico, setTecnico] = useState('');
+    const [tecnico, setTecnico] = useState();
     const [atendente, setAtendente] = useState('Selecione...');
 
     const [rua, setRua] = useState('');
@@ -201,8 +201,13 @@ export default function Cadastrar_chamado() {
             "cidade": cidade,
             "bairro": bairro,
             "numero": numero,
-            "tecnico": tecnico,
             "servicos": servicosSelecionados.map(s => s.id),
+        }
+
+        // por ser opcional o tecnico é inserido apenas se for declarado
+        // Adicione o técnico somente se tiver sido selecionado
+        if (tecnico) {
+            dados.tecnico = tecnico;
         }
 
         console.log('Servicos', dados.servicos);
@@ -322,9 +327,9 @@ export default function Cadastrar_chamado() {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm={2}>Tecnico</Form.Label> {/*Deve trazer todos os atendentes cadastrados, em ordem alfabetica  */}
+                <Form.Label column sm={2}>Tecnico</Form.Label> {/*Deve trazer todos os técnicos cadastrados, em ordem alfabetica  */}
                     <Col sm={10}>
-                        <Form.Control required as="select" onChange={(e)=> setTecnico(e.target.value)} value={tecnico._id}>
+                        <Form.Control required as="select" onChange={(e)=> setTecnico(e.target.value)}>
                             {tecnicos_alfabetico.length > 0 ?
                                 <><option selected disabled >Selecione...</option>
                                 {tecnicos_alfabetico.map((tecnico) => {

@@ -120,20 +120,38 @@ export default function Orcamento_chamado() {
     return (
         <div id="cadchamado-main">
             <Form id="cadchamado-form" onSubmit={handleSubmit}>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Técnico Responsavel</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control required as="select" onChange={e=> setTecnico(e.target.value)} value={tecnico}>
-                            {tecnicos_alfabetico.length > 0 ?
-                                <><option selected disabled >Selecione...</option>
-                                    {tecnicos_alfabetico.map((tecnico) => {
-                                        return (<option value={tecnico._id}>{tecnico.nome}</option>)
-                                    })}</> :
-                                <option selected disabled>Não há nenhum técnico cadastrado.</option>
-                            }
+            <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={2}>Técnico Responsável</Form.Label>
+                <Col sm={10}>
+                    {chamado.tecnico ? (
+                        // Exibe o nome do técnico e desabilita a seleção
+                        <Form.Control 
+                            type="text" 
+                            value={chamado.tecnico.nome} 
+                            disabled
+                        />
+                    ) : (
+                        // Se não houver técnico, exibe a lista de técnicos
+                        <Form.Control
+                            required
+                            as="select"
+                            onChange={e => setTecnico(e.target.value)}
+                            value={chamado.tecnico ? chamado.tecnico._id : (tecnico|| "")} // Use 'tecnicoSelecionado' ou vazio como fallback
+                        >
+                            <option value="">Selecione...</option>
+                            {tecnicos_alfabetico.length > 0 ? (
+                                tecnicos_alfabetico.map((tecnico) => (
+                                    <option key={tecnico._id} value={tecnico._id}>
+                                        {tecnico.nome}
+                                    </option>
+                                ))
+                            ) : (
+                                <option disabled>Não há nenhum técnico cadastrado.</option>
+                            )}
                         </Form.Control>
-                    </Col>
-                </Form.Group>
+                    )}
+                </Col>
+            </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Chamado</Form.Label>
                     <Col sm={10}>
