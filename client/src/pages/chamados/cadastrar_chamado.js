@@ -68,11 +68,16 @@ export default function Cadastrar_chamado() {
     const atendentes_alfabetico = atendentes.sort((a, b) => {
         return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     })
+
+    const tecnicos_alfabetico = tecnicos.sort((a, b) => {
+        return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
+    })
     
-    const [documento, setDocumento] = useState('');
+    const [documentoCliente, setDocumentoCliente] = useState('');
     const [clienteCampo, setClienteCampo] = useState('');
     const [clienteContato, setClienteContato] = useState('');
     const [clienteObj, setClienteObj] = useState();
+    const [tecnico, setTecnico] = useState('');
     const [atendente, setAtendente] = useState('Selecione...');
 
     const [rua, setRua] = useState('');
@@ -86,7 +91,6 @@ export default function Cadastrar_chamado() {
     const [servico, setServico] = useState('');
     const [servicosSelecionados, setServicosSelecionados] = useState([]);
     const [totalServicos, setTotalServicos] = useState(0);
-    const [tecnico, setTecnico] = useState('');
 
 
     const [descricao, setDescricao] = useState('');
@@ -154,7 +158,7 @@ export default function Cadastrar_chamado() {
     };
 
     const handleDocumentoCliente = () => {
-        let cliente_pesquisa = clientes.find(cliente => cliente.documento === documento)
+        let cliente_pesquisa = clientes.find(cliente => cliente.documento === documentoCliente)
         if (cliente_pesquisa === undefined) setClienteCampo("Cliente não encontrado")
         else {
             setClienteObj(cliente_pesquisa)
@@ -186,6 +190,7 @@ export default function Cadastrar_chamado() {
         const dados = {
             "cliente": clienteObj._id,
             "atendente": atendente,
+            "tecnico": tecnico,
             "prioridade": prioridade,
             "status": statusChamado,
             "descricao": descricao,
@@ -229,7 +234,7 @@ export default function Cadastrar_chamado() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>CPF/CNPJ</Form.Label>  {/*busca cpf do cliente, caso não encontre deve mostrar uma mensagem de não encontrado cliente */}
                     <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00 ou 00.000.000/0000-00" maxLength={18} type="text" rows={3}
-                                               onChange={(e)=> setDocumento(e.target.value)} onBlur={handleDocumentoCliente}/></Col>
+                                               onChange={(e)=> setDocumentoCliente(e.target.value)} onBlur={handleDocumentoCliente}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome Cliente</Form.Label>  {/*Deve trazer o cliente pesquisado pelo cpf  */}
@@ -312,6 +317,20 @@ export default function Cadastrar_chamado() {
                                     return (<option value={atendente._id}>{atendente.nome}</option>)
                                 })}</> :
                                 <option selected disabled>Não há nenhum atendente cadastrado.</option>
+                            }
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={2}>Tecnico</Form.Label> {/*Deve trazer todos os atendentes cadastrados, em ordem alfabetica  */}
+                    <Col sm={10}>
+                        <Form.Control required as="select" onChange={(e)=> setTecnico(e.target.value)} value={tecnico._id}>
+                            {tecnicos_alfabetico.length > 0 ?
+                                <><option selected disabled >Selecione...</option>
+                                {tecnicos_alfabetico.map((tecnico) => {
+                                    return (<option value={tecnico._id}>{tecnico.nome}</option>)
+                                })}</> :
+                                <option selected disabled>Não há nenhum técnico cadastrado.</option>
                             }
                         </Form.Control>
                     </Col>

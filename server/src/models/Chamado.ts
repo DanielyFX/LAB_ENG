@@ -5,6 +5,7 @@ import {ServicoModel} from "../models/Servico"
 interface Chamado{
     cliente: Types.ObjectId;
     atendente: Types.ObjectId;
+    tecnico: Types.ObjectId;
     prioridade: PrioridadeEnum;
     status: StatusChamadoEnum;
     descricao: string;
@@ -28,6 +29,11 @@ const ChamadoSchema = new Schema({
         type: Types.ObjectId,
         ref: 'Atendente',
         required: true,
+    },
+    tecnico: {
+        type: Types.ObjectId,
+        ref: 'Tecnico',
+        required: false,
     },
     prioridade: {
         type: String,

@@ -9,7 +9,7 @@ import searchIcon from "../../css/Icons";
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
-    const {chamado, clientes, atendentes} = props
+    const {chamado, clientes, atendentes, tecnicos} = props
 
     const handleExcluir = (chamado_id) => {
         fetch('http://localhost:3001/inicio/chamados/deletar', {
@@ -25,7 +25,8 @@ function ChamadoBox(props) {
                 if (response.success) window.location.reload();
                 else alert("Erro ao deletar Chamado");
             })
-    }
+    };
+
     return (
         <div className="chamado">
             <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
@@ -37,6 +38,7 @@ function ChamadoBox(props) {
             <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsao}</p><hr/>
             <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataAbertura}</p><hr/>
             <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
+            <p key={`${chamado._id}_tecnico`}>TECNICO: {chamado.tecnico.nome}</p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {
                     setShow(true)
@@ -45,7 +47,7 @@ function ChamadoBox(props) {
                     handleExcluir(chamado._id)
                 }}>Excluir</Button>
             </ButtonGroup>
-            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
         </div>
     );
 }
@@ -53,7 +55,7 @@ function ChamadoBox(props) {
 export default function Consultar_Chamados(props) {
 
 
-    const {chamados, atendentes, clientes} = useLoaderData();
+    const {chamados, atendentes, clientes, tecnicos} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
@@ -80,6 +82,7 @@ export default function Consultar_Chamados(props) {
                 <Dropdown.Item as="button" onClick={() => funcao("dataAbertura")}>Data Criação</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("atendente")}>Atendente</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("cliente")}>Cliente</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("tecnico")}>Tecnico</Dropdown.Item>
             </Dropdown.Menu>
         )
     }
@@ -127,6 +130,8 @@ export default function Consultar_Chamados(props) {
                                 return chamado.previsaoAtendimento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "atendente":
                                 return chamado.atendente.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                            case "tecnico":
+                                return chamado.tecnico.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "status":
                                 return chamado.status.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "cliente":
@@ -141,6 +146,7 @@ export default function Consultar_Chamados(props) {
                             case "orcamento":
                             case "status":
                             case "atendente":
+                            case "tecnico":
                             case "cliente":
                                 sort_string(a[parametroOrd], b[parametroOrd]);
                                 break;
@@ -156,7 +162,7 @@ export default function Consultar_Chamados(props) {
                     }).map((chamado) => {
                         // console.log(chamado)
                         return (
-                            <ChamadoBox chamado={chamado} clientes={clientes} atendentes={atendentes}/>
+                            <ChamadoBox chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos}/>
                         );
                     })
                 }

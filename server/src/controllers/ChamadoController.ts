@@ -6,6 +6,7 @@ class ChamadoController {
         const new_chamado = new ChamadoModel();
         new_chamado.cliente = request.body.cliente;
         new_chamado.atendente = request.body.atendente;
+        new_chamado.tecnico = request.body.tecnico;
         new_chamado.prioridade = request.body.prioridade;
         new_chamado.status = request.body.status;
         new_chamado.descricao = request.body.descricao;
@@ -30,7 +31,7 @@ class ChamadoController {
 
     async getAll(request: Request, response: Response) {
         let chamados = await ChamadoModel.find({})
-            .populate('cliente').populate('atendente');
+            .populate('cliente').populate('atendente').populate('tecnico');
         return response.status(200).json(chamados);
     }
 
