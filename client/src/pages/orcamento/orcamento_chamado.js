@@ -5,7 +5,9 @@ import Row from "react-bootstrap/Row";
 import '../../css/chamados/cadchamados.css'
 import { ButtonGroup } from "react-bootstrap";
 import {useLoaderData} from "react-router-dom";
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import Table from "react-bootstrap/Table";
+import enums from "../../utils/enums.json"
 
 export default function Orcamento_chamado() {
 
@@ -21,29 +23,81 @@ export default function Orcamento_chamado() {
 
     const [chamado, setChamado] = useState('Selecione...');
     const [tecnico, setTecnico] = useState('Selecione...');
-    const [tipoServico, setTipoServico] = useState('Selecione...');
+    const [servicosChamado, setServicosChamado] = useState([]);
     const [tempoExecucao, setTempoExecucao] = useState('');
-    const [garantia, setGarantia] = useState('');
+    const [atendimento, setAtendimento] = useState('');
+    const [valorTotal, setValorTotal] = useState('');
+    const [quantidadeServico] = useState('');
+    const [despesaServico] = useState('');
     const [enderecoServico, setEnderecoServico] = useState('');
     const [observacao, setObservacao] = useState('');
     const [descontoServico, setDescontoServico] = useState('');
     const [situacaoOrcamento, setSituacaoOrcamento] = useState('Selecione...');
     const [precoTotal, setPrecoTotal] = useState('');
 
+    const calcularTempoExecucao = () => {
+        if (chamado && chamado.dataAbertura && chamado.previsao) {
+            const dataAbertura = new Date(chamado.dataAbertura); // Certifique-se de que a data de abertura é do tipo Date
+            const previsao = new Date(chamado.previsao); // Certifique-se de que a previsão também é do tipo Date
+
+            const diffTime = previsao - dataAbertura; // Diferença em milissegundos
+
+            // Converte a diferença para dias, horas e minutos
+            const diffDias = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Diferença em dias
+            const diffHoras = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Diferença em horas
+            const diffMinutos = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60)); // Diferença em minutos
+
+            setTempoExecucao(`${diffDias}d ${diffHoras}h ${diffMinutos}m`); // Formato: 5h 30m
+        }
+    };
+
+    useEffect(() => {
+        calcularTempoExecucao();
+    }, [chamado]);
+
+    const handleChamadoChange = (e) => {
+        const chamadoId = e.target.value;
+    
+        const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId);
+        setChamado(chamadoSelecionado);
+        if (chamadoSelecionado) {
+            const listaIdServicos = chamadoSelecionado.servicos || [];
+            // Mapeia os ObjectIds dos serviços para os objetos completos usando find
+            const servicosCompleto = listaIdServicos.map((id) => servicos.find((servico) => servico._id === id));
+            setServicosChamado(servicosCompleto);
+        } else {
+            setServicosChamado([]);
+        }
+    };
+
+    const calcularTotal = () => {
+        const totalServicos = servicosChamado.reduce((acc, servico) => acc + parseFloat(servico.preco || 0), 0);
+        const desconto = parseFloat(descontoServico) || 0;
+        const totalComDesconto = totalServicos - desconto;
+        setPrecoTotal(totalComDesconto.toFixed(2));
+      };
+
+      useEffect(() => {
+        calcularTotal();
+      }, [servicosChamado, descontoServico]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const dados = {
             "chamado": chamado,
             "tecnico": tecnico,
-            "servico": tipoServico,
+            "quantidadeServico": quantidadeServico,
             "tempoExecucao": tempoExecucao,
-            "garantia": garantia,
+            "atendimento": atendimento,
+            "valorTotal": valorTotal,
             "enderecoServico": enderecoServico,
             "observacao": observacao,
             "situacao": situacaoOrcamento,
             "descontoServico": descontoServico,
-            "precoTotal": precoTotal
+            "precoTotal": precoTotal,
+            "depesa": despesaServico
         }
+        console.log("Serviços do chamado selecionado:", servicosChamado);
         fetch('http://localhost:3001/inicio/orcamentos/novo', {
             method: "POST",
             headers: {
@@ -83,46 +137,28 @@ export default function Orcamento_chamado() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Chamado</Form.Label>
                     <Col sm={10}>
-                        <Form.Control required as="select" onChange={e=> setChamado(e.target.value)} value={chamado}>
-                        {chamados_alfabetico.length > 0 ?
-                            <><option selected disabled >Selecione...</option>
-                                {chamados_alfabetico.map((chamado) => {
-                                    return (<option value={chamado._id}>{chamado.descricao}</option>)
-                                })}</> :
-                            <option selected disabled>Não há nenhum chamado cadastrado.</option>
-                        }
+                        <Form.Control required as="select" onChange={handleChamadoChange} value={chamado}>
+                            <option selected disabled>Selecione...</option>
+                            {chamados.map(chamado => (
+                                <option key={chamado._id} value={chamado._id}>{chamado.descricao}</option>
+                            ))}
                         </Form.Control>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Tipo de Serviço</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control required as="select" onChange={e=> setTipoServico(e.target.value)} value={tipoServico}>
-                            {servicos_alfabetico.length > 0 ?
-                                <><option selected disabled >Selecione...</option>
-                                    {servicos_alfabetico.map((servico) => {
-                                        return (<option value={servico._id}>{servico.nome}</option>)
-                                    })}</> :
-                                <option selected disabled>Não há nenhum serviço cadastrado.</option>
-                            }
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
-
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Tempo Execução</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
-                                               onChange={e => setTempoExecucao(e.target.value)}/></Col>
+                                               onChange={e => setTempoExecucao(e.target.value)} value={tempoExecucao}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Garantia</Form.Label>
+                    <Form.Label column sm={2}>Atendimento</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
-                                               onChange={e => setGarantia(e.target.value)}/></Col>
+                                                value={chamado.atendimento}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Endereço do Serviço</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
-                                               onChange={e => setEnderecoServico(e.target.value)}/></Col>
+                                               onChange={e => setEnderecoServico(e.target.value)} value={`${chamado.rua}, ${chamado.numero}, ${chamado.bairro}, ${chamado.cidade}`}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Descrição</Form.Label>
@@ -136,8 +172,7 @@ export default function Orcamento_chamado() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Preço Total</Form.Label>
-                    <Col sm={10}><Form.Control required  type="number"
-                                               onChange={e => setPrecoTotal(e.target.value)}/></Col>
+                    <Col sm={10}><Form.Control required type="number" value={precoTotal} disabled /></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Situação</Form.Label>
@@ -151,7 +186,24 @@ export default function Orcamento_chamado() {
                     </Form.Control>
                     </Col>
                 </Form.Group>
-
+                {/* Tabela de Serviços */}
+                {/* Tabela para exibir serviços selecionados */}
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {servicosChamado.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.nome}</td>
+                                <td>R$ {item.preco}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
 
                 <ButtonGroup>
                     <Button variant="primary" type="submit">Cadastrar</Button>
