@@ -630,6 +630,32 @@ export class CEP {
             console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
+
+    static async getDataFrom(cep){
+        try{
+            const response = await fetch(CEP.#getURI(cep));
+            if(!response.ok)
+                throw `Erro em obter o CEP. HTTP-${response.status}`;
+  
+            const data = await response.json();
+            if("erro" in data)
+                throw "CEP não encontrado";
+            
+            return data;
+        }catch(err){
+            if(err instanceof TypeError)
+                if(err.message === "Failed to fetch")
+                    throw `Verifique sua conexão com a internet`;
+                else
+                    throw err.message;
+            else
+                throw err;
+        }
+    }
+
+    static #getURI(cep){
+        return `https://viacep.com.br/ws/${cep}/json/`;
+    }
 }
 
 
