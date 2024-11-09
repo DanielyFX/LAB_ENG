@@ -2,10 +2,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import '../../css/atendentes/cadatendentes.css'
+import Alert from 'react-bootstrap/Alert';
+import '../../css/atendentes/cadatendentes.css';
 import { ButtonGroup } from 'react-bootstrap';
-import {useState} from "react";
-import {Validar} from '../validacao'
+import { useState } from "react";
+import { Validar } from '../validacao';
 
 export default function Cadastrar_atendente() {
 
@@ -25,6 +26,10 @@ export default function Cadastrar_atendente() {
     const [dataContratoError, setDataContratoError] = useState('');
     const [senhaError, setSenhaError] = useState('');
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -37,7 +42,7 @@ export default function Cadastrar_atendente() {
             && !dataContratoError
             && !senhaError;
         
-        if(tudoValido === false){
+        if(!tudoValido){
             console.error("Formulário inválido:");
             console.error(
                 `nome: ${nomeError}
@@ -71,16 +76,36 @@ export default function Cadastrar_atendente() {
             .then((resultado) => resultado.json())
             .then((response) => {
                 if(response.success) {
-                    alert("Atendente Cadastrado com Sucesso!")
+                setShowAlert(true);
+                setMsgAlert(`Atendente ${dados.nome}: Cadastrado com Sucesso!`);
+                setTypeAlert("success");
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o atendente!")
+                setShowAlert(true);
+                setMsgAlert(`CPF ${Validar.CPF.getFormated(dados.cpf)} já cadastrado!`);
+                setTypeAlert("info");
                 }
             })
+        .catch((error) => {
+            setShowAlert(true);
+            setTypeAlert("danger");
+            if(error instanceof TypeError && error.message === "Failed to fetch")
+                setMsgAlert(`Erro: Verifique sua conexão com a internet (${error.message}).`);
+            else
+                setMsgAlert(`Erro: ${error.message}`);
+        });
     }
 
     return (
         <div id="cadatendente-main">
+             <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <Form id="cadatendente-form" onSubmit={handleSubmit}>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome Completo</Form.Label>
@@ -199,7 +224,6 @@ export default function Cadastrar_atendente() {
                     <Button variant="primary" type="submit">Cadastrar</Button>
                     <Button variant="secondary" href="/inicio">Cancelar</Button>
                 </ButtonGroup>
-               
             </Form>
         </div>
     )
