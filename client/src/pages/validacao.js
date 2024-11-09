@@ -586,8 +586,8 @@ export class CEP {
             return "";
     }
 
-    static hasNextKey(telefone){
-        return this.#incompleteMask.test(telefone);
+    static hasNextKey(cep){
+        return this.#incompleteMask.test(cep);
     }
 
     static getOnlyDigits(cep){
