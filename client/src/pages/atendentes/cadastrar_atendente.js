@@ -73,19 +73,19 @@ export default function Cadastrar_atendente() {
             body: JSON.stringify(dados),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {
-                if(response.success) {
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success) {
                 setShowAlert(true);
                 setMsgAlert(`Atendente ${dados.nome}: Cadastrado com Sucesso!`);
                 setTypeAlert("success");
-                    window.location.reload()
-                } else {
+                window.location.reload()
+            } else {
                 setShowAlert(true);
                 setMsgAlert(`CPF ${Validar.CPF.getFormated(dados.cpf)} já cadastrado!`);
                 setTypeAlert("info");
-                }
-            })
+            }
+        })
         .catch((error) => {
             setShowAlert(true);
             setTypeAlert("danger");

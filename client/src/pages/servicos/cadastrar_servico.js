@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import '../../css/servicos/cadservicos.css'
 import { ButtonGroup } from "react-bootstrap";
 import {useState} from "react";
+import Alert from 'react-bootstrap/Alert';
 
 export default function Cadastrar_servico() {
 
@@ -12,6 +13,10 @@ export default function Cadastrar_servico() {
     const [tipo, setTipo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [preco, setPreco] = useState('');
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -42,47 +47,87 @@ export default function Cadastrar_servico() {
 
         .then((response) => {
             if(response.success) {
-                alert("Serviço cadastrado com sucesso!")
+                setShowAlert(true);
+                setMsgAlert(`Serviço ${dados.nome}: Cadastrado com Sucesso!`);
+                setTypeAlert("success");
                 window.location.reload()
             } else {
-                alert(`Erro ${response.message || "Erro desconhecido ao cadastrar o serviço."}`);
+                setShowAlert(true);
+                setMsgAlert(`Erro ${response.message || "Erro desconhecido ao cadastrar o serviço."}`);
+                setTypeAlert("danger");
             }
         })
 
         .catch((error) => {
+            setShowAlert(true);
+            setTypeAlert("danger");
              if (error.message.includes('400')){
-                 alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
+                setMsgAlert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
              }
              else if(error.message.includes('500')){
-                 alert("Erro: Falha no servidor. Tente novamente mais tarde.");
+                setMsgAlert("Erro: Falha no servidor. Tente novamente mais tarde.");
              }
              else{
-                 alert(`Erro: ${error.message}`);
+                setMsgAlert(`Erro: ${error.message}`);
              }
         });
     }
 
     return (
         <div id="cadservico-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <Form id="cadservico-form" onSubmit={handleSubmit}>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome do Serviço</Form.Label>
-                    <Col sm={10}><Form.Control required type="text"
-                                               onChange={(e) => setNome(e.target.value)}/></Col>
+                    <Col sm={10}>
+                        <Form.Control 
+                            required 
+                            type="text"
+                            onChange={(e) => setNome(e.target.value)}
+                        />
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Tipo Serviço</Form.Label>
-                    <Col sm={10}><Form.Control required type="text" onChange={(e) => setTipo(e.target.value)}/></Col>
+                    <Col sm={10}>
+                        <Form.Control 
+                            required 
+                            type="text" 
+                            onChange={(e) => setTipo(e.target.value)}
+                        />
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Descrição</Form.Label>
-                    <Col sm={10}><Form.Control required as="textarea" rows={3} onChange={(e) => setDescricao(e.target.value)}/></Col>
+                    <Col sm={10}>
+                        <Form.Control 
+                            required 
+                            as="textarea" 
+                            rows={3} 
+                            onChange={(e) => setDescricao(e.target.value)}
+                        />
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Preço Unitário</Form.Label>
-                    <Col sm={10}><Form.Control required type="number" onChange={(e) => setPreco(e.target.value)}/></Col>
+                    <Col sm={10}>
+                        <Form.Control 
+                            required 
+                            type="number" 
+                            min={0}
+                            step={0.01} 
+                            onChange={(e) => setPreco(e.target.value)}
+                        />
+                    </Col>
                 </Form.Group>
-                
+
                 <ButtonGroup>
                     <Button variant="primary" type="submit">Cadastrar</Button>
                     <Button variant="secondary" href="/inicio">Cancelar</Button>
