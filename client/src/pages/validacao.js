@@ -22,7 +22,7 @@ export class CadastroPessoaFisica {
             const digitoDeVerificao2 = parseInt(cpfDigitos[cpfDigitos.length-1]);
             const digitoCalculado1 = this.#calcPrimeiroDigito(cpfDigitos);
             const digitoCalculado2 = this.#calcSegundoDigito(cpfDigitos);
-
+            
             return digitoCalculado1 === digitoDeVerificao1 &&
                 digitoCalculado2 === digitoDeVerificao2;
         }
@@ -52,6 +52,11 @@ export class CadastroPessoaFisica {
 
     static getOnlyDigits(cpf){
         return cpf.replaceAll(".", "").replaceAll("-", "");
+    }
+
+    static getFormated(cpf){
+        if(/\d{11}/.test(cpf))
+            return `${cpf.substr(0,3)}.${cpf.substr(3,3)}.${cpf.substr(6,3)}-${cpf.substr(9,2)}`;
     }
 
     static handleKeyDown(event){
@@ -116,7 +121,8 @@ export class CadastroPessoaFisica {
             this.#pesos[7] /*4*/ *parseInt(cpf[7]) +
             this.#pesos[8] /*3*/ *parseInt(cpf[8]) +
             this.#pesos[9] /*2*/ *parseInt(cpf[9]);
-        const resto = soma%this.#numeroPrimo;
+        
+            const resto = soma%this.#numeroPrimo;
         return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo - resto;
     }
 }
@@ -175,6 +181,11 @@ export class CadastroNacionalPessoaJuridica {
 
     static getOnlyDigits(cnpj){
         return cnpj.replaceAll(".", "").replaceAll("-", "").replaceAll("/", "");
+    }
+
+    static getFormated(cnpj){
+        if(/\d{14}/.test(cnpj))
+            return `${cnpj.substr(0,2)}.${cnpj.substr(2,3)}.${cnpj.substr(5,3)}/${cnpj.substr(8,4)}-${cnpj.substr(12,2)}`;
     }
 
     static handleKeyDown(event){
