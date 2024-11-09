@@ -572,11 +572,11 @@ export class CEP {
     static get minLength () { return 8; }
 
     static isFormatValid(telefone){
-        return this.#strictMask.test(telefone);
+        return CEP.#strictMask.test(telefone);
     }
 
     static isValidKey(key){
-        return this.#validKeys.test(key);
+        return CEP.#validKeys.test(key);
     }
 
     static getNextFormatKey(cep){
@@ -587,7 +587,7 @@ export class CEP {
     }
 
     static hasNextKey(cep){
-        return this.#incompleteMask.test(cep);
+        return CEP.#incompleteMask.test(cep);
     }
 
     static getOnlyDigits(cep){
@@ -603,15 +603,15 @@ export class CEP {
         try{
             if(Validar.isCaracterDeControle(event.key)) return;
     
-            if(!this.isValidKey(event.key)){
+            if(!CEP.isValidKey(event.key)){
                 event.preventDefault();
-            }else if(!this.hasNextKey(event.target.value)){
+            }else if(!CEP.hasNextKey(event.target.value)){
                 event.preventDefault();
             }else{
-                event.target.value += this.getNextFormatKey(event.target.value);
+                event.target.value += CEP.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${CEP.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -620,14 +620,14 @@ export class CEP {
             if(!Validar.isNotEmptyStr(cep)){
                 errorMsgSetter("Obrigatório!");
             }
-            else if(this.hasNextKey(cep)){
+            else if(CEP.hasNextKey(cep)){
                 errorMsgSetter("Incompleto!");
             }else{
                 errorMsgSetter("");
-                valueSetter(this.getOnlyDigits(cep));
+                valueSetter(CEP.getOnlyDigits(cep));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${CEP.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 
