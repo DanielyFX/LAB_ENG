@@ -17,8 +17,9 @@ export class CadastroPessoaFisica {
     static isNumericValid(cpf){
         if(this.isFormatValid(cpf)){
             const cpfDigitos = this.getOnlyDigits(cpf);
-            const digitoDeVerificao1 = parseInt(cpfDigitos[cpfDigitos.length-1]);
-            const digitoDeVerificao2 = parseInt(cpfDigitos[cpfDigitos.length-2]);
+            
+            const digitoDeVerificao1 = parseInt(cpfDigitos[cpfDigitos.length-2]);
+            const digitoDeVerificao2 = parseInt(cpfDigitos[cpfDigitos.length-1]);
             const digitoCalculado1 = this.#calcPrimeiroDigito(cpfDigitos);
             const digitoCalculado2 = this.#calcSegundoDigito(cpfDigitos);
 
@@ -100,7 +101,7 @@ export class CadastroPessoaFisica {
             this.#pesos[9] /*2*/ *parseInt(cpf[8]);
        
         const resto = soma%this.#numeroPrimo;
-        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo-soma;
+        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo-resto;
     }
 
     static #calcSegundoDigito(cpf){
@@ -116,7 +117,7 @@ export class CadastroPessoaFisica {
             this.#pesos[8] /*3*/ *parseInt(cpf[8]) +
             this.#pesos[9] /*2*/ *parseInt(cpf[9]);
         const resto = soma%this.#numeroPrimo;
-        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo - soma;
+        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo - resto;
     }
 }
 
@@ -138,8 +139,8 @@ export class CadastroNacionalPessoaJuridica {
     static isNumericValid(cnpj){
         if(this.isFormatValid(cnpj)){
             const cnpjDigitos = this.getOnlyDigits(cnpj);
-            const digitoDeVerificao1 = parseInt(cnpjDigitos[cnpjDigitos.length-1]);
-            const digitoDeVerificao2 = parseInt(cnpjDigitos[cnpjDigitos.length-2]);
+            const digitoDeVerificao1 = parseInt(cnpjDigitos[cnpjDigitos.length-2]);
+            const digitoDeVerificao2 = parseInt(cnpjDigitos[cnpjDigitos.length-1]);
             const digitoCalculado1 = this.#calcPrimeiroDigito(cnpjDigitos);
             const digitoCalculado2 = this.#calcSegundoDigito(cnpjDigitos);
 
@@ -226,7 +227,7 @@ export class CadastroNacionalPessoaJuridica {
             this.#pesos[12]/*2*/*parseInt(cnpj[11]);
         
         const resto = soma%this.#numeroPrimo;
-        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo-soma;
+        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo-resto;
     }
 
     static #calcSegundoDigito(cnpj){
@@ -246,7 +247,7 @@ export class CadastroNacionalPessoaJuridica {
             this.#pesos[12]/*2*/ *parseInt(cnpj[12]);
 
         const resto = soma%this.#numeroPrimo;
-        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo - soma;
+        return (resto === 0 || resto === 1)? 0 : this.#numeroPrimo - resto;
     }
 }
 
