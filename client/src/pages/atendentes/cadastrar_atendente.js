@@ -98,7 +98,7 @@ export default function Cadastrar_atendente() {
 
     return (
         <div id="cadatendente-main">
-             <Alert 
+            <Alert 
                 variant={typeAlert} 
                 show={showAlert} 
                 onClose={() => setShowAlert(false)} 
