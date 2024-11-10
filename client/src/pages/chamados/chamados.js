@@ -10,6 +10,7 @@ import searchIcon from "../../css/Icons";
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
     const {chamado, clientes, atendentes, tecnicos} = props
+    console.log("Chamado único", chamado);
 
     const handleExcluir = (chamado_id) => {
         fetch('http://localhost:3001/inicio/chamados/deletar', {
@@ -61,6 +62,7 @@ export default function Consultar_Chamados(props) {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
+    
 
     // console.log("chamados", chamados)
     // console.log("clientes", clientes)
@@ -162,7 +164,7 @@ export default function Consultar_Chamados(props) {
                                 return true;
                         }
                     }).map((chamado) => {
-                        // console.log(chamado)
+                        //console.log(chamado)
                         return (
                             <ChamadoBox chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos}/>
                         );

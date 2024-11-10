@@ -25,12 +25,26 @@ class OrcamentoController {
     }
 
     async getAll(request: Request, response: Response) {
-        let orcamentos = await OrcamentoModel.find({})
-            .populate('tecnico')
-            .populate({path: 'chamado', populate: [{path: 'cliente'},{path: 'servicos'}
-            ]});
-            
-        return response.status(200).json(orcamentos);
+        try {
+            let orcamentos = await OrcamentoModel.find({})
+                .populate('tecnico')
+                .populate({
+                    path: 'chamado',
+                    populate: [
+                        { path: 'cliente' },  // Popula o cliente dentro de chamado
+                        { path: 'servicos' }  // Popula a lista de serviços dentro de chamado
+                    ]
+                });
+    
+            console.log("Orçamentos:", orcamentos);
+            if (orcamentos.length === 0) {
+                console.warn("Nenhum orçamento encontrado.");
+            }
+            return response.status(200).json(orcamentos);
+        } catch (error) {
+            console.error("Erro ao buscar orçamentos:", error);
+            return response.status(500).json({ success: false, message: "Erro ao buscar orçamentos" });
+        }
     }
 
     async edit(request: Request, response: Response) {

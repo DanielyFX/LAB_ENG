@@ -12,9 +12,7 @@ import enums from "../../utils/enums.json";
 export default function Orcamento_chamado() {
 
     const { tecnicos, chamados, servicos } = useLoaderData();
-    console.log("tecnicos", tecnicos)
-    console.log("chamados", chamados)
-    console.log("servicos", servicos)
+
 
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const tecnicos_alfabetico = tecnicos.sort(sort_str)

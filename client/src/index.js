@@ -330,13 +330,13 @@ const router = createBrowserRouter([
   {
     path: "/inicio/orcamento/consultar",
     loader: async () => {
-      const [tecnicos, chamados, servicos, orcamentos] = await Promise.all([
+      const [orcamentos, tecnicos, chamados, servicos] = await Promise.all([
+        fetch('http://localhost:3001/inicio/orcamentos/consultar').then(res => res.json()),
           fetch('http://localhost:3001/inicio/tecnicos/consultar').then(res => res.json()),
           fetch('http://localhost:3001/inicio/chamados/consultar').then(res => res.json()),
           fetch('http://localhost:3001/inicio/servicos/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/inicio/orcamentos/consultar').then(res => res.json())
       ])
-      return { tecnicos, chamados, servicos, orcamentos }
+      return { orcamentos, tecnicos, chamados, servicos}
     },
     element: (
       <PrivateRoute>

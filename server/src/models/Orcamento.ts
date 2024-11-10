@@ -1,11 +1,11 @@
-import mongoose, {Document, Schema, Types} from 'mongoose';
+import mongoose, { Schema, model, Types} from 'mongoose';
 
 interface Despesa{
     tipo: string,
     valor: number
 }
 
-interface Orcamento extends Document {
+interface Orcamento{
     chamado: Types.ObjectId;
     tecnico: Types.ObjectId;
     tempoExecucao: string;
@@ -65,5 +65,5 @@ const OrcamentoSchema = new Schema({
     }
 });
 
-const OrcamentoModel = mongoose.model<Orcamento>('Orcamento', OrcamentoSchema);
+const OrcamentoModel = model<Orcamento>('Orcamento', OrcamentoSchema);
 export { OrcamentoModel, Orcamento };
