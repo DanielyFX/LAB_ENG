@@ -139,9 +139,10 @@ export default function Orcamento_chamado() {
             "situacao": situacaoOrcamento,
             "descontoServico": descontoServico,
             "precoTotal": precoTotal,
-            "depesas": despesasSelecionadas
+            "despesas": despesasSelecionadas
         }
         console.log("Endereço do serviço", enderecoServico);
+        console.log("Despesas", despesasSelecionadas);
 
         fetch('http://localhost:3001/inicio/orcamentos/novo', {
             method: "POST",
@@ -224,7 +225,7 @@ export default function Orcamento_chamado() {
                                                onChange={e => setEnderecoServico(e.target.value)} value={enderecoServico}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Descrição</Form.Label>
+                    <Form.Label column sm={2}>Observação</Form.Label>
                     <Col sm={10}><Form.Control  as="textarea" rows={3}
                                                onChange={e => setObservacao(e.target.value)}/></Col>
                 </Form.Group>

@@ -26,8 +26,10 @@ class OrcamentoController {
 
     async getAll(request: Request, response: Response) {
         let orcamentos = await OrcamentoModel.find({})
-            .populate('tecnico').populate({path: 'chamado', populate: {path: 'cliente'}}).populate('servico');
-
+            .populate('tecnico')
+            .populate({path: 'chamado', populate: [{path: 'cliente'},{path: 'servicos'}
+            ]});
+            
         return response.status(200).json(orcamentos);
     }
 

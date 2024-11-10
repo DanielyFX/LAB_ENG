@@ -32,9 +32,9 @@ function OrcamentoBox(props) {
             <p key={`${orcamento._id}`}>ID: {orcamento._id}</p><hr/>
             <p key={`${orcamento._id}_chamado`}>CHAMADO: {orcamento.chamado.descricao}</p><hr/>
             <p key={`${orcamento._id}_tecnicoo`}>TECNICO: {orcamento.tecnico.nome}</p><hr/>
-            <p key={`${orcamento._id}_servico`}>SERVICO: {orcamento.servico.nome}</p><hr/>
+            <p key={`${orcamento._id}_servicos`}>SERVICOS: {orcamento.chamado.servicos}</p><hr/>
             <p key={`${orcamento._id}_tempoExecucao`}>TEMPO EXECUÇÃO: {orcamento.tempoExecucao}</p><hr/>
-            <p key={`${orcamento._id}_garantia`}>GARANTIA: {orcamento.garantia}</p><hr/>
+            <p key={`${orcamento._id}_garantia`}>ATENDIMENDIMENTO: {orcamento.atendimento}</p><hr/>
             <p key={`${orcamento._id}_enderecoServico`}>ENDEREÇO: {orcamento.enderecoServico}</p><hr/>
             <p key={`${orcamento._id}_observacao`}>OBSERVAÇÃO: {orcamento.observacao}</p><hr/>
             <p key={`${orcamento._id}_situacaoOrcamento`}>SITUAÇÃO: {orcamento.situacao}</p><hr/>
@@ -76,7 +76,7 @@ export default function Consultar_orcamento() {
                 <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("chamado")}>Chamado</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("tecnico")}>Técnico</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("servico")}>Serviço</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("servicos")}>Serviços</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("tempoExecucao")}>Tempo de execução</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("garantia")}>Garantia</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("enderecoServico")}>Endereço</Dropdown.Item>
@@ -125,8 +125,8 @@ export default function Consultar_orcamento() {
                                 return orcamento.chamado.descricao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "tecnico":
                                 return orcamento.tecnico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
-                            case "servico":
-                                return orcamento.servico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                            case "servicos":
+                                return orcamento.chamado.servicos.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "tempoExecucao":
                                 return orcamento.tempoExecucao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "garantia":
@@ -149,7 +149,7 @@ export default function Consultar_orcamento() {
                             case "chamado":
                                 return sort_string(a[parametroOrd].descricao, b[parametroOrd].descricao);
                             case "tecnico":
-                            case "servico":
+                            case "servicos":
                                 return sort_string(a[parametroOrd].nome, b[parametroOrd].nome);
                             case "_id":
                             case "tempoExecucao":

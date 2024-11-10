@@ -1,16 +1,21 @@
 import mongoose, {Document, Schema, Types} from 'mongoose';
 
+interface Despesa{
+    tipo: string,
+    valor: number
+}
+
 interface Orcamento extends Document {
     chamado: Types.ObjectId;
     tecnico: Types.ObjectId;
-    tempoExecucao: String;
+    tempoExecucao: string;
     enderecoServico: string;
     observacao: string;
     situacao: string;
     descontoServico: string;
     dataCriacao: Date;
     precoTotal: number;
-    despesas: Array<Object>;
+    despesas: Despesa[];
     
 }
 
@@ -49,8 +54,13 @@ const OrcamentoSchema = new Schema({
         type: Number,
         required: true,
     },
-    depesas: {
-        type: Array,
+    despesas: {
+        type: [
+            {
+            tipo: {type: String, required: true},
+            valor: {type: Number, required: true}
+            }
+        ],
         required: false
     }
 });
