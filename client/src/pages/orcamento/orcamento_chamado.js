@@ -7,7 +7,7 @@ import { ButtonGroup } from "react-bootstrap";
 import {useLoaderData} from "react-router-dom";
 import {useState, useEffect} from "react";
 import Table from "react-bootstrap/Table";
-import enums from "../../utils/enums.json"
+import enums from "../../utils/enums.json";
 
 export default function Orcamento_chamado() {
 
@@ -26,17 +26,17 @@ export default function Orcamento_chamado() {
     const [servicosChamado, setServicosChamado] = useState([]);
     const [tempoExecucao, setTempoExecucao] = useState('');
     const [atendimento, setAtendimento] = useState('');
-    const [valorTotal, setValorTotal] = useState('');
     const [enderecoServico, setEnderecoServico] = useState('');
     const [observacao, setObservacao] = useState('');
     const [descontoServico, setDescontoServico] = useState('');
-    const [situacaoOrcamento, setSituacaoOrcamento] = useState('Selecione...');
+    const [situacaoOrcamento, setSituacaoOrcamento] = useState(enums.SituacaoEnum.realizado);
     const [precoTotal, setPrecoTotal] = useState('');
 
     const [tipoDespesa, setTipoDespesa] = useState('');
     const [valorDespesa, setValorDespesa] = useState('');
     const [despesasSelecionadas, setDespesasSelecionadas] = useState([]);
-
+    
+    console.log("Despesas selecionadas", despesasSelecionadas)
     const calcularTempoExecucao = () => {
         if (chamado && chamado.dataAbertura && chamado.previsao) {
             const dataAbertura = new Date(chamado.dataAbertura); // Certifique-se de que a data de abertura é do tipo Date
@@ -53,8 +53,17 @@ export default function Orcamento_chamado() {
         }
     };
 
+    const handleDescontoChange = (e) => {
+        const valor = parseFloat(e.target.value);
+        if (valor >= 0 || e.target.value === "") { // Permite apenas valores não-negativos ou vazios
+            setDescontoServico(e.target.value);
+        } else {
+            alert("O valor do desconto não pode ser negativo!");
+        }
+    };
+
     const handleAdicionarDespesa = () => {
-        if (tipoDespesa && valorDespesa) {
+        if (tipoDespesa && valorDespesa && parseFloat(valorDespesa) > 0) {
             const novaDespesa = {
                 tipo: enums.DespesaEnum[tipoDespesa], // Mapeia a chave do enum para o valor exibível
                 valor: parseFloat(valorDespesa),
@@ -62,6 +71,12 @@ export default function Orcamento_chamado() {
             setDespesasSelecionadas([...despesasSelecionadas, novaDespesa]);
             setTipoDespesa('');
             setValorDespesa('');
+        } else if (tipoDespesa && !valorDespesa) {
+            alert("Insira um valor para a despesa");
+        } else if(!tipoDespesa && valorDespesa){
+            alert("Insira o tipo da despesa");
+        }else if(tipoDespesa && valorDespesa <= 0){
+            alert("Insira um valor de despesa maior do que zero");
         }
     };
 
@@ -71,16 +86,17 @@ export default function Orcamento_chamado() {
 
     const handleChamadoChange = (e) => {
         const chamadoId = e.target.value;
-    
         const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId);
         setChamado(chamadoSelecionado);
         if (chamadoSelecionado) {
+            setEnderecoServico(`${chamadoSelecionado.rua}, ${chamadoSelecionado.numero}, ${chamadoSelecionado.bairro}, ${chamadoSelecionado.cidade}`)
             const listaIdServicos = chamadoSelecionado.servicos || [];
             // Mapeia os ObjectIds dos serviços para os objetos completos usando find
             const servicosCompleto = listaIdServicos.map((id) => servicos.find((servico) => servico._id === id));
             setServicosChamado(servicosCompleto);
         } else {
             setServicosChamado([]);
+            setEnderecoServico('');
         }
     };
 
@@ -93,9 +109,9 @@ export default function Orcamento_chamado() {
     const calcularTotal = () => {
         // 1. Calcula o total dos serviços
         const totalServicos = servicosChamado.reduce((acc, servico) => acc + parseFloat(servico.preco || 0), 0);
-        
+
         // 2. Aplica o desconto, caso exista
-        const desconto = parseFloat(descontoServico) || 0;
+        const desconto = parseFloat(descontoServico) >= 0 ? parseFloat(descontoServico) : 0;
         const totalComDesconto = totalServicos - desconto;
     
         // 3. Calcula o total das despesas adicionais
@@ -118,8 +134,6 @@ export default function Orcamento_chamado() {
             "chamado": chamado,
             "tecnico": tecnico,
             "tempoExecucao": tempoExecucao,
-            "atendimento": atendimento,
-            "valorTotal": valorTotal,
             "enderecoServico": enderecoServico,
             "observacao": observacao,
             "situacao": situacaoOrcamento,
@@ -127,7 +141,8 @@ export default function Orcamento_chamado() {
             "precoTotal": precoTotal,
             "depesas": despesasSelecionadas
         }
-        console.log("Serviços do chamado selecionado:", servicosChamado);
+        console.log("Endereço do serviço", enderecoServico);
+
         fetch('http://localhost:3001/inicio/orcamentos/novo', {
             method: "POST",
             headers: {
@@ -201,12 +216,12 @@ export default function Orcamento_chamado() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Atendimento</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
-                                                value={chamado.atendimento}/></Col>
+                                                value={chamado.atendimento} disabled/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Endereço do Serviço</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
-                                               onChange={e => setEnderecoServico(e.target.value)} value={`${chamado.rua}, ${chamado.numero}, ${chamado.bairro}, ${chamado.cidade}`}/></Col>
+                                               onChange={e => setEnderecoServico(e.target.value)} value={enderecoServico}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Descrição</Form.Label>
@@ -261,24 +276,12 @@ export default function Orcamento_chamado() {
         </Table>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Desconto</Form.Label>
-                    <Col sm={10}><Form.Control required  type="text"
-                                               onChange={e => setDescontoServico(e.target.value)}/></Col>
+                    <Col sm={10}><Form.Control required  type="number" min="0" placeholder="Valor do desconto"
+                                               value={descontoServico} onChange={handleDescontoChange}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Preço Total</Form.Label>
                     <Col sm={10}><Form.Control required type="number" value={precoTotal} disabled /></Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Situação</Form.Label>
-                    <Col sm={10}>
-                    <Form.Control as="select" onChange={e => setSituacaoOrcamento(e.target.value)} value={situacaoOrcamento}>
-                        <option selected disabled >Selecione...</option>
-                        <option value="Realizado">Realizado</option>
-                        <option value="Aprovado">Aprovado</option>
-                        <option value="Reprovado">Reprovado</option>
-                        <option value="Cancelado">Cancelado</option>
-                    </Form.Control>
-                    </Col>
                 </Form.Group>
                 {/* Tabela para exibir serviços selecionados */}
                 <Table striped bordered hover>

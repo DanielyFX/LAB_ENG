@@ -1,17 +1,17 @@
 import mongoose, {Document, Schema, Types} from 'mongoose';
 
 interface Orcamento extends Document {
-    tecnico: Types.ObjectId;
     chamado: Types.ObjectId;
-    servico: Types.ObjectId;
-    situacao: string;
-    tempoExecucao: string;
-    garantia: string;
+    tecnico: Types.ObjectId;
+    tempoExecucao: String;
     enderecoServico: string;
     observacao: string;
-    dataCriacao: Date;
+    situacao: string;
     descontoServico: string;
+    dataCriacao: Date;
     precoTotal: number;
+    despesas: Array<Object>;
+    
 }
 
 const OrcamentoSchema = new Schema({
@@ -25,22 +25,9 @@ const OrcamentoSchema = new Schema({
         ref: 'Chamado',
         required: true
     },
-    servico: {
-        type: Types.ObjectId,
-        ref: 'Servico',
-        required: true
-    },
-    situacao: {
-        type: String,
-        required: true,
-    },
     tempoExecucao: {
         type: String,
-        required: true,
-    },
-    garantia: {
-        type: String,
-        required: true,
+        required: true
     },
     enderecoServico: {
         type: String,
@@ -48,19 +35,23 @@ const OrcamentoSchema = new Schema({
     },
     observacao: {
         type: String,
-        required: false,
+        required: true,
+    },
+    situacao: {
+        type: String,
+        required: true,
     },
     descontoServico: {
-        type: String,
+        type: Number,
         required: false,
     },
     precoTotal: {
         type: Number,
         required: true,
     },
-    dataCriacao: {
-        type: Date,
-        default: Date.now()
+    depesas: {
+        type: Array,
+        required: false
     }
 });
 

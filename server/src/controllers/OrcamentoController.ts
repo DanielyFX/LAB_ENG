@@ -4,16 +4,16 @@ import {OrcamentoModel, Orcamento} from "../models/Orcamento";
 class OrcamentoController {
     async create(request: Request, response: Response) {
         const new_orcamento = new OrcamentoModel();
-        new_orcamento.tecnico = request.body.tecnico;
         new_orcamento.chamado = request.body.chamado;
-        new_orcamento.servico = request.body.servico;
+        new_orcamento.tecnico = request.body.tecnico;
         new_orcamento.tempoExecucao = request.body.tempoExecucao;
-        new_orcamento.garantia = request.body.garantia;
-        new_orcamento.situacao = request.body.situacao;
         new_orcamento.enderecoServico = request.body.enderecoServico;
         new_orcamento.observacao = request.body.observacao;
+        new_orcamento.situacao = request.body.situacao;
         new_orcamento.descontoServico = request.body.descontoServico;
+        new_orcamento.dataCriacao = request.body.dataCriacao;
         new_orcamento.precoTotal = request.body.precoTotal;
+        new_orcamento.despesas = request.body.despesas;
 
         try {
             new_orcamento.save().then();
