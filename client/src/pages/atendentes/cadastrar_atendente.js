@@ -79,7 +79,9 @@ export default function Cadastrar_atendente() {
                 setShowAlert(true);
                 setMsgAlert(`Atendente ${dados.nome}: Cadastrado com Sucesso!`);
                 setTypeAlert("success");
-                window.location.reload()
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
             } else {
                 setShowAlert(true);
                 setMsgAlert(`CPF ${Validar.CPF.getFormated(dados.cpf)} já cadastrado!`);
