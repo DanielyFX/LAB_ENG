@@ -16,31 +16,49 @@ export default function OrcamentoModal(props) {
     const [chamado, setChamado] = useState(orcamento.chamado._id);
     const [tecnico, setTecnico] = useState(orcamento.tecnico._id);
     const [tempoExecucao, setTempoExecucao] = useState(orcamento.tempoExecucao);
-    const [garantia, setGarantia] = useState(orcamento.garantia);
+    const [atendimento, setAtendimento] = useState(orcamento.chamado.atendimento);
     const [enderecoServico, setEnderecoServico] = useState(orcamento.enderecoServico);
     const [observacao, setObservacao] = useState(orcamento.observacao);
     const [descontoServico, setDescontoServico] = useState(orcamento.descontoServico);
     const [situacaoOrcamento, setSituacaoOrcamento] = useState(orcamento.situacao);
     const [precoTotal, setPrecoTotal] = useState(orcamento.precoTotal);
+    const [despesas, setDespesas] = useState(orcamento.despesas);
+    const [errors, setErrors] = useState({});
 
-    const dados_novos = {
-        "_id": orcamento._id,
-        "chamado": chamado,
-        "tecnico": tecnico,
-        "tempoExecucao": tempoExecucao,
-        "garantia": garantia,
-        "enderecoServico": enderecoServico,
-        "observacao": observacao,
-        "situacao": situacaoOrcamento,
-        "descontoServico": descontoServico,
-        "precoTotal": precoTotal
-    }
+    const validateFields = () => {
+        const newErrors = {};
 
+        // Validação para evitar valores negativos
+        if (descontoServico < 0) newErrors.descontoServico = "Desconto não pode ser negativo.";
+        if (precoTotal < 0) newErrors.precoTotal = "Preço total não pode ser negativo.";
+        if (despesas < 0) newErrors.despesas = "Despesas não podem ser negativas.";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+    
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        let alterados = [];
+        
+        if (!validateFields()){
+            return;
+        }
 
+        const dados_novos = {
+            "_id": orcamento._id,
+            "chamado": chamado,
+            "tecnico": tecnico,
+            "tempoExecucao": tempoExecucao,
+            "enderecoServico": enderecoServico,
+            "observacao": observacao,
+            "descontoServico": descontoServico,
+            "precoTotal": precoTotal,
+            "despesas": despesas,
+            "situacao": situacaoOrcamento,
+        };
+    
+        let alterados = [];
         for(let propriedade in dados_novos) {
             if (propriedade === 'chamado') {
                 if (dados_novos.chamado !== orcamento.chamado._id) alterados.push(propriedade)
@@ -112,13 +130,17 @@ export default function OrcamentoModal(props) {
                             <Form.Label column sm={2}>Tempo Execução</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
                                                        onChange={e => setTempoExecucao(e.target.value)}
-                                                       defaultValue={tempoExecucao}/></Col>
+                                                       defaultValue={tempoExecucao}
+                                                       disabled
+                                                       />
+                                                    </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Garantia</Form.Label>
+                            <Form.Label column sm={2}>Atendimento</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
-                                                       onChange={e => setGarantia(e.target.value)}
-                                                       defaultValue={garantia}/></Col>
+                                                       onChange={e => setAtendimento(e.target.value)}
+                                                       defaultValue={atendimento}
+                                                       disabled/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Endereço</Form.Label>
@@ -136,25 +158,26 @@ export default function OrcamentoModal(props) {
                             <Form.Label column sm={2}>Desconto</Form.Label>
                             <Col sm={10}><Form.Control required  type="text"
                                                        onChange={e => setDescontoServico(e.target.value)}
-                                                       defaultValue={descontoServico}/></Col>
+                                                       defaultValue={descontoServico}
+                                                       isInvalid={!!errors.descontoServico}
+                                                    />
+                                                    <Form.Control.Feedback type="invalid">
+                                                        {errors.descontoServico}
+                                                    </Form.Control.Feedback>
+                                                </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Preço Total</Form.Label>
                             <Col sm={10}><Form.Control required  type="number"
                                                        onChange={e => setPrecoTotal(e.target.value)}
-                                                       defaultValue={precoTotal}/></Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Situação</Form.Label>
-                            <Col sm={10}>
-                                <Form.Control as="select" onChange={e => setSituacaoOrcamento(e.target.value)} value={situacaoOrcamento} >
-                                    <option disabled value="Selecione...">Selecione...</option>
-                                    <option value="Realizado">Realizado</option>
-                                    <option value="Aprovado">Aprovado</option>
-                                    <option value="Reprovado">Reprovado</option>
-                                    <option value="Cancelado">Cancelado</option>
-                                </Form.Control>
-                            </Col>
+                                                       defaultValue={precoTotal}
+                                                       disabled
+                                                       isInvalid={!!errors.precoTotal}
+                                                       />
+                                                       <Form.Control.Feedback type="invalid">
+                                                            {errors.precoTotal}
+                                                       </Form.Control.Feedback>
+                                                    </Col>
                         </Form.Group>
 
                     </Modal.Body>

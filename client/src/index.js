@@ -284,14 +284,15 @@ const router = createBrowserRouter([
   {
     path: "/inicio/chamados/consultar",
     loader: async () => {
-        const [chamados, clientes, atendentes, servicos, tecnicos] = await Promise.all([
+        const [chamados, clientes, atendentes, servicos, tecnicos, orcamentos] = await Promise.all([
           fetch('http://localhost:3001/inicio/chamados/consultar').then(res => res.json()),
           fetch('http://localhost:3001/inicio/clientes/consultar').then(res => res.json()),
           fetch('http://localhost:3001/inicio/atendentes/consultar').then(res => res.json()),
           fetch('http://localhost:3001/inicio/servicos/consultar').then(res => res.json()),
-          fetch('http://localhost:3001/inicio/tecnicos/consultar').then(res => res.json())  
+          fetch('http://localhost:3001/inicio/tecnicos/consultar').then(res => res.json()),
+          fetch('http://localhost:3001/inicio/orcamentos/consultar').then(res => res.json())    
         ])
-        return { chamados, clientes, atendentes, servicos, tecnicos}
+        return { chamados, clientes, atendentes, servicos, tecnicos, orcamentos}
     },
     element: (
       <PrivateRoute>

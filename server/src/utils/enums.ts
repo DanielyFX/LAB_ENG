@@ -38,6 +38,7 @@ export enum DespesaEnum{
 }
 
 export enum SituacaoEnum{
+    nao_realizado = "NÃO REALIZADO",
     realizado = "REALIZADO",
     aprovado = "APROVADO",
     reprovado = "REPROVADO",

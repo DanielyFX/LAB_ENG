@@ -40,7 +40,7 @@ const OrcamentoSchema = new Schema({
     },
     observacao: {
         type: String,
-        required: true,
+        required: false,
     },
     situacao: {
         type: String,

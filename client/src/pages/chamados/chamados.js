@@ -6,11 +6,13 @@ import {useState} from "react";
 import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ChamadoModal from "../../components/ChamadoModal";
 import searchIcon from "../../css/Icons";
+import enums from "../../utils/enums.json"
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
-    const {chamado, clientes, atendentes, tecnicos} = props
+    const {chamado, clientes, atendentes, tecnicos, orcamento} = props
     console.log("Chamado único", chamado);
+    console.log("Orçamento", orcamento);
 
     const handleExcluir = (chamado_id) => {
         fetch('http://localhost:3001/inicio/chamados/deletar', {
@@ -32,12 +34,29 @@ function ChamadoBox(props) {
         <div className="chamado">
             <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
             <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente.nome}</p><hr/>
-            <p key={`${chamado._id}_cliente`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
+            <p key={`${chamado._id}_orcamento`}>ORÇAMENTO: {orcamento ? `${orcamento.situacao}` : enums.SituacaoEnum.nao_realizado}</p><hr/>
+            <p key={`${chamado._id}_documento`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
             <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
             <p key={`${chamado._id}_status`}>STATUS CHAMADO: {chamado.status}</p><hr/>
-            <p key={`${chamado._id}_previsaoAtendimento`}>DATA PREVISTA: {chamado.previsao}</p><hr/>
-            <p key={`${chamado._id}_dataCriacao`}>DATA CRIAÇÃO: {chamado.dataAbertura}</p><hr/>
+            <p key={`${chamado._id}_previsaoAtendimento`}>
+                DATA PREVISTA: {new Date(chamado.previsao).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}
+            </p><hr/>
+            <p key={`${chamado._id}_dataCriacao`}>
+                DATA CRIAÇÃO: {new Date(chamado.dataAbertura).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}
+            </p><hr/>
             <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
             <p key={`${chamado._id}_tecnico`}>
             {chamado.tecnico && chamado.tecnico.nome ? `TECNICO: ${chamado.tecnico.nome}` : "TECNICO: Não atribuído"}
@@ -58,7 +77,7 @@ function ChamadoBox(props) {
 export default function Consultar_Chamados(props) {
 
 
-    const {chamados, atendentes, clientes, tecnicos} = useLoaderData();
+    const {chamados, atendentes, clientes, tecnicos, orcamentos} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
@@ -67,6 +86,7 @@ export default function Consultar_Chamados(props) {
     // console.log("chamados", chamados)
     // console.log("clientes", clientes)
     // console.log("atendentes", atendentes)
+    console.log("Orcamentos", orcamentos);
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -89,11 +109,17 @@ export default function Consultar_Chamados(props) {
                 <Dropdown.Item as="button" onClick={() => funcao("tecnico")}>Tecnico</Dropdown.Item>
             </Dropdown.Menu>
         )
-    }
+    };
+
+    // Função auxiliar para encontrar o orçamento relacionado ao chamado
+    const getOrcamentoRelacionado = (chamado) => {
+        return orcamentos?.find(orcamento => orcamento.chamado._id === chamado._id) || null;
+    };
+
 
     const sort_string = (a, b) => {
         return a > b ? a === b ? 1 : 0 : -1;
-    }
+    };
 
     return (
         <div className="body-main">
@@ -129,7 +155,8 @@ export default function Consultar_Chamados(props) {
                             case "prioridade":
                                 return chamado.prioridade.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "orcamento":
-                                return chamado.orcamento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                                const orcamentoRelacionado = getOrcamentoRelacionado(chamado);
+                                return orcamentoRelacionado ? orcamentoRelacionado.status.toLowerCase().includes(pesquisa.toLowerCase()) : enums.SituacaoEnum.nao_realizado;   
                             case "previsaoAtendimento":
                                 return chamado.previsaoAtendimento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "atendente":
@@ -165,8 +192,16 @@ export default function Consultar_Chamados(props) {
                         }
                     }).map((chamado) => {
                         //console.log(chamado)
+                        const orcamentoRelacionado = getOrcamentoRelacionado(chamado);
+                        console.log("Chamado", chamado);
+                        console.log("Orçamento relacionado", orcamentoRelacionado);
                         return (
-                            <ChamadoBox chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos}/>
+                            <ChamadoBox 
+                            chamado={chamado} 
+                            clientes={clientes} 
+                            atendentes={atendentes} 
+                            tecnicos={tecnicos} 
+                            orcamento={orcamentoRelacionado}/>
                         );
                     })
                 }
