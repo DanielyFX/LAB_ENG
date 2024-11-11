@@ -15,3 +15,8 @@
     /*background-color: lightgray;*/
     border-radius: 15px;
 }
+
+#cpf, #telFixo, #telCel {
+    max-width: 170px;
+    min-width: 160px;
+}
