@@ -55,7 +55,7 @@ export default function Cadastrar_cliente() {
         
         }catch(err){
             setShowAlert(true);
-            setMsgAlert(err);
+            setMsgAlert(err.message);
             setTypeAlert("danger");
         }
     };
@@ -93,7 +93,9 @@ export default function Cadastrar_cliente() {
                 setShowAlert(true);
                 setMsgAlert(`Cliente ${dados.nome} Cadastrado com sucesso!`);
                 setTypeAlert("success");
-                window.location.reload()
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
                 setShowAlert(true);
                 setTypeAlert("warning");
