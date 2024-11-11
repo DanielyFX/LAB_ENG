@@ -13,7 +13,6 @@ export default function Orcamento_chamado() {
 
     const { tecnicos, chamados, servicos } = useLoaderData();
 
-
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
     const servicos_alfabetico = servicos.sort(sort_str)
@@ -21,6 +20,8 @@ export default function Orcamento_chamado() {
 
     const [chamado, setChamado] = useState('Selecione...');
     const [tecnico, setTecnico] = useState('Selecione...');
+    const [erroTecnico, setErroTecnico] = useState(false);
+
     const [servicosChamado, setServicosChamado] = useState([]);
     const [tempoExecucao, setTempoExecucao] = useState('');
     const [atendimento, setAtendimento] = useState('');
@@ -86,11 +87,21 @@ export default function Orcamento_chamado() {
         const chamadoId = e.target.value;
         const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId);
         setChamado(chamadoSelecionado);
+    
         if (chamadoSelecionado) {
-            setEnderecoServico(`${chamadoSelecionado.rua}, ${chamadoSelecionado.numero}, ${chamadoSelecionado.bairro}, ${chamadoSelecionado.cidade}`)
+            setEnderecoServico(`${chamadoSelecionado.rua}, ${chamadoSelecionado.numero}, ${chamadoSelecionado.bairro}, ${chamadoSelecionado.cidade}`);
             const listaIdServicos = chamadoSelecionado.servicos || [];
-            // Mapeia os ObjectIds dos serviços para os objetos completos usando find
-            const servicosCompleto = listaIdServicos.map((id) => servicos.find((servico) => servico._id === id));
+    
+            // Checar se `listaIdServicos` contém IDs ou objetos completos
+            const servicosCompleto = listaIdServicos.map((item) => {
+                // Se o item já é um objeto com propriedades, use-o diretamente
+                if (typeof item === "object" && item._id) {
+                    return item;
+                }
+                // Se o item for um ID, procure o objeto completo
+                return servicos.find((servico) => servico._id === item);
+            });
+    
             setServicosChamado(servicosCompleto);
         } else {
             setServicosChamado([]);
@@ -128,6 +139,36 @@ export default function Orcamento_chamado() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (tecnico === 'Selecione...') {
+            alert("Por favor, selecione um técnico responsável.");
+            return;
+        }
+        
+        // Verifica se o chamado foi selecionado
+        if (chamado === 'Selecione...') {
+            alert("Por favor, selecione um chamado.");
+            return;
+        }
+    
+        // Verifica se o tempo de execução foi preenchido
+        if (!tempoExecucao) {
+            alert("Por favor, insira o tempo de execução.");
+            return;
+        }
+    
+        // Verifica se o endereço de serviço foi preenchido
+        if (!enderecoServico) {
+            alert("Por favor, insira o endereço do serviço.");
+            return;
+        }
+    
+        // Verifica se o valor do desconto é válido
+        if (descontoServico && parseFloat(descontoServico) > precoTotal) {
+            alert("O valor do desconto não pode ser maior do que o preco total do serviço.");
+            return;
+        }
+
         const dados = {
             "chamado": chamado,
             "tecnico": tecnico,
@@ -169,7 +210,8 @@ export default function Orcamento_chamado() {
                 <Col sm={10}>
                     {chamado.tecnico ? (
                         // Exibe o nome do técnico e desabilita a seleção
-                        <Form.Control 
+                        <Form.Control
+                            required 
                             type="text" 
                             value={chamado.tecnico.nome} 
                             disabled
@@ -275,7 +317,7 @@ export default function Orcamento_chamado() {
         </Table>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Desconto</Form.Label>
-                    <Col sm={10}><Form.Control required  type="number" min="0" placeholder="Valor do desconto"
+                    <Col sm={10}><Form.Control  type="number" min="0" placeholder="Valor do desconto"
                                                value={descontoServico} onChange={handleDescontoChange}/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">

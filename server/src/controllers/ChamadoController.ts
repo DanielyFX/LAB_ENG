@@ -14,7 +14,7 @@ class ChamadoController {
         //new_chamado.orcamento = request.body.orcamento;
         new_chamado.atendimento = request.body.atendimento;
         new_chamado.dataAbertura = request.body.dataAbertura;
-        new_chamado.rua = request.body.dataAbertura;
+        new_chamado.rua = request.body.rua;
         new_chamado.cidade = request.body.cidade;
         new_chamado.bairro = request.body.bairro;
         new_chamado.numero = request.body.numero;

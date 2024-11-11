@@ -29,13 +29,30 @@ function OrcamentoBox(props) {
     }
 
     return (
-        <div className="orcamento">
+        <div className="tecnico"> {/*verificar o css depois*/}
             <p key={`${orcamento._id}`}>ID: {orcamento._id}</p><hr/>
             <p key={`${orcamento._id}_chamado`}>CHAMADO: {orcamento.chamado.descricao}</p><hr/>
             <p key={`${orcamento._id}_tecnicoo`}>TECNICO: {orcamento.tecnico.nome}</p><hr/>
-            <p key={`${orcamento._id}_servicos`}>SERVICOS: {orcamento.chamado.servicos}</p><hr/>
+            <p key={`${orcamento._id}_servicos`}><strong>SERVIÇOS:</strong></p>
+            <ul style={{ listStyleType: "circle", paddingLeft: "20px" }}>
+                {orcamento.chamado.servicos.map((servico, index) => (
+                    <li key={index} style={{ margin: "5px 0" }}>
+                        <span>{servico.nome}</span> - <span>R${servico.preco.toFixed(2)}</span> {/* Formata o valor com duas casas decimais */}
+                    </li>
+                ))}
+            </ul>
+            <p><strong>Total de Serviços:</strong> R${orcamento.chamado.servicos.reduce((total, servico) => total + servico.preco, 0).toFixed(2)}</p><hr/>
+            <p key={`${orcamento._id}_despesas`}><strong>DESPESAS:</strong></p>
+            <ul style={{ listStyleType: "circle", paddingLeft: "20px" }}>
+                {orcamento.despesas.map((despesa, index) => (
+                    <li key={index} style={{ margin: "5px 0" }}>
+                        <span>{despesa.tipo}</span> - <span>R${despesa.valor.toFixed(2)}</span> {/* Formata o valor com duas casas decimais */}
+                    </li>
+                ))}
+            </ul>
+            <p><strong>Total de Despesas:</strong> R${orcamento.despesas.reduce((total, despesa) => total + despesa.valor, 0).toFixed(2)}</p><hr/>
             <p key={`${orcamento._id}_tempoExecucao`}>TEMPO EXECUÇÃO: {orcamento.tempoExecucao}</p><hr/>
-            <p key={`${orcamento._id}_atendimento`}>ATENDIMENDIMENTO: {orcamento.atendimento}</p><hr/>
+            <p key={`${orcamento._id}_atendimento`}>ATENDIMENDIMENTO: {orcamento.chamado.atendimento}</p><hr/>
             <p key={`${orcamento._id}_enderecoServico`}>ENDEREÇO: {orcamento.enderecoServico}</p><hr/>
             <p key={`${orcamento._id}_observacao`}>OBSERVAÇÃO: {orcamento.observacao}</p><hr/>
             <p key={`${orcamento._id}_situacaoOrcamento`}>SITUAÇÃO: {orcamento.situacao}</p><hr/>

@@ -15,7 +15,6 @@ export default function OrcamentoModal(props) {
 
     const [chamado, setChamado] = useState(orcamento.chamado._id);
     const [tecnico, setTecnico] = useState(orcamento.tecnico._id);
-    const [tipoServico, setTipoServico] = useState(orcamento.servico._id);
     const [tempoExecucao, setTempoExecucao] = useState(orcamento.tempoExecucao);
     const [garantia, setGarantia] = useState(orcamento.garantia);
     const [enderecoServico, setEnderecoServico] = useState(orcamento.enderecoServico);
@@ -28,7 +27,6 @@ export default function OrcamentoModal(props) {
         "_id": orcamento._id,
         "chamado": chamado,
         "tecnico": tecnico,
-        "servico": tipoServico,
         "tempoExecucao": tempoExecucao,
         "garantia": garantia,
         "enderecoServico": enderecoServico,
@@ -48,8 +46,6 @@ export default function OrcamentoModal(props) {
                 if (dados_novos.chamado !== orcamento.chamado._id) alterados.push(propriedade)
             } else if (propriedade === 'tecnico') {
                 if (dados_novos.tecnico !== orcamento.tecnico._id) alterados.push(propriedade)
-            } else if (propriedade === 'servico') {
-                if (dados_novos.servico !== orcamento.servico._id) alterados.push(propriedade)
             } else if (orcamento[propriedade] !== dados_novos[propriedade]) alterados.push(propriedade)
         }
         let body = {
@@ -112,21 +108,6 @@ export default function OrcamentoModal(props) {
                                 </Form.Control>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={2}>Tipo de Serviço</Form.Label>
-                            <Col sm={10}>
-                                <Form.Control required as="select" onChange={e=> setTipoServico(e.target.value)} value={tipoServico}>
-                                    {servicos_alfabetico.length > 0 ?
-                                        <><option selected disabled >Selecione...</option>
-                                            {servicos_alfabetico.map((servico) => {
-                                                return (<option value={servico._id}>{servico.nome}</option>)
-                                            })}</> :
-                                        <option selected disabled>Não há nenhum serviço cadastrado.</option>
-                                    }
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
-
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Tempo Execução</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
