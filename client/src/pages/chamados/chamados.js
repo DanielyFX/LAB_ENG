@@ -14,9 +14,9 @@ function ChamadoBox(props) {
     //console.log("Chamado único", chamado);
     //console.log("Orçamento", orcamento);
 
-    const handleExcluir = (chamado_id) => {
-        fetch('http://localhost:3001/inicio/chamados/deletar', {
-            method: 'DELETE',
+    const handleInativar = (chamado_id) => {
+        fetch('http://localhost:3001/inicio/chamados/inativar', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -26,7 +26,7 @@ function ChamadoBox(props) {
             .then((resultado) => resultado.json())
             .then((response) => {
                 if (response.success) window.location.reload();
-                else alert("Erro ao deletar Chamado");
+                else alert("Erro ao inativar Chamado");
             })
     };
 
@@ -76,9 +76,9 @@ function ChamadoBox(props) {
                 <Button onClick={() => {
                     setShow(true)
                 }}>Editar</Button>
-                <Button variant="danger" onClick={() => {
-                    handleExcluir(chamado._id)
-                }}>Excluir</Button>
+                {chamado.bd_status !== "INATIVO" && (
+                    <Button variant="danger" onClick={() => handleInativar(chamado._id)}>Inativar</Button>
+                )}
             </ButtonGroup>
             <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} servicos={servicos} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
             
@@ -150,8 +150,9 @@ export default function Consultar_Chamados(props) {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {chamados.length > 0 &&
-                    chamados.filter((chamado) => {
+                {chamados.length > 0 && chamados
+                    .filter((chamado) => chamado.bd_status !== "INATIVO")
+                    .filter((chamado) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in chamado) {

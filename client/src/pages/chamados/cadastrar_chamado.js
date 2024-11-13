@@ -197,6 +197,7 @@ export default function Cadastrar_chamado() {
             "previsao": previsaoAtendimento,
             "atendimento": atendimento,
             "dataAbertura": dataAbertura,
+            "cep": cep,
             "rua": rua,
             "cidade": cidade,
             "bairro": bairro,

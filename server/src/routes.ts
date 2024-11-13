@@ -76,7 +76,7 @@ const chamadoController = new ChamadoController();
 router.post('/inicio/chamados/novo', chamadoController.create)
 router.get('/inicio/chamados/consultar', chamadoController.getAll)
 router.post('/inicio/chamados/editar', chamadoController.edit)
-router.delete('/inicio/chamados/deletar', chamadoController.delete)
+router.post('/inicio/chamados/inativar', chamadoController.inative)
 
 // ATENDENTES
 const atendenteController = new AtendenteController();

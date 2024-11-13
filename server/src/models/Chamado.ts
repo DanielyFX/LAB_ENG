@@ -12,6 +12,7 @@ interface Chamado{
     previsao: Date;
     atendimento: AtendimentoEnum;
     dataAbertura: Date;
+    cep: string;
     rua: string;
     cidade: string;
     bairro: string;
@@ -62,6 +63,11 @@ const ChamadoSchema = new Schema({
         type: Date,
         required: true,
     },
+    cep: {
+        type: String,
+        required: true,
+        default: '',
+    },
     rua: {
         type: String,
         required: true,
@@ -86,7 +92,13 @@ const ChamadoSchema = new Schema({
         type: Types.ObjectId,
         ref: 'Servico',
         required: false
-    }]
+    }],
+
+    bd_status: {
+        type: String,
+        required: true,
+        default: "ATIVO"
+    }
 });
 
 const ChamadoModel = model<Chamado>('Chamado', ChamadoSchema);

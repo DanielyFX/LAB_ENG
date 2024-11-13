@@ -59,6 +59,7 @@ function pesquisacep(valor) {
     }
 }
 
+
 function ChamadoModal(props) {
     const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, onHide} = props;
     //console.log("Servicos no modal do chamado", servicos);
@@ -89,11 +90,11 @@ function ChamadoModal(props) {
 
     const [atendimento, setAtendimento] = useState(chamado.atendimento);
 
+    const [cep, setCep] = useState(chamado.cep);
     const [rua, setRua] = useState(chamado.rua);
     const [cidade, setCidade] = useState(chamado.cidade);
     const [bairro, setBairro] = useState(chamado.bairro);
     const [numero, setNumero] = useState(chamado.numero);
-    const [cep, setCep] = useState('');
 
     console.log("Servicos no chamado", servicosSelecionados);
     useEffect(() => {
@@ -107,6 +108,7 @@ function ChamadoModal(props) {
         setStatusChamado(chamado.status || '');
         setPrevisaoAtendimento(chamado.previsao || '');
         setAtendimento(chamado.atendimento || '');
+        setCep(chamado.cep || '');
         setRua(chamado.rua || '');
         setCidade(chamado.cidade || '');
         setBairro(chamado.bairro || '');
@@ -157,6 +159,15 @@ function ChamadoModal(props) {
             setTotalServicos(novosServicos.reduce((acc, item) => acc + item.preco, 0));
             setServico(''); // Limpa o campo selecionado
         }
+    };
+
+    const handleCepChange = (e) => {
+        const { value } = e.target;
+        setCep(value);
+    };
+    
+    const handleCepDesfoque = (e) => {
+        pesquisacep(e.target.value); 
     };
 
     // Função de comparação profunda
@@ -361,6 +372,26 @@ function ChamadoModal(props) {
                                 <Col sm={10}><Form.Control required  as="textarea" rows={3}
                                                            onChange={e=> setDescricao(e.target.value)}
                                                            value={descricao}/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>CEP</Form.Label>
+                                <Col sm={10}><Form.Control placeholder="Ex.: 00000-000" maxLength={9} value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque} value={cep}/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>Rua</Form.Label>
+                                <Col sm={10}><Form.Control required type="text" id="rua" onChange={(e) => setRua(e.target.value)} value={rua}/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>Número</Form.Label>
+                                <Col sm={10}><Form.Control required type="text" onChange={(e) => setNumero(e.target.value)} value={numero}/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>Bairro</Form.Label>
+                                <Col sm={10}><Form.Control required type="text" id="bairro" onChange={(e) => setBairro(e.target.value)} value={bairro}/></Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}>Cidade</Form.Label>
+                                <Col sm={10}><Form.Control required type="text" id="cidade" onChange={(e) => setCidade(e.target.value)} value={cidade}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Prioridade</Form.Label> 

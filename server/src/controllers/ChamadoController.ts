@@ -14,6 +14,7 @@ class ChamadoController {
         //new_chamado.orcamento = request.body.orcamento;
         new_chamado.atendimento = request.body.atendimento;
         new_chamado.dataAbertura = request.body.dataAbertura;
+        new_chamado.cep = request.body.cep;
         new_chamado.rua = request.body.rua;
         new_chamado.cidade = request.body.cidade;
         new_chamado.bairro = request.body.bairro;
@@ -53,7 +54,32 @@ class ChamadoController {
         return response.status(200).json({success: true})
     }
 
-    async delete(request: Request, response: Response) {
+    async inative(request: Request, response: Response) {
+        const { chamado_id } = request.body;
+        try {
+            let chamado = await ChamadoModel.findById(chamado_id).exec();
+            
+            if (!chamado) {
+                return response.status(404).json({ success: false, message: "Chamado não encontrado" });
+            }
+            
+            chamado.set("bd_status", "INATIVO");
+
+            await chamado.save();
+
+            return response.status(200).json({ success: true, message: "Chamado inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+}
+
+export {ChamadoController};
+
+
+/*RASCUNHOS 
+async delete(request: Request, response: Response) {
         const { chamado_id } = request.body;
         try {
             ChamadoModel.findByIdAndDelete(chamado_id, { useFindAndModify: false }).exec()
@@ -63,6 +89,5 @@ class ChamadoController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {ChamadoController};
+*/
