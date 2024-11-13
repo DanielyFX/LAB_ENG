@@ -550,12 +550,14 @@ export class Senha {
     }
 }
 
-export class DataContrato {
-
+export class Data {
     static get TodayHTMLDatetimeLocalFormat() {
         const today = new Date();
         return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0]
     }
+}
+
+export class DataContrato extends Data {
 
     static handleOnChange(date, valueSetter, errorMsgSetter){
         try{
@@ -670,6 +672,20 @@ export class CEP {
     }
 }
 
+export class NonEmptyField {
+    static handleOnChange(text, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(text)){
+                errorMsgSetter("Obrigatório!");
+            }else{
+                errorMsgSetter("");
+                valueSetter(text);
+            }
+        }catch(err){
+            console.error(`${NonEmptyField.name} -> Erro handling onChange event: ${err}`);
+        }
+    }
+}
 
 export class Validar {
     static CPF = CadastroPessoaFisica;
@@ -681,6 +697,8 @@ export class Validar {
     static Senha = Senha;
     static DataContrato = DataContrato;
     static CEP = CEP;
+    static Data = Data;
+    static NonEmptyField = NonEmptyField;
     
     static isCaracterDeControle(key){
         return key === "Backspace"
