@@ -48,7 +48,7 @@ const tecnicoController = new TecnicoController();
 router.post('/inicio/tecnicos/novo', tecnicoController.create)
 router.get('/inicio/tecnicos/consultar', tecnicoController.getAll)
 router.post('/inicio/tecnicos/editar', tecnicoController.edit)
-router.delete('/inicio/tecnicos/deletar', tecnicoController.delete)
+router.post('/inicio/tecnicos/inativar', tecnicoController.inative)
 
 // SERVIÇOS
 const servicoController = new ServicoController();

@@ -50,9 +50,9 @@ function AtendenteBox(props) {
                 <Button onClick={() => {
                     setShow(true)
                 }}>Editar</Button>
-                <Button variant="danger" onClick={() => {
-                    handleInativar(atendente._id)
-                }}>Inativar</Button>
+                {atendente.bd_status !== "INATIVO" && (
+                    <Button variant="danger" onClick={() => handleInativar(atendente._id)}>Inativar</Button>
+                )}
             </ButtonGroup>
             <AtendenteModal show={show} atendente={atendente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
         </div>

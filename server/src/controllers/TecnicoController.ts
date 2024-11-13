@@ -55,7 +55,34 @@ class TecnicoController {
         return response.status(200).json({success: true})
     }
 
-    async delete(request: Request, response: Response) {
+    async inative(request: Request, response: Response) {
+        const { tecnico_id } = request.body;
+        try {
+            let tecnico = await TecnicoModel.findById(tecnico_id).exec();
+            
+            if (!tecnico) {
+                return response.status(404).json({ success: false, message: "Técnico não encontrado" });
+            }
+            
+            tecnico.set("bd_status", "INATIVO");
+
+            await tecnico.save();
+
+            return response.status(200).json({ success: true, message: "Técnico inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+
+    
+}
+
+export {TecnicoController};
+
+
+/* RASCUNHO
+async delete(request: Request, response: Response) {
         const { tecnico_id } = request.body;
         console.log(request.body);
         try {
@@ -66,6 +93,5 @@ class TecnicoController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {TecnicoController};
+*/

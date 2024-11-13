@@ -13,21 +13,21 @@ function TecnicoBox(props) {
     const { tecnico_modal } = props
     //console.log(tecnico_modal)
 
-    const handleExcluir = (tecnico_id) => {
-        fetch('http://localhost:3001/inicio/tecnicos/deletar', {
-            method: 'DELETE',
+    const handleInativar = (tecnico_id) => {
+        fetch('http://localhost:3001/inicio/tecnicos/inativar', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             mode: "cors",
             body: JSON.stringify({tecnico_id})
         })
-        .then((resultado) => resultado.json())
-        .then((response) => {
-            if (response.success) window.location.reload();
-            else alert("Erro ao deletar Técnico");
-        })
-    }
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if (response.success) window.location.reload();
+                else alert("Erro ao inativar Técnico");
+            })
+    };
 
     return (
         <div className="tecnico">
@@ -50,9 +50,9 @@ function TecnicoBox(props) {
                 <Button onClick={() => {
                     setShow(true)
                 }}>Editar</Button>
-                <Button variant="danger" onClick={() => {
-                    handleExcluir(tecnico_modal._id)
-                }}>Excluir</Button>
+                {tecnico_modal.bd_status !== "INATIVO" && (
+                    <Button variant="danger" onClick={() => handleInativar(tecnico_modal._id)}>Inativar</Button>
+                )}
             </ButtonGroup>
 
             <TecnicoModal show={show} tecnico_box={tecnico_modal} onHide={() => setShow(false)} handleClose={() => {setShow(false);}}/>
@@ -112,8 +112,9 @@ export default function Consultar_Tecnicos() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {tecnicos.length > 0 &&
-                    tecnicos.filter((tecnico) => {
+                {tecnicos.length > 0 && tecnicos
+                    .filter((tecnico) => tecnico.bd_status !== "INATIVO")
+                    .filter((tecnico) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in tecnico) {
