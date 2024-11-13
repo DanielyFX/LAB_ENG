@@ -375,7 +375,7 @@ function ChamadoModal(props) {
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>CEP</Form.Label>
-                                <Col sm={10}><Form.Control placeholder="Ex.: 00000-000" maxLength={9} value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque} value={cep}/></Col>
+                                <Col sm={10}><Form.Control placeholder="Ex.: 00000-000" maxLength={9} value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque}/></Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Rua</Form.Label>
