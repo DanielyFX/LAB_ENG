@@ -6,18 +6,71 @@ import Col from "react-bootstrap/Col";
 import {useState, useEffect} from "react";
 import enums from "../utils/enums.json";
 import Alert from 'react-bootstrap/Alert';
+import { Table } from 'react-bootstrap';
+
+function limpa_formulário_cep() {
+    document.getElementById('rua').value = "";
+    document.getElementById('bairro').value = "";
+    document.getElementById('cidade').value = "";
+}
+
+window.meu_callback = function(conteudo) {
+    if (!("erro" in conteudo)) {
+        let rua_input = document.getElementById('rua');
+        let bairro_input = document.getElementById('bairro');
+        let cidade_input = document.getElementById('cidade');
+        const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+        let e_rua = new Event('input', {bubbles: true});
+        let e_bairro = new Event('input', {bubbles: true});
+        let e_cidade = new Event('input', {bubbles: true});
+        setter.call(rua_input, conteudo.logradouro);
+        setter.call(bairro_input, conteudo.bairro);
+        setter.call(cidade_input, conteudo.localidade);
+        rua_input.dispatchEvent(e_rua);
+        bairro_input.dispatchEvent(e_bairro);
+        cidade_input.dispatchEvent(e_cidade);
+        document.getElementById('rua').value = conteudo.logradouro;
+        document.getElementById('bairro').value = conteudo.bairro;
+        document.getElementById('cidade').value = conteudo.localidade;
+    } else {
+        limpa_formulário_cep();
+        alert("CEP não encontrado.");
+    }
+}
+
+function pesquisacep(valor) {
+    var cep = valor.replace(/\D/g, '');
+    if (cep !== "") {
+        var validacep = /^[0-9]{8}$/;
+        if (validacep.test(cep)) {
+            document.getElementById('rua').value = "";
+            document.getElementById('bairro').value = "";
+            document.getElementById('cidade').value = "";
+
+            var script = document.createElement('script');
+            script.src = `https://viacep.com.br/ws/${cep}/json/?callback=meu_callback`;
+            document.body.appendChild(script);
+        } else {
+            limpa_formulário_cep();
+            alert("Formato de CEP inválido.");
+        }
+    } else {
+        limpa_formulário_cep();
+    }
+}
 
 function ChamadoModal(props) {
-
-    const {handleClose, chamado, clientes, atendentes, onHide} = props;
+    const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, onHide} = props;
+    //console.log("Servicos no modal do chamado", servicos);
     const atendentes_alfabetico = atendentes.sort((a, b) => {
         return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
-    })
+    });
 
     const [documento, setDocumento] = useState(chamado.cliente.documento);
     const [clienteCampo, setClienteCampo] = useState(chamado.cliente.nome);
     const [clienteObj, setClienteObj] = useState(chamado.cliente._id);
     const [atendente, setAtendente] = useState(chamado.atendente._id);
+    const [tecnico, setTecnico] = useState(chamado.tecnico._id);
 
     const [mensagem, setMensagem] = useState("");
     const [sucesso, setSucesso] = useState(false); 
@@ -29,18 +82,88 @@ function ChamadoModal(props) {
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
-    
 
+    const [servico, setServico] = useState('');
+    const [servicosSelecionados, setServicosSelecionados] = useState(chamado.servicos);
+    const [totalServicos, setTotalServicos] = useState(0);
+
+    const [atendimento, setAtendimento] = useState(chamado.atendimento);
+
+    const [rua, setRua] = useState(chamado.rua);
+    const [cidade, setCidade] = useState(chamado.cidade);
+    const [bairro, setBairro] = useState(chamado.bairro);
+    const [numero, setNumero] = useState(chamado.numero);
+    const [cep, setCep] = useState('');
+
+    console.log("Servicos no chamado", servicosSelecionados);
     useEffect(() => {
-        setDocumento(chamado.cliente.documento);
-        setClienteCampo(chamado.cliente.nome);
-        setClienteObj(chamado.cliente._id);
-        setAtendente(chamado.atendente._id);
-        setDescricao(chamado.descricao);
-        setPrioridade(chamado.prioridade);
-        setStatusChamado(chamado.status);
-        setPrevisaoAtendimento(chamado.previsao);
-    }, [chamado, props.show]); // Executa sempre que o chamado mudar
+        setDocumento(chamado.cliente.documento || '');
+        setClienteCampo(chamado.cliente.nome || '');
+        setClienteObj(chamado.cliente._id || '');
+        setAtendente(chamado.atendente._id || '');
+        setTecnico(chamado.tecnico._id || '');
+        setDescricao(chamado.descricao || '');
+        setPrioridade(chamado.prioridade || '');
+        setStatusChamado(chamado.status || '');
+        setPrevisaoAtendimento(chamado.previsao || '');
+        setServicosSelecionados(chamado.servicos || []);
+        setAtendimento(chamado.atendimento || '');
+        setRua(chamado.rua || '');
+        setCidade(chamado.cidade || '');
+        setBairro(chamado.bairro || '');
+        setNumero(chamado.numero || '');
+        setCep(chamado.cep || '');
+
+    }, [chamado]);
+
+    const handleAdicionarServico = () => {
+        if (!servico) {
+            alert("Por favor, selecione um serviço."); // Mensagem de alerta se nenhum serviço for selecionado
+            return;
+        }
+        
+        const servicoSelecionado = servicos.find(s => s.nome === servico);
+        if (servicoSelecionado) {
+            const novoServico = { id: servicoSelecionado._id, nome: servicoSelecionado.nome, preco: servicoSelecionado.preco };
+            const novosServicos = [...servicosSelecionados, novoServico];
+            setServicosSelecionados(novosServicos);
+            setTotalServicos(novosServicos.reduce((acc, item) => acc + item.preco, 0));
+            setServico(''); // Limpa o campo selecionado
+        }
+    };
+
+    // Função de comparação profunda
+    const deepCompare = (obj1, obj2) => {
+        if (obj1 === obj2) return true;
+        
+        if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+            return false;
+        }
+        
+        if (Array.isArray(obj1) && Array.isArray(obj2)) {
+            if (obj1.length !== obj2.length) return false;
+            for (let i = 0; i < obj1.length; i++) {
+                if (!deepCompare(obj1[i], obj2[i])) return false;
+            }
+        } else {
+            const keys1 = Object.keys(obj1);
+            const keys2 = Object.keys(obj2);
+            
+            if (keys1.length !== keys2.length) return false;
+            
+            for (let key of keys1) {
+                if (!keys2.includes(key) || !deepCompare(obj1[key], obj2[key])) return false;
+            }
+        }
+        
+        return true;
+    };
+
+    const handleRemoverServico = (index) => {
+        const novosServicos = servicosSelecionados.filter((_, i) => i !== index);
+        setServicosSelecionados(novosServicos);
+        setTotalServicos(novosServicos.reduce((acc, item) => acc + item.preco, 0));
+    };
 
     const handleDocumento = () => {
         let cliente_pesquisa = clientes.find(cliente => cliente.documento === documento)
@@ -88,19 +211,30 @@ function ChamadoModal(props) {
         }
     }, [prioridade]); // Adiciona a prioridade como dependência
 
+    useEffect(() => {
+        // Calcula o total dos serviços inicialmente, com base no que já está cadastrado em `chamado.servicos`
+        const totalInicial = chamado.servicos.reduce((acc, item) => acc + item.preco, 0);
+        setTotalServicos(totalInicial);
+    }, [chamado.servicos]);
+
+    useEffect(() => {
+        const totalAtualizado = servicosSelecionados.reduce((acc, item) => acc + item.preco, 0);
+        setTotalServicos(totalAtualizado);
+    }, [servicosSelecionados]);
+
     const calcularPrevisaoAtendimento = (prioridade) => {
         const hoje = new Date(); // Data atual
         let diasParaAdicionar = 0;
 
         switch (prioridade){
             case "alta":
-                diasParaAdicionar = 20;
+                diasParaAdicionar = 7;
                 break;
             case "media":
                 diasParaAdicionar = 12;
                 break;
             case "baixa": 
-                diasParaAdicionar = 7;
+                diasParaAdicionar = 20;
                 break;
             default:
                 return '';
@@ -115,7 +249,8 @@ function ChamadoModal(props) {
         setConfirmacaoAberta(true);
     };
 
-    const confirmarAlteracoes = () => {
+    const handleConfirmarAlteracoes = () => {
+        console.log("Função chamada");
         // Lógica para enviar os dados ao servidor
         let dados_novos = {
             "_id": chamado._id,
@@ -124,8 +259,18 @@ function ChamadoModal(props) {
             "previsao": previsaoAtendimento,
             "atendente": atendente,
             "status": statusChamado,
-            "cliente": clienteObj
+            "cliente": clienteObj,
+            "tecnico": tecnico,
+            "atendimento": atendimento,
+            "rua": rua,
+            "cidade": cidade,
+            "bairro": bairro,
+            "numero": numero,
+            "servicos": servicosSelecionados.map(s => s.id),
         };
+
+        console.log("Dados servicos", dados_novos.servicos)
+        
         let alterados = [];
         for (let propriedade in dados_novos) {
             if (propriedade === "atendente") {
@@ -136,6 +281,15 @@ function ChamadoModal(props) {
                 if (chamado.cliente._id !== dados_novos.cliente) {
                     alterados.push(propriedade);
                 }
+            } else if (propriedade === "tecnico") {
+                if (chamado.tecnico._id !== dados_novos.tecnico) {
+                    alterados.push(propriedade);
+                }
+            } else if (propriedade === "servicos") {
+            // Comparação profunda para a lista de serviços
+            if (!deepCompare(chamado.servicos.map(s => s.id), dados_novos.servicos)) {
+                alterados.push(propriedade);
+            }
             } else if (chamado[propriedade] !== dados_novos[propriedade]) {
                 alterados.push(propriedade);
             }
@@ -224,6 +378,48 @@ function ChamadoModal(props) {
                                 />
                             </Col>
                             </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={2}>Serviço</Form.Label>
+                            <Col sm={8}>
+                                <Form.Control as="select" value={servico} onChange={(e) => setServico(e.target.value)}>
+                                    <option value="">Selecione um serviço...</option>
+                                    {servicos.map((s) => (
+                                        <option key={s.id} value={s.nome}>{s.nome}</option>
+                                    ))}
+                                </Form.Control>
+                            </Col>
+                            <Col sm={2}>
+                                <Button onClick={handleAdicionarServico}>Adicionar</Button>
+                            </Col>
+                        </Form.Group>
+                        {/* Tabela para exibir serviços selecionados */}
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {servicosSelecionados.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.nome}</td>
+                                        <td>R$ {item.preco.toFixed(2)}</td>
+                                        <td>
+                                            <Button variant="danger" onClick={() => handleRemoverServico(index)}>Remover</Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+
+                        {/* Total dos serviços */}
+                        <Row>
+                            <Col sm={10} className="text-end">
+                                <strong>Total: R$ {totalServicos.toFixed(2)}</strong>
+                            </Col>
+                        </Row>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleCancelarChamado}>Cancelar Chamado</Button>
@@ -244,7 +440,7 @@ function ChamadoModal(props) {
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={cancelarAlteracoes}>Cancelar</Button>
-            <Button variant="primary" onClick={confirmarAlteracoes}>Confirmar</Button>
+            <Button variant="primary" onClick={handleConfirmarAlteracoes}>Confirmar</Button>
         </Modal.Footer>
     </Modal>
     </>

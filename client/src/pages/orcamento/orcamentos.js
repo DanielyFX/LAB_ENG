@@ -10,7 +10,7 @@ import searchIcon from "../../css/Icons";
 function OrcamentoBox(props) {
     const [show, setShow] = useState(false)
     const {orcamento, tecnicos, chamados, servicos} = props
-    console.log("Orcamento unico", orcamento);
+    //console.log("Orcamento unico", orcamento);
 
     const handleExcluir = (orcamento_id) => {
         fetch('http://localhost:3001/inicio/orcamentos/deletar', {
@@ -81,7 +81,7 @@ export default function Consultar_orcamento() {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
-    console.log("Orcamentos", orcamentos);
+    //console.log("Orcamentos", orcamentos);
 
     const dropdown = (ord_ou_pesquisa) => {
         let funcao, todos = true;

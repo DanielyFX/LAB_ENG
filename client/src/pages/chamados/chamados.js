@@ -10,9 +10,9 @@ import enums from "../../utils/enums.json"
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
-    const {chamado, clientes, atendentes, tecnicos, orcamento} = props
-    console.log("Chamado único", chamado);
-    console.log("Orçamento", orcamento);
+    const {chamado, clientes, atendentes, tecnicos, servicos, orcamento} = props
+    //console.log("Chamado único", chamado);
+    //console.log("Orçamento", orcamento);
 
     const handleExcluir = (chamado_id) => {
         fetch('http://localhost:3001/inicio/chamados/deletar', {
@@ -34,11 +34,26 @@ function ChamadoBox(props) {
         <div className="chamado">
             <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
             <p key={`${chamado._id}_cliente`}>CLIENTE: {chamado.cliente.nome}</p><hr/>
+            <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
+            <p key={`${chamado._id}_prioridade`}> PRIORIADE: {chamado.prioridade} </p><hr/>
+            <p key={`${chamado._id}_tecnico`}>
+            {chamado.tecnico && chamado.tecnico.nome ? `TECNICO: ${chamado.tecnico.nome}` : "TECNICO: Não atribuído"}
+            </p><hr/>
+            <p key={`${chamado._id}_enderecoServico`}>ENDEREÇO: {chamado.rua}, {chamado.numero}, {chamado.bairro}, {chamado.cidade}`</p><hr/>
             <p key={`${chamado._id}_orcamento`}>ORÇAMENTO: {orcamento ? `${orcamento.situacao}` : enums.SituacaoEnum.nao_realizado}</p><hr/>
             <p key={`${chamado._id}_documento`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
             <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
             <p key={`${chamado._id}_status`}>STATUS CHAMADO: {chamado.status}</p><hr/>
+            <p key={`${chamado._id}_servicos`}><strong>SERVIÇOS:</strong></p>
+            <ul style={{ listStyleType: "circle", paddingLeft: "20px" }}>
+                {chamado.servicos.map((servico, index) => (
+                    <li key={index} style={{ margin: "5px 0" }}>
+                        <span>{servico.nome}</span> - <span>R${servico.preco.toFixed(2)}</span> {/* Formata o valor com duas casas decimais */}
+                    </li>
+                ))}
+            </ul>
+            <p><strong>Total de Serviços:</strong> R${chamado.servicos.reduce((total, servico) => total + servico.preco, 0).toFixed(2)}</p><hr/>
             <p key={`${chamado._id}_previsaoAtendimento`}>
                 DATA PREVISTA: {new Date(chamado.previsao).toLocaleDateString("pt-BR", {
                     day: "2-digit",
@@ -57,10 +72,6 @@ function ChamadoBox(props) {
                     minute: "2-digit"
                 })}
             </p><hr/>
-            <p key={`${chamado._id}_atendente`}>ATENDENTE: {chamado.atendente.nome}</p><hr/>
-            <p key={`${chamado._id}_tecnico`}>
-            {chamado.tecnico && chamado.tecnico.nome ? `TECNICO: ${chamado.tecnico.nome}` : "TECNICO: Não atribuído"}
-            </p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {
                     setShow(true)
@@ -69,15 +80,15 @@ function ChamadoBox(props) {
                     handleExcluir(chamado._id)
                 }}>Excluir</Button>
             </ButtonGroup>
-            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} servicos={servicos} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            
         </div>
     );
 }
 
 export default function Consultar_Chamados(props) {
 
-
-    const {chamados, atendentes, clientes, tecnicos, orcamentos} = useLoaderData();
+    const {chamados, clientes, atendentes, servicos, tecnicos, orcamentos} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
@@ -86,7 +97,7 @@ export default function Consultar_Chamados(props) {
     // console.log("chamados", chamados)
     // console.log("clientes", clientes)
     // console.log("atendentes", atendentes)
-    console.log("Orcamentos", orcamentos);
+    //console.log("Orcamentos", orcamentos);
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -193,14 +204,15 @@ export default function Consultar_Chamados(props) {
                     }).map((chamado) => {
                         //console.log(chamado)
                         const orcamentoRelacionado = getOrcamentoRelacionado(chamado);
-                        console.log("Chamado", chamado);
-                        console.log("Orçamento relacionado", orcamentoRelacionado);
+                        //console.log("Chamado", chamado);
+                        //console.log("Orçamento relacionado", orcamentoRelacionado);
                         return (
                             <ChamadoBox 
                             chamado={chamado} 
                             clientes={clientes} 
                             atendentes={atendentes} 
-                            tecnicos={tecnicos} 
+                            tecnicos={tecnicos}
+                            servicos={servicos} 
                             orcamento={orcamentoRelacionado}/>
                         );
                     })

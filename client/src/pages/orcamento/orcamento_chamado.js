@@ -18,8 +18,8 @@ export default function Orcamento_chamado() {
     const servicos_alfabetico = servicos.sort(sort_str)
     const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
 
-    const [chamado, setChamado] = useState('Selecione...');
-    const [tecnico, setTecnico] = useState('Selecione...');
+    const [chamado, setChamado] = useState('');
+    const [tecnico, setTecnico] = useState('');
     const [erroTecnico, setErroTecnico] = useState(false);
 
     const [servicosChamado, setServicosChamado] = useState([]);
@@ -42,11 +42,12 @@ export default function Orcamento_chamado() {
             const previsao = new Date(chamado.previsao); // Certifique-se de que a previsão também é do tipo Date
 
             const diffTime = previsao - dataAbertura; // Diferença em milissegundos
-
+            
+            const tempo = diffTime / 3;
             // Converte a diferença para dias, horas e minutos
-            const diffDias = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Diferença em dias
-            const diffHoras = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Diferença em horas
-            const diffMinutos = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60)); // Diferença em minutos
+            const diffDias = Math.floor(tempo / (1000 * 60 * 60 * 24)); // Diferença em dias
+            const diffHoras = Math.floor((tempo % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Diferença em horas
+            const diffMinutos = Math.floor((tempo % (1000 * 60 * 60)) / (1000 * 60)); // Diferença em minutos
 
             setTempoExecucao(`${diffDias}d ${diffHoras}h ${diffMinutos}m`); // Formato: 5h 30m
         }
@@ -79,9 +80,6 @@ export default function Orcamento_chamado() {
         }
     };
 
-    useEffect(() => {
-        calcularTempoExecucao();
-    }, [chamado]);
 
     const handleChamadoChange = (e) => {
         const chamadoId = e.target.value;
@@ -133,9 +131,20 @@ export default function Orcamento_chamado() {
         setPrecoTotal(precoFinal.toFixed(2));
     };
 
-      useEffect(() => {
+
+    useEffect(() => {
         calcularTotal();
       }, [servicosChamado, descontoServico, despesasSelecionadas]);
+    
+    useEffect(() => {
+        calcularTempoExecucao();
+    }, [chamado]);
+
+    useEffect(()=>{
+        if (chamado.tecnico){
+            setTecnico(chamado.tecnico._id);
+        }
+      }, [chamado]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -241,18 +250,18 @@ export default function Orcamento_chamado() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Chamado</Form.Label>
                     <Col sm={10}>
-                        <Form.Control required as="select" onChange={handleChamadoChange} value={chamado?._id || ""}>
-                            <option selected disabled>Selecione...</option>
-                            {chamados.map(chamado => (
-                                <option key={chamado._id} value={chamado._id}>{chamado.descricao}</option>
-                            ))}
-                        </Form.Control>
+                    <Form.Control required as="select" onChange={handleChamadoChange} value={chamado?._id || ""}>
+                        <option value="" disabled>Selecione...</option>
+                        {chamados.map(chamado => (
+                            <option key={chamado._id} value={chamado._id}>{chamado.descricao}</option>
+                        ))}
+                    </Form.Control>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Tempo Execução</Form.Label>
                     <Col sm={10}><Form.Control required type="text"
-                                               onChange={e => setTempoExecucao(e.target.value)} value={tempoExecucao}/></Col>
+                                               onChange={e => setTempoExecucao(e.target.value)} value={tempoExecucao} disabled/></Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Atendimento</Form.Label>

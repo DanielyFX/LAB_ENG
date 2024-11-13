@@ -119,13 +119,13 @@ export default function Cadastrar_chamado() {
 
         switch (prioridade){
             case "alta":
-                diasParaAdicionar = 20;
+                diasParaAdicionar = 7; 
                 break;
             case "media":
                 diasParaAdicionar = 12;
                 break;
             case "baixa": 
-                diasParaAdicionar = 7;
+                diasParaAdicionar = 20;
                 break;
             default:
                 return '';

@@ -36,7 +36,7 @@ class OrcamentoController {
                     ]
                 });
     
-            console.log("Orçamentos:", orcamentos);
+            //console.log("Orçamentos:", orcamentos);
             if (orcamentos.length === 0) {
                 console.warn("Nenhum orçamento encontrado.");
             }
