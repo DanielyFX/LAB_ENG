@@ -52,6 +52,33 @@ class AtendenteController {
         return response.status(200).json({success: true})
     }
 
+    async inative(request: Request, response: Response) {
+        const { atendente_id } = request.body;
+        try {
+            let atendente = await AtendenteModel.findById(atendente_id).exec();
+            
+            if (!atendente) {
+                return response.status(404).json({ success: false, message: "Atendente não encontrado" });
+            }
+            
+            atendente.set("bd_status", "INATIVO");
+
+            await atendente.save();
+
+            return response.status(200).json({ success: true, message: "Chamado inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+
+    
+}
+
+export {AtendenteController};
+
+
+/*RASCUNHO
     async delete(request: Request, response: Response) {
         const { atendente_id } = request.body;
         try {
@@ -62,6 +89,5 @@ class AtendenteController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {AtendenteController};
+*/

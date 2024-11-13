@@ -11,9 +11,9 @@ function AtendenteBox(props) {
     const [show, setShow] = useState(false);
     const {atendente} = props;
 
-    const handleExcluir = (atendente_id) => {
-        fetch('http://localhost:3001/inicio/atendentes/deletar', {
-            method: 'DELETE',
+    const handleInativar = (atendente_id) => {
+        fetch('http://localhost:3001/inicio/atendentes/inativar', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -23,9 +23,9 @@ function AtendenteBox(props) {
             .then((resultado) => resultado.json())
             .then((response) => {
                 if (response.success) window.location.reload();
-                else alert("Erro ao deletar atendente");
+                else alert("Erro ao inativar Atendente");
             })
-    }
+    };
 
     return (
         <div className="tecnico">
@@ -51,8 +51,8 @@ function AtendenteBox(props) {
                     setShow(true)
                 }}>Editar</Button>
                 <Button variant="danger" onClick={() => {
-                    handleExcluir(atendente._id)
-                }}>Excluir</Button>
+                    handleInativar(atendente._id)
+                }}>Inativar</Button>
             </ButtonGroup>
             <AtendenteModal show={show} atendente={atendente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
         </div>
@@ -111,8 +111,9 @@ export default function Consultar_Atendentes() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {
-                    atendentes.filter((atendente) => {
+                {atendentes
+                    .filter((atendente) => atendente.bd_status !== "INATIVO")
+                    .filter((atendente) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in atendente) {

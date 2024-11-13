@@ -43,6 +43,11 @@ const AtendenteSchema = new Schema({
         type: Date,
         default: Date.now()
     },
+    bd_status: {
+        type: String,
+        required: true,
+        default: "ATIVO"
+    },
     hash: String,
     salt: String,
     dataContrato: Date

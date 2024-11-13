@@ -83,7 +83,7 @@ const atendenteController = new AtendenteController();
 router.post('/inicio/atendentes/novo', atendenteController.create)
 router.get('/inicio/atendentes/consultar', atendenteController.getAll)
 router.post('/inicio/atendentes/editar', atendenteController.edit)
-router.delete('/inicio/atendentes/deletar', atendenteController.delete)
+router.post('/inicio/atendentes/inativar', atendenteController.inative)
 
 // LOGIN e OUTRAS ROTAS
 const loginController = new LoginController();

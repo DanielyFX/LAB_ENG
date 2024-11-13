@@ -103,8 +103,8 @@ export default function Cadastrar_atendente() {
         }
         else if(CPF.hasNextKey(cpf)){
             setCpfError("Incompleto!");
-        }else if(!CPF.isNumericValid(cpf)){
-            setCpfError("Inválido!");
+        //}else if(!CPF.isNumericValid(cpf)){
+           // setCpfError("Inválido!");
         }else{
             setCpfError("");
             setCpf(CPF.getOnlyDigits(cpf));
@@ -198,6 +198,7 @@ export default function Cadastrar_atendente() {
             "email": email,
             "senha": senha
         }
+        console.log("cpf inserido", dados.cpf);
         fetch('http://localhost:3001/inicio/atendentes/novo', {
             method: "POST",
             headers: {
@@ -212,7 +213,7 @@ export default function Cadastrar_atendente() {
                     alert("Atendente Cadastrado com Sucesso!")
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o atendente!")
+                    alert("Erro ao cadastrar o atendente! Verifique as informações inseridas")
                 }
             })
     }
