@@ -93,7 +93,6 @@ export default function Consultar_Chamados(props) {
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
     
-
     // console.log("chamados", chamados)
     // console.log("clientes", clientes)
     // console.log("atendentes", atendentes)

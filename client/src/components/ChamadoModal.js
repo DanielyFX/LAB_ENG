@@ -84,7 +84,7 @@ function ChamadoModal(props) {
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
 
     const [servico, setServico] = useState('');
-    const [servicosSelecionados, setServicosSelecionados] = useState(chamado.servicos);
+    const [servicosSelecionados, setServicosSelecionados] = useState([...chamado.servicos]);
     const [totalServicos, setTotalServicos] = useState(0);
 
     const [atendimento, setAtendimento] = useState(chamado.atendimento);
@@ -106,7 +106,6 @@ function ChamadoModal(props) {
         setPrioridade(chamado.prioridade || '');
         setStatusChamado(chamado.status || '');
         setPrevisaoAtendimento(chamado.previsao || '');
-        setServicosSelecionados(chamado.servicos || []);
         setAtendimento(chamado.atendimento || '');
         setRua(chamado.rua || '');
         setCidade(chamado.cidade || '');
@@ -114,9 +113,35 @@ function ChamadoModal(props) {
         setNumero(chamado.numero || '');
         setCep(chamado.cep || '');
 
+        setServicosSelecionados([...chamado.servicos]);
+        const totalInicial = chamado.servicos.reduce((acc, item) => acc + item.preco, 0);
+        setTotalServicos(totalInicial);
+
     }, [chamado]);
 
+    useEffect(() => {
+        const totalAtualizado = servicosSelecionados.reduce((acc, item) => acc + item.preco, 0);
+        setTotalServicos(totalAtualizado);
+
+    }, [servicosSelecionados]);
+
+    useEffect(() => {
+        // Define a data e hora atuais no formato necessário para `datetime-local`
+        const now = new Date();
+        const formattedDate = now.toISOString().slice(0, 16); // Retorna 'YYYY-MM-DDTHH:MM' no fuso horário local
+        
+        if (prioridade && prioridade !== 'Selecione...') {
+            setPrevisaoAtendimento(calcularPrevisaoAtendimento(prioridade));
+        } else {
+            setPrevisaoAtendimento('');
+        }
+    }, [prioridade]); // Adiciona a prioridade como dependência
+
+    console.log("Servicos selecionados pt2", servicosSelecionados);
+
     const handleAdicionarServico = () => {
+        //console.log("Servicos no meu chamado", chamado.servicos);
+        console.log("Servicos selecionados no handleAdicionar servicos", servicosSelecionados);
         if (!servico) {
             alert("Por favor, selecione um serviço."); // Mensagem de alerta se nenhum serviço for selecionado
             return;
@@ -124,9 +149,11 @@ function ChamadoModal(props) {
         
         const servicoSelecionado = servicos.find(s => s.nome === servico);
         if (servicoSelecionado) {
-            const novoServico = { id: servicoSelecionado._id, nome: servicoSelecionado.nome, preco: servicoSelecionado.preco };
+            const novoServico = { _id: servicoSelecionado._id, nome: servicoSelecionado.nome, preco: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];
+            console.log("Novos serviços", novosServicos);
             setServicosSelecionados(novosServicos);
+            console.log("Servicos Selecionados novos+antigos", servicosSelecionados);
             setTotalServicos(novosServicos.reduce((acc, item) => acc + item.preco, 0));
             setServico(''); // Limpa o campo selecionado
         }
@@ -198,29 +225,7 @@ function ChamadoModal(props) {
             setSucesso(false);
         }
     };
-    
-    useEffect(() => {
-        // Define a data e hora atuais no formato necessário para `datetime-local`
-        const now = new Date();
-        const formattedDate = now.toISOString().slice(0, 16); // Retorna 'YYYY-MM-DDTHH:MM' no fuso horário local
-        
-        if (prioridade && prioridade !== 'Selecione...') {
-            setPrevisaoAtendimento(calcularPrevisaoAtendimento(prioridade));
-        } else {
-            setPrevisaoAtendimento('');
-        }
-    }, [prioridade]); // Adiciona a prioridade como dependência
 
-    useEffect(() => {
-        // Calcula o total dos serviços inicialmente, com base no que já está cadastrado em `chamado.servicos`
-        const totalInicial = chamado.servicos.reduce((acc, item) => acc + item.preco, 0);
-        setTotalServicos(totalInicial);
-    }, [chamado.servicos]);
-
-    useEffect(() => {
-        const totalAtualizado = servicosSelecionados.reduce((acc, item) => acc + item.preco, 0);
-        setTotalServicos(totalAtualizado);
-    }, [servicosSelecionados]);
 
     const calcularPrevisaoAtendimento = (prioridade) => {
         const hoje = new Date(); // Data atual
@@ -266,7 +271,7 @@ function ChamadoModal(props) {
             "cidade": cidade,
             "bairro": bairro,
             "numero": numero,
-            "servicos": servicosSelecionados.map(s => s.id),
+            "servicos": servicosSelecionados.map(s => s._id),
         };
 
         console.log("Dados servicos", dados_novos.servicos)
@@ -287,7 +292,7 @@ function ChamadoModal(props) {
                 }
             } else if (propriedade === "servicos") {
             // Comparação profunda para a lista de serviços
-            if (!deepCompare(chamado.servicos.map(s => s.id), dados_novos.servicos)) {
+            if (!deepCompare(propriedade, dados_novos.servicos)) {
                 alterados.push(propriedade);
             }
             } else if (chamado[propriedade] !== dados_novos[propriedade]) {
