@@ -55,7 +55,7 @@ const servicoController = new ServicoController();
 router.post('/inicio/servicos/novo', servicoController.create)
 router.get('/inicio/servicos/consultar', servicoController.getAll)
 router.post('/inicio/servicos/editar', servicoController.edit)
-router.delete('/inicio/servicos/deletar', servicoController.delete)
+router.post('/inicio/servicos/inativar', servicoController.inative)
 
 // ORÇAMENTOS
 const orcamentoController = new OrcamentoController();
@@ -69,7 +69,7 @@ const clienteController = new ClienteController();
 router.post('/inicio/clientes/novo', clienteController.create)
 router.get('/inicio/clientes/consultar', clienteController.getAll)
 router.post('/inicio/clientes/editar', clienteController.edit)
-router.delete('/inicio/clientes/deletar', clienteController.delete)
+router.post('/inicio/clientes/inativar', clienteController.inative)
 
 // CHAMADOS
 const chamadoController = new ChamadoController();

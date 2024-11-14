@@ -53,7 +53,31 @@ class ClienteController {
         return response.status(200).json({success: true})
     }
 
-    async delete(request: Request, response: Response) {
+    async inative(request: Request, response: Response) {
+        const { cliente_id } = request.body;
+        try {
+            let cliente = await ClienteModel.findById(cliente_id).exec();
+            
+            if (!cliente) {
+                return response.status(404).json({ success: false, message: "Cliente não encontrado" });
+            }
+            
+            cliente.set("bd_status", "INATIVO");
+
+            await cliente.save();
+
+            return response.status(200).json({ success: true, message: "Cliente inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+}
+
+export {ClienteController};
+
+/*RASCUNHO
+async delete(request: Request, response: Response) {
         const { cliente_id } = request.body;
         try {
             ClienteModel.findByIdAndDelete(cliente_id, { useFindAndModify: false }).exec()
@@ -63,6 +87,6 @@ class ClienteController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {ClienteController};
+
+*/

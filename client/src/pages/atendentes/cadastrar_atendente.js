@@ -104,7 +104,7 @@ export default function Cadastrar_atendente() {
         else if(CPF.hasNextKey(cpf)){
             setCpfError("Incompleto!");
         //}else if(!CPF.isNumericValid(cpf)){
-           // setCpfError("Inválido!");
+          //  setCpfError("Inválido!");
         }else{
             setCpfError("");
             setCpf(CPF.getOnlyDigits(cpf));

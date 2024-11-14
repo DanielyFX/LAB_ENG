@@ -71,6 +71,12 @@ const ClienteSchema = new Schema({
         type: Number,
         default: 0,
         required: true,
+    },
+    
+    bd_status: {
+        type: String,
+        required: true,
+        default: "ATIVO"
     }
 });
 

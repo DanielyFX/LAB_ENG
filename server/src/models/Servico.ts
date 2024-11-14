@@ -32,6 +32,12 @@ const ServicoSchema = new Schema({
         type: Number,
         default: 0.00,
         required: true,
+    },
+
+    bd_status: {
+        type: String,
+        required: true,
+        default: "ATIVO"
     }
 });
 

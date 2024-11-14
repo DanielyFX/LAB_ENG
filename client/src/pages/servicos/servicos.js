@@ -11,21 +11,22 @@ const ServicoBox = (props) => {
     const [show, setShow] = useState(false);
     const {servico} = props;
 
-    const handleExcluir = (servico_id) => {
-        fetch('http://localhost:3001/inicio/servicos/deletar', {
-            method: 'DELETE',
+    const handleInativar = (servico_id) => {
+        fetch('http://localhost:3001/inicio/servicos/inativar', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             mode: "cors",
             body: JSON.stringify({servico_id})
         })
-        .then((resultado) => resultado.json())
-        .then((response) => {
-            if (response.success) window.location.reload();
-            else alert("Erro ao deletar Serviço");
-        })
-    }
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if (response.success) window.location.reload();
+                else alert("Erro ao inativar Serviço");
+            })
+    };
+
     return (
         <div className="tecnico">
             <p key={`${servico._id}_nome`}>NOME: {servico.nome}</p>
@@ -45,9 +46,9 @@ const ServicoBox = (props) => {
                 <Button onClick={() => {
                     setShow(true)
                 }}>Editar</Button>
-                <Button variant="danger" onClick={() => {
-                    handleExcluir(servico._id)
-                }}>Excluir</Button>
+                {servico.bd_status !== "INATIVO" && (
+                    <Button variant="danger" onClick={() => handleInativar(servico._id)}>Inativar</Button>
+                )}
             </ButtonGroup>
             <ServicoModal show={show} servico={servico} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
         </div>
@@ -104,8 +105,9 @@ export default function Consultar_Clientes() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {servicos.length > 0 &&
-                    servicos.filter((servico) => {
+                {servicos.length > 0 && servicos
+                    .filter((servico) => servico.bd_status != "INATIVO")
+                    .filter((servico) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in servico) {
