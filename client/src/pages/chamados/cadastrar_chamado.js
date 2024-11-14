@@ -141,7 +141,8 @@ export default function Cadastrar_chamado() {
             return;
         }
         
-        const servicoSelecionado = servicos.find(s => s.nome === servico);
+        const servicoSelecionado = servicos.find(s => 
+            s.nome === servico && s.bd_status != "INATIVO");
         if (servicoSelecionado) {
             const novoServico = { id: servicoSelecionado._id, servico: servicoSelecionado.nome, valor: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];
@@ -158,7 +159,9 @@ export default function Cadastrar_chamado() {
     };
 
     const handleDocumentoCliente = () => {
-        let cliente_pesquisa = clientes.find(cliente => cliente.documento === documentoCliente)
+        let cliente_pesquisa = clientes.find(cliente => 
+            cliente.documento === documentoCliente && cliente.bd_status !== "INATIVO"
+        );
         if (cliente_pesquisa === undefined) setClienteCampo("Cliente não encontrado")
         else {
             setClienteObj(cliente_pesquisa)
@@ -319,7 +322,9 @@ export default function Cadastrar_chamado() {
                         <Form.Control required as="select" onChange={(e)=> setAtendente(e.target.value)} value={atendente._id}>
                             {atendentes_alfabetico.length > 0 ?
                                 <><option selected disabled >Selecione...</option>
-                                {atendentes_alfabetico.map((atendente) => {
+                                {atendentes_alfabetico
+                                    .filter((atendente) => atendente.bd_status !== "INATIVO")
+                                    .map((atendente) => {
                                     return (<option value={atendente._id}>{atendente.nome}</option>)
                                 })}</> :
                                 <option selected disabled>Não há nenhum atendente cadastrado.</option>
@@ -333,7 +338,9 @@ export default function Cadastrar_chamado() {
                         <Form.Control required as="select" onChange={(e)=> setTecnico(e.target.value)}>
                             {tecnicos_alfabetico.length > 0 ?
                                 <><option selected disabled >Selecione...</option>
-                                {tecnicos_alfabetico.map((tecnico) => {
+                                {tecnicos_alfabetico
+                                    .filter((tecnico) => tecnico.bd_status !== "INATIVO")
+                                    .map((tecnico) => {
                                     return (<option value={tecnico._id}>{tecnico.nome}</option>)
                                 })}</> :
                                 <option selected disabled>Não há nenhum técnico cadastrado.</option>
@@ -346,7 +353,9 @@ export default function Cadastrar_chamado() {
                     <Col sm={8}>
                         <Form.Control as="select" value={servico} onChange={(e) => setServico(e.target.value)}>
                             <option value="">Selecione um serviço...</option>
-                            {servicos.map((s) => (
+                            {servicos
+                                .filter((s) => s.bd_status !== "INATIVO")
+                                .map((s) => (
                                 <option key={s.id} value={s.nome}>{s.nome}</option>
                             ))}
                         </Form.Control>

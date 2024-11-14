@@ -83,7 +83,7 @@ export default function Orcamento_chamado() {
 
     const handleChamadoChange = (e) => {
         const chamadoId = e.target.value;
-        const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId);
+        const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId && chamado.bd_status !== "INATIVO");
         setChamado(chamadoSelecionado);
     
         if (chamadoSelecionado) {
@@ -97,7 +97,7 @@ export default function Orcamento_chamado() {
                     return item;
                 }
                 // Se o item for um ID, procure o objeto completo
-                return servicos.find((servico) => servico._id === item);
+                return servicos.find((servico) => servico._id === item && servico.bd_status !== "INATIVO");
             });
     
             setServicosChamado(servicosCompleto);
@@ -235,7 +235,9 @@ export default function Orcamento_chamado() {
                         >
                             <option value="">Selecione...</option>
                             {tecnicos_alfabetico.length > 0 ? (
-                                tecnicos_alfabetico.map((tecnico) => (
+                                tecnicos_alfabetico
+                                    .filter((tecnico) => tecnico.bd_status != "INATIVO")
+                                    .map((tecnico) => (
                                     <option key={tecnico._id} value={tecnico._id}>
                                         {tecnico.nome}
                                     </option>
@@ -252,7 +254,9 @@ export default function Orcamento_chamado() {
                     <Col sm={10}>
                     <Form.Control required as="select" onChange={handleChamadoChange} value={chamado?._id || ""}>
                         <option value="" disabled>Selecione...</option>
-                        {chamados.map(chamado => (
+                        {chamados
+                            .filter((chamado) => chamado.bd_status !== "INATIVO")
+                            .map(chamado => (
                             <option key={chamado._id} value={chamado._id}>{chamado.descricao}</option>
                         ))}
                     </Form.Control>
