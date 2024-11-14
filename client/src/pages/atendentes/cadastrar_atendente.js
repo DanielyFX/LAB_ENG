@@ -213,7 +213,7 @@ export default function Cadastrar_atendente() {
                     alert("Atendente Cadastrado com Sucesso!")
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o atendente! Verifique as informações inseridas")
+                    alert(response.message)
                 }
             })
     }

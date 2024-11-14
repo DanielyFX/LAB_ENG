@@ -17,10 +17,14 @@ class TecnicoController {
         new_tecnico.salt = crypto.randomBytes(16).toString('base64');
         new_tecnico.hash = crypto.pbkdf2Sync(request.body.senha, new_tecnico.salt, 1000, 64, 'sha512').toString('base64');
 
-        const existe = await TecnicoModel.exists({ cpf: new_tecnico.cpf })
+        const existe = await TecnicoModel.exists(
+            { cpf: new_tecnico.cpf, bd_status: {$ne: "INATIVO"} })
 
-        if (existe) {
-            return response.json({success: false})
+        if (existe){
+            return response.status(409).json({
+                success: false,
+                message: "Técnico já cadastrado com esse cpf."
+            });
         }
 
         try {

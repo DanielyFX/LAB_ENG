@@ -14,10 +14,14 @@ class AtendenteController {
         new_atendente.salt = crypto.randomBytes(16).toString('hex');
         new_atendente.hash = crypto.pbkdf2Sync(request.body.senha, new_atendente.salt, 1000, 64, 'sha512').toString('base64');
 
-        const existe = await AtendenteModel.exists({ cpf: new_atendente.cpf })
+        const existe = await AtendenteModel.exists(
+            { cpf: new_atendente.cpf, bd_status: { $ne: "INATIVO"} })
 
-        if (existe) {
-            return response.json({success: false})
+        if (existe){
+            return response.status(409).json({
+                success: false,
+                message: "Atendente já cadastrado com esse cpf."
+            });
         }
 
         try {

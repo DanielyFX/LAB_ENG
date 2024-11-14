@@ -206,7 +206,7 @@ export default function Orcamento_chamado() {
                     alert("Orçamento cadastrado com sucesso!")
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o orçamento!")
+                    alert(response.message)
                 }
             })
     }

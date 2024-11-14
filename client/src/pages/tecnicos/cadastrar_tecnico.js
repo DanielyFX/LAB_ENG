@@ -42,7 +42,7 @@ export default function Cadastrar_tecnico() {
                     alert("Técnico Cadastrado com Sucesso!")
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o técnico! Verifique os dados inseridos!")
+                    alert(response.message)
                 }
             })
     }

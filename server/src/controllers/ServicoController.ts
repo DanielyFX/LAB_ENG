@@ -11,7 +11,9 @@ class ServicoController {
         new_servico.preco = request.body.preco;
 
         try{
-            const existe = await ServicoModel.exists({nome: new_servico.nome});
+            const existe = await ServicoModel.exists({
+                nome: new_servico.nome,
+                bd_status: { $ne: "INATIVO"}});
 
             if (existe){
                 return response.status(409).json({

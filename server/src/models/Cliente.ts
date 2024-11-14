@@ -28,7 +28,6 @@ const ClienteSchema = new Schema({
     },
     documento: {
         type: String,
-        unique: true,
         default: '',
         required: true,
     },

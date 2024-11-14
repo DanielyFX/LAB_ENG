@@ -16,6 +16,16 @@ class OrcamentoController {
         new_orcamento.despesas = request.body.despesas;
 
         try {
+            const existe = await OrcamentoModel.exists({
+                chamado: new_orcamento.chamado});
+
+            if (existe){
+                return response.status(409).json({
+                    success: false,
+                    message: "Chamado selecionado já orçado."
+                });
+            }
+
             new_orcamento.save().then();
             return response.status(200).json({success: true})
         } catch (error) {

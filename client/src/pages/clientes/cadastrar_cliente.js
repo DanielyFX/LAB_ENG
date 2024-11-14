@@ -112,7 +112,7 @@ export default function Cadastrar_cliente() {
                     alert("Cliente Cadastrado com sucesso!")
                     window.location.reload()
                 } else {
-                    alert("Erro ao cadastrar o cliente!")
+                    alert(response.message)
                 }
             })
 
