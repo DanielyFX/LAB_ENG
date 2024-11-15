@@ -71,6 +71,9 @@ function ChamadoBox(props) {
                 ))}
             </ul>
             <p><strong>Total de Serviços:</strong> R${chamado.servicos.reduce((total, servico) => total + servico.preco, 0).toFixed(2)}</p><hr/>
+            <p><strong>Total de Despesas:</strong> R${orcamento?.despesas.reduce((total, item) => total + item.valor, 0).toFixed(2) || 0}</p><hr/>
+            <p><strong>Valor de Desconto:</strong> R${parseFloat(orcamento?.descontoServico).toFixed(2) || 0}</p><hr/>
+            <p><strong>Total chamado:</strong> R${parseFloat(orcamento?.precoTotal).toFixed(2) || 0}</p><hr/>
             <p key={`${chamado._id}_previsaoAtendimento`}>
                 DATA PREVISTA: {new Date(chamado.previsao).toLocaleDateString("pt-BR", {
                     day: "2-digit",

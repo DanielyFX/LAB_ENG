@@ -41,6 +41,8 @@ export default function OrcamentoModal(props) {
     const [valorDespesa, setValorDespesa] = useState('');
     const [despesasSelecionadas, setDespesasSelecionadas] = useState(orcamento.despesas);
 
+    const isBlocked = situacaoOrcamento === "APROVADO" || situacaoOrcamento === "REPROVADO";
+
     useEffect(() => {
         setChamado(orcamento.chamado._id);
         setTecnico(orcamento.tecnico._id);
@@ -264,10 +266,15 @@ export default function OrcamentoModal(props) {
                         <Modal.Title>Editar orçamento</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                    {isBlocked && (
+                            <p style={{ color: 'red', textAlign: 'center' }}>
+                                Este orçamento está {situacaoOrcamento.toLowerCase()} e não pode ser editado.
+                            </p>
+                        )}
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Técnico Responsavel</Form.Label>
                             <Col sm={10}>
-                                <Form.Control required as="select" onChange={e=> setTecnico(e.target.value)} value={tecnico}>
+                                <Form.Control required as="select" onChange={e=> setTecnico(e.target.value)} value={tecnico} disabled={isBlocked}>
                                     {tecnicos_alfabetico.length > 0 ?
                                         <><option selected disabled >Selecione...</option>
                                             {tecnicos_alfabetico.map((tecnico) => {
@@ -319,19 +326,25 @@ export default function OrcamentoModal(props) {
                             <Form.Label column sm={2}>Endereço</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
                                                        onChange={e => setEnderecoServico(e.target.value)}
-                                                       value={enderecoServico}/></Col>
+                                                       value={enderecoServico}
+                                                       disabled={isBlocked}
+                                                       /></Col>
+                                                       
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Observação</Form.Label>
                             <Col sm={10}><Form.Control required  as="textarea" rows={3}
                                                        onChange={e => setObservacao(e.target.value)}
-                                                       value={observacao}/></Col>
+                                                       value={observacao}
+                                                       disabled={isBlocked}
+                                                       /></Col>
+                                                       
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Tipo de Despesa</Form.Label>
                 <Col sm={8}>
-                    <Form.Control as="select" value={tipoDespesa} onChange={(e) => setTipoDespesa(e.target.value)}>
-                        <option value="">Selecione um tipo de despesa...</option>
+                    <Form.Control as="select" value={tipoDespesa} onChange={(e) => setTipoDespesa(e.target.value)} disabled={isBlocked}>
+                        <option value="">Selecione um tipo de despesa...</option> 
                         {Object.keys(enums.DespesaEnum).map((key) => (
                             <option key={key} value={key}>{enums.DespesaEnum[key]}</option>
                         ))}
@@ -349,6 +362,7 @@ export default function OrcamentoModal(props) {
                             placeholder="Valor da despesa"
                             value={valorDespesa}
                             onChange={(e) => setValorDespesa(e.target.value)}
+                            disabled={isBlocked}
                         />
                     </Col>
                 </Form.Group>
@@ -375,7 +389,7 @@ export default function OrcamentoModal(props) {
             <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Desconto</Form.Label>
                     <Col sm={10}><Form.Control  type="number" min="0" placeholder="Valor do desconto"
-                                               value={descontoServico} onChange={handleDescontoChange}/></Col>
+                                               value={descontoServico} onChange={handleDescontoChange} disabled={isBlocked}/></Col>
                 </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Preço Total</Form.Label>

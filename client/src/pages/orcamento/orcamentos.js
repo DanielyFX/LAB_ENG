@@ -33,6 +33,7 @@ function OrcamentoBox(props) {
         <div className="tecnico"> {/*verificar o css depois*/}
             <p key={`${orcamento._id}`}>ID: {orcamento._id}</p><hr/>
             <p key={`${orcamento._id}_chamado`}>CHAMADO: {orcamento.chamado.descricao}</p><hr/>
+            <p key={`${orcamento._id}_empresa`}>CONTRATANTE: {orcamento.chamado.cliente.nome}</p><hr/>
             <p key={`${orcamento._id}_tecnicoo`}>TECNICO: {orcamento.tecnico.nome}</p><hr/>
             <p key={`${orcamento._id}_servicos`}><strong>SERVIÇOS:</strong></p>
             <ul style={{ listStyleType: "circle", paddingLeft: "20px" }}>

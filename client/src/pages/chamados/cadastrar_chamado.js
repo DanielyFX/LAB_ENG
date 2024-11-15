@@ -7,7 +7,8 @@ import { ButtonGroup } from "react-bootstrap";
 import {useState, useEffect} from "react";
 import {useLoaderData} from "react-router-dom";
 import { Table } from 'react-bootstrap';
-import enums  from "../../utils/enums";
+import Alert from 'react-bootstrap/Alert';
+import enums from '../../utils/enums.json';
 
 function limpa_formulário_cep() {
     document.getElementById('rua').value = "";
