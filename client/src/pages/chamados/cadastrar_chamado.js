@@ -28,7 +28,7 @@ export default function Cadastrar_chamado() {
 
     
     
-    const atendentes_alfabetico = atendentes.sort((a, b) => {
+    const atendentes_alfabetico = atendentes.filter((a) => a.ativo).sort((a, b) => {
         return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     })
 
