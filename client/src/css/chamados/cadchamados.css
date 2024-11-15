@@ -15,3 +15,12 @@
     /*background-color: lightgray;*/
     border-radius: 15px;
 }
+
+#stsOrcamento,
+#stsChamado {
+    max-width: 160px;
+}
+
+#dataPrevisao {
+    max-width: 200px;
+}
