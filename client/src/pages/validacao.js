@@ -565,7 +565,27 @@ export class DataContrato extends Data {
             const convertedDate = new Date(Date.parse(date));
             if(!Validar.isNotEmptyStr(date)){
                 errorMsgSetter("Obrigatória!");
-            }else if((today - convertedDate) < 0){
+            }else if((today - convertedDate) <= 0){
+                errorMsgSetter("Inválida!");
+            }else{
+                valueSetter(date);
+                errorMsgSetter("");
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class DataPrevisaoAtendimento extends Data {
+    
+    static handleOnChange(date, valueSetter, errorMsgSetter){
+        try{
+            const today = new Date();
+            const convertedDate = new Date(Date.parse(date));
+            if(!Validar.isNotEmptyStr(date)){
+                errorMsgSetter("Obrigatória!");
+            }else if((today - convertedDate) >= 0){
                 errorMsgSetter("Inválida!");
             }else{
                 valueSetter(date);
@@ -699,6 +719,7 @@ export class Validar {
     static CEP = CEP;
     static Data = Data;
     static NonEmptyField = NonEmptyField;
+    static DataPrevisaoAtendimento = DataPrevisaoAtendimento;
     
     static isCaracterDeControle(key){
         return key === "Backspace"
