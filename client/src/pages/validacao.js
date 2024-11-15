@@ -301,6 +301,12 @@ export class TelefoneFixo {
                     .replaceAll("-", "");
     }
 
+    static getFormated(telefone){
+        if(this.isFormatValid(telefone))
+            return `(${telefone.substr(0,2)})${telefone.substr(2,4)}-${telefone.substr(6,4)}`;
+        return "invalido";
+    }
+
     static handleKeyDown(event){
         try{
             if(Validar.isCaracterDeControle(event.key)) return;
@@ -371,6 +377,12 @@ export class TelefoneCelular {
                     .replaceAll("(", "")
                     .replaceAll(")", "")
                     .replaceAll("-", "");
+    }
+
+    static getFormated(telefone){
+        if(this.isFormatValid(telefone))
+            return `(${telefone.substr(0,2)})${telefone.substr(2,5)}-${telefone.substr(7,4)}`;
+        return telefone;
     }
 
     static handleKeyDown(event){
