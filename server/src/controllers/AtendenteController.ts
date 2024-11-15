@@ -58,7 +58,7 @@ class AtendenteController {
             let atendente = await AtendenteModel.findById(atendente_id).exec();
 
             if (atendente === null) 
-                return response.status(404).json({success: false})
+                return response.status(404).json({success: false, find: false});
             
             atendente.set("ativo", false);
 
