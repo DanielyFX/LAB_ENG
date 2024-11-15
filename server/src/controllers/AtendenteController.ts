@@ -55,8 +55,17 @@ class AtendenteController {
     async delete(request: Request, response: Response) {
         const { atendente_id } = request.body;
         try {
-            AtendenteModel.findByIdAndDelete(atendente_id, { useFindAndModify: false }).exec()
-                .finally(() => { return response.status(200).json({ success: true })});
+            let atendente = await AtendenteModel.findById(atendente_id).exec();
+
+            if (atendente === null) 
+                return response.status(404).json({success: false})
+            
+            atendente.set("ativo", false);
+
+            atendente.save().then();
+            return response.status(200).json({success: true});
+            // AtendenteModel.findByIdAndDelete(atendente_id, { useFindAndModify: false }).exec()
+            //     .finally(() => { return response.status(200).json({ success: true })});
         } catch (error) {
             console.error(error);
             return response.status(500).json({success: false});
