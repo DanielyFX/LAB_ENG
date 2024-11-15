@@ -9,6 +9,7 @@ interface Atendente extends Document {
     email: string;
     hash: string;
     salt: string;
+    ativo: boolean;
     dataContrato: Date;
     dataCriacao: Date;
 }
@@ -45,7 +46,11 @@ const AtendenteSchema = new Schema({
     },
     hash: String,
     salt: String,
-    dataContrato: Date
+    dataContrato: Date,
+    ativo: {
+        type: Boolean,
+        default: true
+    }
 });
 
 AtendenteSchema.methods.validarSenha = function (senha: string) {
