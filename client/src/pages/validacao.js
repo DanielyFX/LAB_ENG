@@ -567,6 +567,11 @@ export class Data {
         const today = new Date();
         return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0]
     }
+
+    static getOnlyDateBRFormat(isoDate){
+        const date = new Date(isoDate);
+        return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+    }
 }
 
 export class DataContrato extends Data {
