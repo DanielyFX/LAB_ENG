@@ -6,6 +6,7 @@ import {useState} from "react";
 import {Dropdown, InputGroup, ButtonGroup} from "react-bootstrap";
 import AtendenteModal from "../../components/AtendenteModal";
 import searchIcon from "../../css/Icons";
+import Alert from 'react-bootstrap/Alert';
 import {
     Validar,
     Data,
@@ -17,6 +18,7 @@ import {
 function AtendenteBox(props) {
     const [show, setShow] = useState(false);
     const {atendente} = props;
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
 
     const handleExcluir = (atendente_id) => {
         fetch('http://localhost:3001/inicio/atendentes/deletar', {
@@ -29,10 +31,32 @@ function AtendenteBox(props) {
         })
         .then((resultado) => resultado.json())
         .then((response) => {
-            if (response.success) window.location.reload();
-            else alert("Erro ao deletar atendente");
+            if (response.success){
+                setShowAlert(true);
+                setMsgAlert(`Atendente inativado com sucesso`);
+                setTypeAlert("success");
+                console.log(`Resposta: ${response.success}`);
+                setTimeout(() => {
+                    window.location.reload();  
+                }, 2000);
+            } 
+            else if('find' in response && response.find === false){
+                setShowAlert(true);
+                setMsgAlert(`Atendente não encontrado`);
+                setTypeAlert("info");
+            }else{
+                setShowAlert(true);
+                setMsgAlert(`Não foi possível inativar o atendente`);
+                setTypeAlert("info");
+            }
         })
         .catch((err) => {
+            setShowAlert(true);
+            setTypeAlert('danger');
+            if(err instanceof TypeError && err.message === "Failed to fetch")
+                setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+            else
+                setMsgAlert(`Erro: ${err.message}`);
             console.error(`Erro ao excluir atendente: ${err}`);
         });
     }
@@ -55,6 +79,8 @@ function AtendenteBox(props) {
             <hr/>
             <p key={`${atendente._id}_dataCriacao`}>DATA CRIAÇÃO: {Data.getOnlyDateBRFormat(atendente.dataCriacao)}</p>
             <hr/>
+            <p key={`${atendente._id}_ativo`}>ATIVO: {atendente.ativo ? "SIM" : "NÃO"}</p>
+            <hr/>
 
             <ButtonGroup>
                 <Button onClick={() => {
@@ -64,7 +90,15 @@ function AtendenteBox(props) {
                     handleExcluir(atendente._id)
                 }}>Excluir</Button>
             </ButtonGroup>
-            <AtendenteModal show={show} atendente={atendente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
+            <AtendenteModal 
+                show={show} 
+                atendente={atendente} 
+                onHide={() => setShow(false)} 
+                handleClose={() => setShow(false)}
+                setMsgAlert={setMsgAlert} 
+                setShowAlert={setShowAlert}
+                setTypeAlert={setTypeAlert}
+            />
         </div>
     )
 
@@ -76,6 +110,10 @@ export default function Consultar_Atendentes() {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -104,6 +142,14 @@ export default function Consultar_Atendentes() {
 
     return (
         <div className="body-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <InputGroup className="mb-3">
                 <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
                 <Form.Control  placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
@@ -120,7 +166,7 @@ export default function Consultar_Atendentes() {
                     {dropdown("ord")}
                 </Dropdown>
             </InputGroup>
-            <div id="chamados-main">
+            <div id="chamados-main md-6 lg-6">
                 {
                     atendentes.filter((atendente) => {
                         switch (parametro) {
@@ -165,7 +211,12 @@ export default function Consultar_Atendentes() {
                         }
                     }).map((atendente) => {
                         return (
-                            <AtendenteBox atendente={atendente} />
+                            <AtendenteBox 
+                                atendente={atendente} 
+                                setShowAlert={setShowAlert}
+                                setTypeAlert={setTypeAlert}
+                                setMsgAlert={setMsgAlert}    
+                            />
                         );
                     })
                 }

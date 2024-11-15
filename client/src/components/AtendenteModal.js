@@ -12,6 +12,7 @@ export default function AtendenteModal(props) {
 
     const {handleClose, atendente, onHide} = props;
     const [ativo, setAtivo] = useState(atendente.ativo);
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
     
     let dados_novos = {
         "_id": atendente._id,
@@ -32,10 +33,12 @@ export default function AtendenteModal(props) {
                 alterados.push(propriedade);
             }
         }
+
         let body = {
             alterados: alterados,
             dados_novos: dados_novos
         }
+
         fetch('http://localhost:3001/inicio/atendentes/editar', {
             method: 'POST',
             headers: {
@@ -44,8 +47,29 @@ export default function AtendenteModal(props) {
             body: JSON.stringify(body),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {/*console.log(response)*/})
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success){
+                setShowAlert(true);
+                setMsgAlert(`Alterações ${atendente.nome} realizadas com sucesso`);
+                setTypeAlert("success");
+                console.log(`Resposta: ${response.success}`);
+                window.location.reload();  
+
+            }else{
+                setShowAlert(true);
+                setMsgAlert(`Não foi possível alterar o(a) atendente`);
+                setTypeAlert("info");
+            }
+        })
+        .catch((err) =>{
+            setShowAlert(true);
+            setTypeAlert('danger');
+            if(err instanceof TypeError && err.message === "Failed to fetch")
+                setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+            else
+                setMsgAlert(`Erro: ${err.message}`);
+        })
         setTimeout(() => {
             onHide()
         }, 500);
