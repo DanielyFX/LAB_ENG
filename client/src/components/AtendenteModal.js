@@ -50,12 +50,14 @@ export default function AtendenteModal(props) {
         .then((resultado) => resultado.json())
         .then((response) => {
             if(response.success){
+                handleClose();
                 setShowAlert(true);
                 setMsgAlert(`Alterações ${atendente.nome} realizadas com sucesso`);
                 setTypeAlert("success");
                 console.log(`Resposta: ${response.success}`);
-                window.location.reload();  
-
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000); 
             }else{
                 setShowAlert(true);
                 setMsgAlert(`Não foi possível alterar o(a) atendente`);
