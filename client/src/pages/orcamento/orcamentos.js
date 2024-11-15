@@ -131,7 +131,9 @@ export default function Consultar_orcamento() {
             </InputGroup>
             <div id="orcamentos-main">
                 {
-                    orcamentos.filter((orcamento) => {
+                    orcamentos
+                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status != "CANCELADO")
+                        .filter((orcamento) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in orcamento) {

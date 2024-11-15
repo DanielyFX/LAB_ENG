@@ -83,7 +83,7 @@ export default function Orcamento_chamado() {
 
     const handleChamadoChange = (e) => {
         const chamadoId = e.target.value;
-        const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId && chamado.bd_status !== "INATIVO");
+        const chamadoSelecionado = chamados.find((chamado) => chamado._id === chamadoId && chamado.bd_status !== "INATIVO" && chamado.status !== "CANCELADO");
         setChamado(chamadoSelecionado);
     
         if (chamadoSelecionado) {
@@ -255,7 +255,7 @@ export default function Orcamento_chamado() {
                     <Form.Control required as="select" onChange={handleChamadoChange} value={chamado?._id || ""}>
                         <option value="" disabled>Selecione...</option>
                         {chamados
-                            .filter((chamado) => chamado.bd_status !== "INATIVO")
+                            .filter((chamado) => chamado.bd_status !== "INATIVO" && chamado.status !== "CANCELADO" )
                             .map(chamado => (
                             <option key={chamado._id} value={chamado._id}>{chamado.descricao}</option>
                         ))}

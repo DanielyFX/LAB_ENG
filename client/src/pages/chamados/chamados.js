@@ -39,7 +39,7 @@ function ChamadoBox(props) {
             <p key={`${chamado._id}_tecnico`}>
             {chamado.tecnico && chamado.tecnico.nome ? `TECNICO: ${chamado.tecnico.nome}` : "TECNICO: Não atribuído"}
             </p><hr/>
-            <p key={`${chamado._id}_enderecoServico`}>ENDEREÇO: {chamado.rua}, {chamado.numero}, {chamado.bairro}, {chamado.cidade}`</p><hr/>
+            <p key={`${chamado._id}_enderecoServico`}>ENDEREÇO: {chamado.rua}, {chamado.numero}, {chamado.bairro}, {chamado.cidade}</p><hr/>
             <p key={`${chamado._id}_orcamento`}>ORÇAMENTO: {orcamento ? `${orcamento.situacao}` : enums.SituacaoEnum.nao_realizado}</p><hr/>
             <p key={`${chamado._id}_documento`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>

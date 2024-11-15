@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Toast from 'react-bootstrap/Toast';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -67,6 +68,9 @@ function ChamadoModal(props) {
         return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     });
 
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+
     const [documento, setDocumento] = useState(chamado.cliente.documento);
     const [clienteCampo, setClienteCampo] = useState(chamado.cliente.nome);
     const [clienteObj, setClienteObj] = useState(chamado.cliente._id);
@@ -98,6 +102,10 @@ function ChamadoModal(props) {
 
     console.log("Servicos no chamado", servicosSelecionados);
     useEffect(() => {
+        setToastMessage("");
+        setShowToast(false);
+        setMensagem("");
+        setSucesso(false);
         setDocumento(chamado.cliente.documento || '');
         setClienteCampo(chamado.cliente.nome || '');
         setClienteObj(chamado.cliente._id || '');
@@ -119,7 +127,7 @@ function ChamadoModal(props) {
         const totalInicial = chamado.servicos.reduce((acc, item) => acc + item.preco, 0);
         setTotalServicos(totalInicial);
 
-    }, [chamado]);
+    }, [chamado, props.show]);
 
     useEffect(() => {
         const totalAtualizado = servicosSelecionados.reduce((acc, item) => acc + item.preco, 0);
@@ -149,7 +157,7 @@ function ChamadoModal(props) {
             return;
         }
         
-        const servicoSelecionado = servicos.find(s => s.nome === servico);
+        const servicoSelecionado = servicos.find(s => s.nome === servico && s.db_status != "INATIVO");
         if (servicoSelecionado) {
             const novoServico = { _id: servicoSelecionado._id, nome: servicoSelecionado.nome, preco: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];
@@ -204,7 +212,7 @@ function ChamadoModal(props) {
     };
 
     const handleDocumento = () => {
-        let cliente_pesquisa = clientes.find(cliente => cliente.documento === documento)
+        let cliente_pesquisa = clientes.find(cliente => cliente.documento === documento && cliente.db_status !== "INATIVO")
         if (cliente_pesquisa === undefined) setClienteCampo("Cliente não encontrado")
         else {
             setClienteObj(cliente_pesquisa._id)
@@ -216,25 +224,32 @@ function ChamadoModal(props) {
         if (chamado.status !== enums.StatusChamadoEnum.cancelado) {
             setStatusChamado(enums.StatusChamadoEnum.cancelado);
             setMensagem("Status alterado para 'Cancelado' com sucesso.");
+            setToastMessage("Chamado cancelado com sucesso!");
             setSucesso(true);
         } else {
             setMensagem("Este chamado já está cancelado.");
+            setToastMessage("Este chamado já está cancelado.")
             setSucesso(false);
         }
+        setShowToast(true);
     };
    // Função para atualizar o status do chamado
    const handleAceitarChamado = () => {
         if (statusChamadoOriginal === enums.StatusChamadoEnum.nao_iniciado) {
             setStatusChamado(enums.StatusChamadoEnum.em_analise);
             setMensagem("Status alterado para 'Em Análise' com sucesso.");
+            setToastMessage("Status alterado para 'Em Análise' com sucesso.")
             setSucesso(true);
         } else if (statusChamadoOriginal === enums.StatusChamadoEnum.em_analise) {
             setMensagem("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
+            setToastMessage("O orçamento ainda não foi feito e aceito. Não é possível avançar.")
             setSucesso(false);
         } else {
             setMensagem("Este chamado não pode ser alterado para outro status.");
+            setToastMessage("Este chamado não pode ser alterado para outro status.").
             setSucesso(false);
         }
+        setShowToast(true);
     };
 
 
@@ -419,7 +434,9 @@ function ChamadoModal(props) {
                             <Col sm={8}>
                                 <Form.Control as="select" value={servico} onChange={(e) => setServico(e.target.value)}>
                                     <option value="">Selecione um serviço...</option>
-                                    {servicos.map((s) => (
+                                    {servicos
+                                        .filter((s) => s.bd_status !== "INATIVO")
+                                        .map((s) => (
                                         <option key={s.id} value={s.nome}>{s.nome}</option>
                                     ))}
                                 </Form.Control>
@@ -461,7 +478,8 @@ function ChamadoModal(props) {
                             <Button variant="secondary" onClick={handleCancelarChamado}>Cancelar Chamado</Button>
                             <Button variant="primary" type='submit'>Salvar</Button>
                             {/* Botão para aceitar o chamado */}
-                            <Button variant="info" onClick={handleAceitarChamado}>Aceitar Chamado</Button>
+                            {chamado.status === "EM ABERTO" && (
+                                <Button variant="info" onClick={handleAceitarChamado}>Aceitar Chamado</Button>)}
                         </Modal.Footer>
                     </Form>
                 </Modal> 
@@ -479,6 +497,24 @@ function ChamadoModal(props) {
             <Button variant="primary" onClick={handleConfirmarAlteracoes}>Confirmar</Button>
         </Modal.Footer>
     </Modal>
+    {/* Toast de feedback */}
+    <Toast
+                onClose={() => setShowToast(false)}
+                show={showToast}
+                delay={3000} // O toast ficará visível por 3 segundos
+                autohide
+                style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)', // Centraliza o toast
+                    zIndex: 1060,
+                    color: 'blue'
+                }}
+            >
+                <Toast.Body>{toastMessage}</Toast.Body>
+            </Toast>
+        
     </>
     );
 }
