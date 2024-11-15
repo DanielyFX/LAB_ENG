@@ -1,4 +1,5 @@
 // import "../../css/orcamento/orcamentos.css"
+import "../../css/chamados/chamados.css"
 import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -126,13 +127,13 @@ export default function Consultar_orcamento() {
                     <Dropdown.Toggle variant="info">
                         Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
-                    {dropdown("ordenacao")}
+                    {dropdown("ord")}
                 </Dropdown>
             </InputGroup>
-            <div id="orcamentos-main">
+            <div id="chamados-main">
                 {
                     orcamentos
-                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status != "CANCELADO")
+                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status != "CANCELADO" && orcamento.situacao != "REPROVADO")
                         .filter((orcamento) => {
                         switch (parametro) {
                             case "todos":

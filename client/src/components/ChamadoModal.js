@@ -62,7 +62,8 @@ function pesquisacep(valor) {
 
 
 function ChamadoModal(props) {
-    const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, onHide} = props;
+    const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, orcamento, onHide} = props;
+    console.log("Orçamento", orcamento);
     //console.log("Servicos no modal do chamado", servicos);
     const atendentes_alfabetico = atendentes.sort((a, b) => {
         return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
@@ -84,6 +85,7 @@ function ChamadoModal(props) {
     const [prioridade, setPrioridade] = useState(chamado.prioridade);
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
     const [statusChamadoOriginal, setStatusChamadoOriginal] = useState(chamado.status);
+    const [statusOrcamentoOriginal, setStatusOrcamentooOriginal] = useState(orcamento?.situacao);
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
@@ -252,6 +254,20 @@ function ChamadoModal(props) {
         setShowToast(true);
     };
 
+    const handleIniciarChamado = () => {
+        if (statusOrcamentoOriginal === enums.SituacaoEnum.aprovado) {
+            setStatusChamado(enums.StatusChamadoEnum.em_progresso);
+            setMensagem("Status alterado para 'Em progresso' com sucesso.");
+            setToastMessage("Status alterado para 'Em progresso' com sucesso.");
+            setSucesso(true);
+        } else {
+            setMensagem("Este chamado não pode ser alterado para outro status.");
+            setToastMessage("Este chamado não pode ser alterado para outro status.");
+            setSucesso(false);
+        }
+        setShowToast(true);
+    };
+
 
     const calcularPrevisaoAtendimento = (prioridade) => {
         const hoje = new Date(); // Data atual
@@ -347,10 +363,12 @@ function ChamadoModal(props) {
             window.location.reload();
         }, 100);
         setConfirmacaoAberta(false); // Fecha o modal de confirmação
+        window.location.reload();
     };
 
     const cancelarAlteracoes = () => {
         setConfirmacaoAberta(false); // Fecha o modal sem salvar as alterações
+        window.location.reload();
     };
 
     return (
@@ -478,8 +496,10 @@ function ChamadoModal(props) {
                             <Button variant="secondary" onClick={handleCancelarChamado}>Cancelar Chamado</Button>
                             <Button variant="primary" type='submit'>Salvar</Button>
                             {/* Botão para aceitar o chamado */}
-                            {chamado.status === "EM ABERTO" && (
+                            {chamado.status === "NÃO INICIADO" && (
                                 <Button variant="info" onClick={handleAceitarChamado}>Aceitar Chamado</Button>)}
+                            {orcamento?.situacao === "APROVADO" && chamado.status === "EM ANÁLISE" && (
+                                <Button variant="info" onClick={handleIniciarChamado}>Iniciar</Button>)}
                         </Modal.Footer>
                     </Form>
                 </Modal> 

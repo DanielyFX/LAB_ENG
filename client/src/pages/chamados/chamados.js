@@ -41,6 +41,23 @@ function ChamadoBox(props) {
             </p><hr/>
             <p key={`${chamado._id}_enderecoServico`}>ENDEREÇO: {chamado.rua}, {chamado.numero}, {chamado.bairro}, {chamado.cidade}</p><hr/>
             <p key={`${chamado._id}_orcamento`}>ORÇAMENTO: {orcamento ? `${orcamento.situacao}` : enums.SituacaoEnum.nao_realizado}</p><hr/>
+            {orcamento?.situacao === "REPROVADO" && (
+                <>
+                    <p 
+                        key={`${chamado._id}_orcamento`} 
+                        style={{
+                            border: "1px solid black",
+                            padding: "10px",
+                            borderRadius: "5px",
+                            margin: "10px 0",
+                            color: "red"
+                        }}
+                    >
+                        <strong>OBSERVAÇÃO DA REPROVAÇÃO:</strong> <p>{orcamento.observacao}</p>
+                    </p>
+                    <hr />
+                </>
+            )}
             <p key={`${chamado._id}_documento`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
             <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
@@ -80,7 +97,7 @@ function ChamadoBox(props) {
                     <Button variant="danger" onClick={() => handleInativar(chamado._id)}>Inativar</Button>
                 )}
             </ButtonGroup>
-            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} servicos={servicos} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} servicos={servicos} orcamento={orcamento} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
             
         </div>
     );

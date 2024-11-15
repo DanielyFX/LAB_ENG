@@ -120,9 +120,6 @@ function ClienteModal(props) {
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={onHide}>
-                            Cancelar
-                        </Button>
                         <Button variant="primary" type='submit'>
                             Salvar
                         </Button>

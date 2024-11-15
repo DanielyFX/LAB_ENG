@@ -247,10 +247,12 @@ export default function OrcamentoModal(props) {
             window.location.reload();
         }, 100);
         setConfirmacaoAberta(false);
+        window.location.reload();
     };
 
     const cancelarAlteracoes = () => {
         setConfirmacaoAberta(false); // Fecha o modal sem salvar as alterações
+        window.location.reload();
     };
 
 
@@ -294,7 +296,7 @@ export default function OrcamentoModal(props) {
                             <Form.Label column sm={2}>Tempo Execução</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
                                                        onChange={e => setTempoExecucao(e.target.value)}
-                                                       defaultValue={tempoExecucao}
+                                                       value={tempoExecucao}
                                                        disabled
                                                        />
                                                     </Col>
@@ -303,27 +305,27 @@ export default function OrcamentoModal(props) {
                             <Form.Label column sm={2}>Atendimento</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
                                                        onChange={e => setAtendimento(e.target.value)}
-                                                       defaultValue={atendimento}
+                                                       value={atendimento}
                                                        disabled/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Situação</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
                                                        onChange={e => setSituacaoOrcamento(e.target.value)}
-                                                       defaultValue={situacaoOrcamento}
+                                                       value={situacaoOrcamento}
                                                        disabled/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Endereço</Form.Label>
                             <Col sm={10}><Form.Control required type="text"
                                                        onChange={e => setEnderecoServico(e.target.value)}
-                                                       defaultValue={enderecoServico}/></Col>
+                                                       value={enderecoServico}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Observação</Form.Label>
                             <Col sm={10}><Form.Control required  as="textarea" rows={3}
                                                        onChange={e => setObservacao(e.target.value)}
-                                                       defaultValue={observacao}/></Col>
+                                                       value={observacao}/></Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Tipo de Despesa</Form.Label>
