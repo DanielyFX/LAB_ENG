@@ -459,6 +459,47 @@ export class NomePessoa {
     }
 }
 
+export class NomeServiço {
+    static #nomeReg = /^[\w\W\d]{3,}[\w\d\s]*$/i;
+    static #nomeKeys = /[\w\W\d\s]/i;
+
+    static isValid(nome){
+        return this.#nomeReg.test(nome);
+    }
+
+    static isValidKey(key){
+        return this.#nomeKeys.test(key);
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(nome, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(nome)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(!this.isValid(nome)){
+                errorMsgSetter("Pelo menos 3 letras");
+            }else{
+                errorMsgSetter("");
+                valueSetter(nome);
+            }
+        }catch(err){
+            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
 export class Email {
     static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
     static #emailKeys = /\w|\.|-|@|\S/;
@@ -737,6 +778,7 @@ export class Validar {
     static Data = Data;
     static NonEmptyField = NonEmptyField;
     static DataPrevisaoAtendimento = DataPrevisaoAtendimento;
+    static NomeServiço = NomeServiço
     
     static isCaracterDeControle(key){
         return key === "Backspace"
