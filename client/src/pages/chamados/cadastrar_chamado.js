@@ -227,8 +227,12 @@ export default function Cadastrar_chamado() {
         .then((resultado) => resultado.json())
         .then((response) => {
             if(response.success) {
-                alert("Chamado cadastrado com sucesso!")
-                window.location.reload()
+                setShowAlert(true);
+                setMsgAlert("Chamado cadastrado com sucesso!");
+                setTypeAlert("success");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
                 alert("Erro ao cadastrar o chamado!")
             }
@@ -238,6 +242,14 @@ export default function Cadastrar_chamado() {
 
     return (
         <div id="cadchamado-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <Form id="cadchamado-form" onSubmit={handleSubmit}>
                 
                 <Form.Group as={Row} className="mb-3">
@@ -332,6 +344,7 @@ export default function Cadastrar_chamado() {
                         </Form.Control>
                     </Col>
                 </Form.Group>
+                
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Tecnico</Form.Label> {/*Deve trazer todos os técnicos cadastrados, em ordem alfabetica  */}
                     <Col sm={10}>
@@ -348,6 +361,7 @@ export default function Cadastrar_chamado() {
                         </Form.Control>
                     </Col>
                 </Form.Group>
+                
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Serviço</Form.Label>
                     <Col sm={8}>

@@ -6,6 +6,13 @@ import {useState} from "react";
 import {Dropdown, InputGroup, ButtonGroup} from "react-bootstrap";
 import AtendenteModal from "../../components/AtendenteModal";
 import searchIcon from "../../css/Icons";
+import {
+    Validar,
+    Data,
+    CadastroPessoaFisica as CPF,
+    TelefoneFixo as TelFixo,
+    TelefoneCelular as TelCel
+} from '../validacao';
 
 function AtendenteBox(props) {
     const [show, setShow] = useState(false);
@@ -33,17 +40,17 @@ function AtendenteBox(props) {
             <hr/>
             <p key={`${atendente._id}_nome`}>NOME: {atendente.nome}</p>
             <hr/>
-            <p key={`${atendente._id}_cpf`}>CPF: {atendente.cpf}</p>
+            <p key={`${atendente._id}_cpf`}>CPF: {CPF.getFormated(atendente.cpf)}</p>
             <hr/>
-            <p key={`${atendente._id}_telefone`}>TELEFONE: {atendente.telefone}</p>
+            <p key={`${atendente._id}_telefone`}>TELEFONE: {TelFixo.getFormated(atendente.telefone)}</p>
             <hr/>
-            <p key={`${atendente._id}_celular`}>CELULAR: {atendente.celular}</p>
+            <p key={`${atendente._id}_celular`}>CELULAR: {TelCel.getFormated(atendente.celular)}</p>
             <hr/>
             <p key={`${atendente._id}_email`}>EMAIL: {atendente.email}</p>
             <hr/>
-            <p key={`${atendente._id}_dataContrato`}>DATA CONTRATO: {atendente.dataContrato}</p>
+            <p key={`${atendente._id}_dataContrato`}>DATA CONTRATO: {Data.getOnlyDateBRFormat(atendente.dataContrato)}</p>
             <hr/>
-            <p key={`${atendente._id}_dataCriacao`}>DATA CRIAÇÃO: {atendente.dataCriacao}</p>
+            <p key={`${atendente._id}_dataCriacao`}>DATA CRIAÇÃO: {Data.getOnlyDateBRFormat(atendente.dataCriacao)}</p>
             <hr/>
 
             <ButtonGroup>

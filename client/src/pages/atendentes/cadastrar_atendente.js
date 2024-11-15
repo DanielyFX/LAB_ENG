@@ -2,15 +2,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import '../../css/atendentes/cadatendentes.css'
+import Alert from 'react-bootstrap/Alert';
+import '../../css/atendentes/cadatendentes.css';
 import { ButtonGroup } from 'react-bootstrap';
-import {useState} from "react";
-import {
-    CadastroPessoaFisica as CPF,
-    TelefoneFixo as TelFixo,
-    TelefoneCelular as TelCel,
-    Validar
-} from '../validacao'
+import { useState } from "react";
+import { Validar } from '../validacao';
 
 export default function Cadastrar_atendente() {
 
@@ -30,139 +26,10 @@ export default function Cadastrar_atendente() {
     const [dataContratoError, setDataContratoError] = useState('');
     const [senhaError, setSenhaError] = useState('');
 
-    //#region HandlingThings
-    const handleKeyDownCpf= (e) => {
-        if(Validar.isCaracterDeControle(e.key)) return;
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
 
-        if(!CPF.isValidKey(e.key)){
-            e.preventDefault();
-        }else if(!CPF.hasNextKey(e.target.value)){
-            e.preventDefault();
-        }else{
-            e.target.value += CPF.getNextFormatKey(e.target.value);
-        }
-    }
-
-    const handleKeyDownTelFixo = (e) => {
-        if(Validar.isCaracterDeControle(e.key)) return;
-
-        if(!TelFixo.isValidKey(e.key)){
-            e.preventDefault();
-        }else if(!TelFixo.hasNextKey(e.target.value)){
-            e.preventDefault();
-        }else{
-            e.target.value += TelFixo.getNextFormatKey(e.target.value);
-        }
-    }
-
-    const handleKeyDownTelCel = (e) => {
-        if(Validar.isCaracterDeControle(e.key)) return;
-
-        if(!TelCel.isValidKey(e.key)){
-            e.preventDefault();
-        }else if(!TelCel.hasNextKey(e.target.value)){
-            e.preventDefault();
-        }else{
-            e.target.value += TelCel.getNextFormatKey(e.target.value);
-        }
-    }
-
-    const handleKeyDownNome = (e) => {
-        if(Validar.isCaracterDeControle(e.key)) return;
-
-        if(!Validar.isNomeKey(e.key)){
-            e.preventDefault();
-        }
-    }
-
-    const handleKeyDownEmail = (e) => {
-        if(Validar.isCaracterDeControle(e.key)) return;
-
-        if(!Validar.isEmailKey(e.key)){
-            e.preventDefault();
-        }
-    }
-
-    //#endregion
-
-    //#region Validating
-    const validarNome = (nome) => {
-        if(Validar.isNome(nome)){
-            setNomeError('');
-            setNome(nome);
-        }else if(Validar.isNotEmptyStr(nome)){
-            setNomeError('Inválido');
-        }else{
-            setNomeError('Obrigatório');
-        }
-    }
-
-    const validarCPF = (cpf) => {
-        if(cpf === ""){
-            setCpfError("Obrigatório!");
-        }
-        else if(CPF.hasNextKey(cpf)){
-            setCpfError("Incompleto!");
-        //}else if(!CPF.isNumericValid(cpf)){
-          //  setCpfError("Inválido!");
-        }else{
-            setCpfError("");
-            setCpf(CPF.getOnlyDigits(cpf));
-        }
-    }
-
-    const validarEmail = (email) => {
-        if(!Validar.isNotEmptyStr(email)){
-            setEmailError("Obrigatório!")
-        }else if(!Validar.isEmail(email)){
-            setEmailError("Inválido.")
-        }else{
-            setEmail(email);
-            setEmailError("");
-        }
-    }
-
-    const validarTel = (telefone) => {
-        if(TelFixo.isFormatValid(telefone)){
-            setTelefone(telefone);
-            setTelefoneError("");
-        }else if(!Validar.isNotEmptyStr(telefone)){
-            setTelefoneError("Obrigatório!");
-        }else{
-            setTelefoneError("Incompleto!");
-        }
-    }
-
-    const validarCel = (celular) => {
-        if(TelCel.isFormatValid(celular)){
-            setCelular(celular);
-            setCelularError("");
-        }else if(!Validar.isNotEmptyStr(celular)){
-            setCelularError("Obrigatório!");
-        }else{
-            setCelularError("Incompleto!");
-        }
-    }
-
-    const validarSenha = (senha) => {
-        if(Validar.isSenha(senha)){
-            setSenhaError("");
-            setSenha(senha);
-        }else if(!Validar.isNotEmptyStr(senha)){
-            setSenhaError("Obrigatório!");
-        }else{
-            setSenhaError("Incompleto!");
-        }
-    }
-
-    const validarDataContrato = (data) => {
-        if(Validar.isNotEmptyStr(data)){
-            setDataContrato(data);
-        }else{
-            setDataContratoError("Obrigatório");
-        }
-    }
-    //#endregion
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -175,7 +42,7 @@ export default function Cadastrar_atendente() {
             && !dataContratoError
             && !senhaError;
         
-        if(tudoValido === false){
+        if(!tudoValido){
             console.error("Formulário inválido:");
             console.error(
                 `nome: ${nomeError}
@@ -207,27 +74,49 @@ export default function Cadastrar_atendente() {
             body: JSON.stringify(dados),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {
-                if(response.success) {
-                    alert("Atendente Cadastrado com Sucesso!")
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success) {
+                setShowAlert(true);
+                setMsgAlert(`Atendente ${dados.nome}: Cadastrado com Sucesso!`);
+                setTypeAlert("success");
+                setTimeout(() => {
                     window.location.reload()
-                } else {
-                    alert(response.message)
-                }
-            })
+                }, 2000);
+            } else {
+                setShowAlert(true);
+                setMsgAlert(`CPF ${Validar.CPF.getFormated(dados.cpf)} já cadastrado!`);
+                setTypeAlert("info");
+            }
+        })
+        .catch((error) => {
+            setShowAlert(true);
+            setTypeAlert("danger");
+            if(error instanceof TypeError && error.message === "Failed to fetch")
+                setMsgAlert(`Erro: Verifique sua conexão com a internet (${error.message}).`);
+            else
+                setMsgAlert(`Erro: ${error.message}`);
+        });
     }
 
     return (
         <div id="cadatendente-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <Form id="cadatendente-form" onSubmit={handleSubmit}>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome Completo</Form.Label>
                     <Col sm={10}>
                         <Form.Control 
                             required 
-                            onChange={(e) => validarNome(e.target.value)} 
-                            onKeyDown={(e) => handleKeyDownNome(e)}
+                            onChange={(e) => Validar.NomePessoa.handleOnChange(e.target.value, setNome, setNomeError)} 
+                            onKeyDown={(e) => Validar.NomePessoa.handleKeyDown(e)}
                             isInvalid={nomeError}
                             type="text"/>
                         <Form.Control.Feedback type="invalid">
@@ -243,8 +132,8 @@ export default function Cadastrar_atendente() {
                             required 
                             placeholder="000.000.000-00" 
                             maxLength={14} 
-                            onChange={(e) => validarCPF(e.target.value)} 
-                            onKeyDown={(e)=> handleKeyDownCpf(e)}
+                            onChange={(e) => Validar.CPF.handleOnChange(e.target.value, setCpf, setCpfError)} 
+                            onKeyDown={(e)=> Validar.CPF.handleKeyDown(e)}
                             isInvalid={cpfError}
                             type="text"
                         />
@@ -261,8 +150,8 @@ export default function Cadastrar_atendente() {
                             required 
                             placeholder="(00) 0000-0000" 
                             maxLength={14} 
-                            onChange={(e) => validarTel(e.target.value)} 
-                            onKeyDown={(e) => handleKeyDownTelFixo(e)}
+                            onChange={(e) => Validar.TelFixo.handleOnChange(e.target.value, setTelefone, setTelefoneError)} 
+                            onKeyDown={(e) => Validar.TelFixo.handleKeyDown(e)}
                             isInvalid={telefoneError}
                             type="text"/>
                         <Form.Control.Feedback type="invalid">
@@ -278,8 +167,8 @@ export default function Cadastrar_atendente() {
                             required 
                             placeholder="(00) 00000-0000" 
                             maxLength={15} 
-                            onChange={(e) => validarCel(e.target.value)} 
-                            onKeyDown={(e) => handleKeyDownTelCel(e)}
+                            onChange={(e) => Validar.TelCel.handleOnChange(e.target.value, setCelular, setCelularError)} 
+                            onKeyDown={(e) => Validar.TelCel.handleKeyDown(e)}
                             isInvalid={celularError}
                             type="text"/>
                         <Form.Control.Feedback type="invalid">
@@ -293,8 +182,8 @@ export default function Cadastrar_atendente() {
                         <Form.Control  
                             required  
                             placeholder="exemplo@email.com" 
-                            onChange={(e) => validarEmail(e.target.value)}
-                            onKeyDown={(e) => handleKeyDownEmail(e)}
+                            onChange={(e) => Validar.Email.handleOnChange(e.target.value, setEmail, setEmailError)}
+                            onKeyDown={(e) => Validar.Email.handleKeyDown(e)}
                             isInvalid={emailError}
                             type="email"
                         />
@@ -309,7 +198,7 @@ export default function Cadastrar_atendente() {
                         <Form.Control 
                             required 
                             maxLength={8} 
-                            onChange={(e) => validarSenha(e.target.value)}
+                            onChange={(e) => Validar.Senha.handleOnChange(e.target.value, setSenha, setSenhaError)}
                             isInvalid={senhaError}
                             type="password" 
                         />
@@ -323,8 +212,9 @@ export default function Cadastrar_atendente() {
                     <Col sm={10}>
                         <Form.Control 
                             required 
-                            onChange={(e) => validarDataContrato(e.target.value)}
+                            onChange={(e) => Validar.DataContrato.handleOnChange(e.target.value, setDataContrato, setDataContratoError)}
                             isInvalid={dataContratoError}
+                            max={Validar.DataContrato.TodayHTMLDatetimeLocalFormat} 
                             type="datetime-local"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -337,7 +227,6 @@ export default function Cadastrar_atendente() {
                     <Button variant="primary" type="submit">Cadastrar</Button>
                     <Button variant="secondary" href="/inicio">Cancelar</Button>
                 </ButtonGroup>
-               
             </Form>
         </div>
     )
