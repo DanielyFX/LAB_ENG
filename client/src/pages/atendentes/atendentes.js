@@ -27,11 +27,14 @@ function AtendenteBox(props) {
             mode: "cors",
             body: JSON.stringify({atendente_id})
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {
-                if (response.success) window.location.reload();
-                else alert("Erro ao deletar atendente");
-            })
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if (response.success) window.location.reload();
+            else alert("Erro ao deletar atendente");
+        })
+        .catch((err) => {
+            console.error(`Erro ao excluir atendente: ${err}`);
+        });
     }
 
     return (
