@@ -92,6 +92,9 @@ export default function Cadastrar_chamado() {
     const [servicosSelecionados, setServicosSelecionados] = useState([]);
     const [totalServicos, setTotalServicos] = useState(0);
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
 
     const [descricao, setDescricao] = useState('');
     const [prioridade, setPrioridade] = useState('Selecione...');
