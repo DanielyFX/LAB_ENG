@@ -3,18 +3,24 @@ import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import ToggleButton  from "react-bootstrap/ToggleButton";
+import { ButtonGroup } from "react-bootstrap";
+import { useState } from 'react';
+
 
 export default function AtendenteModal(props) {
 
     const {handleClose, atendente, onHide} = props;
-
+    const [ativo, setAtivo] = useState(atendente.ativo);
+    
     let dados_novos = {
         "_id": atendente._id,
         "nome": atendente.nome,
         "telefone": atendente.telefone,
         "celular": atendente.celular,
         "dataContrato": atendente.dataContrato,
-        "email": atendente.email
+        "email": atendente.email,
+        "ativo": ativo
     }
 
     const handleSubmit = (e) =>{
@@ -97,6 +103,28 @@ export default function AtendenteModal(props) {
                             <Col sm={10}><Form.Control type="date"
                                                        defaultValue={new Date(atendente.dataContrato).toISOString().substring(0, 10)}
                                                        onChange={(e) => dados_novos.dataContrato = e.target.value}/></Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb=3">
+                            <ButtonGroup>
+                                <ToggleButton
+                                    key="ativo" 
+                                    type='radio' 
+                                    variant={ativo?"primary":"secondary"}
+                                    checked={ativo}   
+                                    onClick={() => setAtivo(true)}
+                                >
+                                    ATIVO
+                                </ToggleButton>
+                                <ToggleButton
+                                    key="inativo" 
+                                    type='radio' 
+                                    variant={(!ativo)?"primary":"secondary"}
+                                    checked={!ativo}   
+                                    onClick={() => setAtivo(false)}
+                                >
+                                    INATIVO
+                                </ToggleButton>
+                            </ButtonGroup>
                         </Form.Group>
 
                     </Modal.Body>
