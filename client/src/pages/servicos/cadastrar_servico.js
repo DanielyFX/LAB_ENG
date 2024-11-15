@@ -6,6 +6,7 @@ import '../../css/servicos/cadservicos.css'
 import { ButtonGroup } from "react-bootstrap";
 import {useState} from "react";
 import Alert from 'react-bootstrap/Alert';
+import { Validar } from "../validacao";
 
 export default function Cadastrar_servico() {
 
@@ -13,6 +14,8 @@ export default function Cadastrar_servico() {
     const [tipo, setTipo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [preco, setPreco] = useState('');
+
+    const [nomeError, setNomeError] = useState('');
 
     const [showAlert, setShowAlert] = useState(false);
     const [msgAlert, setMsgAlert] = useState('');
@@ -50,7 +53,9 @@ export default function Cadastrar_servico() {
                 setShowAlert(true);
                 setMsgAlert(`Serviço ${dados.nome}: Cadastrado com Sucesso!`);
                 setTypeAlert("success");
-                window.location.reload()
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
                 setShowAlert(true);
                 setMsgAlert(`Erro ${response.message || "Erro desconhecido ao cadastrar o serviço."}`);
@@ -90,8 +95,13 @@ export default function Cadastrar_servico() {
                         <Form.Control 
                             required 
                             type="text"
-                            onChange={(e) => setNome(e.target.value)}
+                            isInvalid={nomeError}
+                            onKeyDown={(e) => Validar.NomeServiço.handleKeyDown(e)}
+                            onChange={(e) => Validar.NomeServiço.handleOnChange(e.target.value, setNome, setNomeError)}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            {nomeError}
+                        </Form.Control.Feedback>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
