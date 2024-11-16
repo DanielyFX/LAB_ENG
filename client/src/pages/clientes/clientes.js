@@ -11,21 +11,21 @@ function ClienteBox(props) {
     const [show, setShow] = useState(false)
     const {cliente} = props;
 
-    const handleExcluir = (cliente_id) => {
-        fetch('http://localhost:3001/inicio/clientes/deletar', {
-            method: 'DELETE',
+    const handleInativar = (cliente_id) => {
+        fetch('http://localhost:3001/inicio/clientes/inativar', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             mode: "cors",
             body: JSON.stringify({cliente_id})
         })
-        .then((resultado) => resultado.json())
-        .then((response) => {
-            if (response.success) window.location.reload();
-            else alert("Erro ao deletar cliente.");
-        })
-    }
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if (response.success) window.location.reload();
+                else alert("Erro ao inativar Cliente");
+            })
+    };
 
     return (
         <div className="tecnico">
@@ -43,9 +43,9 @@ function ClienteBox(props) {
             <p key={`${cliente._id}_dataCriacao`}>DATA CRIAÇÃO: {cliente.dataCriacao}</p><hr/>
             <ButtonGroup>
                 <Button onClick={() => {setShow(true)}}>Editar</Button>
-                <Button variant="danger" onClick={() => {
-                    handleExcluir(cliente._id)
-                }}>Excluir</Button>
+                {cliente.bd_status !== "INATIVO" && (
+                    <Button variant="danger" onClick={() => handleInativar(cliente._id)}>Inativar</Button>
+                )}
             </ButtonGroup>
             <ClienteModal show={show} cliente={cliente} onHide={() => setShow(false)} handleClose={() => setShow(false)}/>
         </div>
@@ -109,8 +109,9 @@ export default function Consultar_Clientes() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {clientes.length > 0 &&
-                    clientes.filter((cliente) => {
+                {clientes.length > 0 && clientes
+                    .filter((cliente) => cliente.bd_status != "INATIVO")
+                    .filter((cliente) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in cliente) {

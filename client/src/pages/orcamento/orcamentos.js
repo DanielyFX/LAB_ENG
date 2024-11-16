@@ -1,4 +1,5 @@
 // import "../../css/orcamento/orcamentos.css"
+import "../../css/chamados/chamados.css"
 import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -10,6 +11,7 @@ import searchIcon from "../../css/Icons";
 function OrcamentoBox(props) {
     const [show, setShow] = useState(false)
     const {orcamento, tecnicos, chamados, servicos} = props
+    //console.log("Orcamento unico", orcamento);
 
     const handleExcluir = (orcamento_id) => {
         fetch('http://localhost:3001/inicio/orcamentos/deletar', {
@@ -28,13 +30,31 @@ function OrcamentoBox(props) {
     }
 
     return (
-        <div className="tecnico">
+        <div className="tecnico"> {/*verificar o css depois*/}
             <p key={`${orcamento._id}`}>ID: {orcamento._id}</p><hr/>
             <p key={`${orcamento._id}_chamado`}>CHAMADO: {orcamento.chamado.descricao}</p><hr/>
+            <p key={`${orcamento._id}_empresa`}>CONTRATANTE: {orcamento.chamado.cliente.nome}</p><hr/>
             <p key={`${orcamento._id}_tecnicoo`}>TECNICO: {orcamento.tecnico.nome}</p><hr/>
-            <p key={`${orcamento._id}_servico`}>SERVICO: {orcamento.servico.nome}</p><hr/>
+            <p key={`${orcamento._id}_servicos`}><strong>SERVIÇOS:</strong></p>
+            <ul style={{ listStyleType: "circle", paddingLeft: "20px" }}>
+                {orcamento.chamado.servicos.map((servico, index) => (
+                    <li key={index} style={{ margin: "5px 0" }}>
+                        <span>{servico.nome}</span> - <span>R${servico.preco.toFixed(2)}</span> {/* Formata o valor com duas casas decimais */}
+                    </li>
+                ))}
+            </ul>
+            <p><strong>Total de Serviços:</strong> R${orcamento.chamado.servicos.reduce((total, servico) => total + servico.preco, 0).toFixed(2)}</p><hr/>
+            <p key={`${orcamento._id}_despesas`}><strong>DESPESAS:</strong></p>
+            <ul style={{ listStyleType: "circle", paddingLeft: "20px" }}>
+                {orcamento.despesas.map((despesa, index) => (
+                    <li key={index} style={{ margin: "5px 0" }}>
+                        <span>{despesa.tipo}</span> - <span>R${despesa.valor.toFixed(2)}</span> {/* Formata o valor com duas casas decimais */}
+                    </li>
+                ))}
+            </ul>
+            <p><strong>Total de Despesas:</strong> R${orcamento.despesas.reduce((total, despesa) => total + despesa.valor, 0).toFixed(2)}</p><hr/>
             <p key={`${orcamento._id}_tempoExecucao`}>TEMPO EXECUÇÃO: {orcamento.tempoExecucao}</p><hr/>
-            <p key={`${orcamento._id}_garantia`}>GARANTIA: {orcamento.garantia}</p><hr/>
+            <p key={`${orcamento._id}_atendimento`}>ATENDIMENDIMENTO: {orcamento.chamado.atendimento}</p><hr/>
             <p key={`${orcamento._id}_enderecoServico`}>ENDEREÇO: {orcamento.enderecoServico}</p><hr/>
             <p key={`${orcamento._id}_observacao`}>OBSERVAÇÃO: {orcamento.observacao}</p><hr/>
             <p key={`${orcamento._id}_situacaoOrcamento`}>SITUAÇÃO: {orcamento.situacao}</p><hr/>
@@ -59,10 +79,11 @@ function OrcamentoBox(props) {
 
 export default function Consultar_orcamento() {
 
-    let {orcamentos, tecnicos, chamados, servicos} = useLoaderData();
+    const {orcamentos, tecnicos, chamados, servicos} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
+    //console.log("Orcamentos", orcamentos);
 
     const dropdown = (ord_ou_pesquisa) => {
         let funcao, todos = true;
@@ -76,7 +97,7 @@ export default function Consultar_orcamento() {
                 <Dropdown.Item as="button" onClick={() => funcao("_id")}>ID</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("chamado")}>Chamado</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("tecnico")}>Técnico</Dropdown.Item>
-                <Dropdown.Item as="button" onClick={() => funcao("servico")}>Serviço</Dropdown.Item>
+                <Dropdown.Item as="button" onClick={() => funcao("servicos")}>Serviços</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("tempoExecucao")}>Tempo de execução</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("garantia")}>Garantia</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("enderecoServico")}>Endereço</Dropdown.Item>
@@ -107,12 +128,14 @@ export default function Consultar_orcamento() {
                     <Dropdown.Toggle variant="info">
                         Filtro de Ordenação: {parametroOrd}
                     </Dropdown.Toggle>
-                    {dropdown("ordenacao")}
+                    {dropdown("ord")}
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
                 {
-                    orcamentos.filter((orcamento) => {
+                    orcamentos
+                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status != "CANCELADO" && orcamento.situacao != "REPROVADO")
+                        .filter((orcamento) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in orcamento) {
@@ -125,8 +148,8 @@ export default function Consultar_orcamento() {
                                 return orcamento.chamado.descricao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "tecnico":
                                 return orcamento.tecnico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
-                            case "servico":
-                                return orcamento.servico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                            case "servicos":
+                                return orcamento.chamado.servicos.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "tempoExecucao":
                                 return orcamento.tempoExecucao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "garantia":
@@ -149,7 +172,7 @@ export default function Consultar_orcamento() {
                             case "chamado":
                                 return sort_string(a[parametroOrd].descricao, b[parametroOrd].descricao);
                             case "tecnico":
-                            case "servico":
+                            case "servicos":
                                 return sort_string(a[parametroOrd].nome, b[parametroOrd].nome);
                             case "_id":
                             case "tempoExecucao":
@@ -166,6 +189,7 @@ export default function Consultar_orcamento() {
                             default:
                                 return true;
                         }
+                    
                     }).map((orcamento) => {
                         return (
                             <OrcamentoBox orcamento={orcamento} tecnicos={tecnicos}

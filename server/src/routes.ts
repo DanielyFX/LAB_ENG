@@ -48,14 +48,14 @@ const tecnicoController = new TecnicoController();
 router.post('/inicio/tecnicos/novo', tecnicoController.create)
 router.get('/inicio/tecnicos/consultar', tecnicoController.getAll)
 router.post('/inicio/tecnicos/editar', tecnicoController.edit)
-router.delete('/inicio/tecnicos/deletar', tecnicoController.delete)
+router.post('/inicio/tecnicos/inativar', tecnicoController.inative)
 
 // SERVIÇOS
 const servicoController = new ServicoController();
 router.post('/inicio/servicos/novo', servicoController.create)
 router.get('/inicio/servicos/consultar', servicoController.getAll)
 router.post('/inicio/servicos/editar', servicoController.edit)
-router.delete('/inicio/servicos/deletar', servicoController.delete)
+router.post('/inicio/servicos/inativar', servicoController.inative)
 
 // ORÇAMENTOS
 const orcamentoController = new OrcamentoController();
@@ -69,21 +69,21 @@ const clienteController = new ClienteController();
 router.post('/inicio/clientes/novo', clienteController.create)
 router.get('/inicio/clientes/consultar', clienteController.getAll)
 router.post('/inicio/clientes/editar', clienteController.edit)
-router.delete('/inicio/clientes/deletar', clienteController.delete)
+router.post('/inicio/clientes/inativar', clienteController.inative)
 
 // CHAMADOS
 const chamadoController = new ChamadoController();
 router.post('/inicio/chamados/novo', chamadoController.create)
 router.get('/inicio/chamados/consultar', chamadoController.getAll)
 router.post('/inicio/chamados/editar', chamadoController.edit)
-router.delete('/inicio/chamados/deletar', chamadoController.delete)
+router.post('/inicio/chamados/inativar', chamadoController.inative)
 
 // ATENDENTES
 const atendenteController = new AtendenteController();
 router.post('/inicio/atendentes/novo', atendenteController.create)
 router.get('/inicio/atendentes/consultar', atendenteController.getAll)
 router.post('/inicio/atendentes/editar', atendenteController.edit)
-router.delete('/inicio/atendentes/deletar', atendenteController.delete)
+router.post('/inicio/atendentes/inativar', atendenteController.inative)
 
 // LOGIN e OUTRAS ROTAS
 const loginController = new LoginController();

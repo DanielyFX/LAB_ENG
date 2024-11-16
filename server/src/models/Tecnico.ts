@@ -49,6 +49,11 @@ const TecnicoSchema = new Schema({
         type: String,
         default: '',
         required: true,
+    },
+    bd_status: {
+        type: String,
+        default: "ATIVO",
+        required: true
     }
 });
 

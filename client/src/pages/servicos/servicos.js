@@ -16,39 +16,22 @@ const ServicoBox = (props) => {
     const {servico} = props;
     const {setMsgAlert, setShowAlert, setTypeAlert} = props;
 
-    const handleExcluir = (servico_id) => {
-        fetch('http://localhost:3001/inicio/servicos/deletar', {
-            method: 'DELETE',
+    const handleInativar = (servico_id) => {
+        fetch('http://localhost:3001/inicio/servicos/inativar', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             mode: "cors",
             body: JSON.stringify({servico_id})
         })
-        .then((resultado) => resultado.json())
-        .then((response) => {
-            if (response.success){
-                setShowAlert(true);
-                setMsgAlert(`Serviço excluído com sucesso`);
-                setTypeAlert("success");
-                setTimeout(() => {
-                    window.location.reload();  
-                }, 2000);
-            }else{
-                setShowAlert(true);
-                setMsgAlert(`Não foi possível excluir o serviço`);
-                setTypeAlert("info");
-            }
-        })
-        .catch((err) => {
-            setShowAlert(true);
-            setTypeAlert('danger');
-            if(err instanceof TypeError && err.message === "Failed to fetch")
-                setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
-            else
-                setMsgAlert(`Erro ao excluir: ${err.message}`);
-        });
-    }
+            .then((resultado) => resultado.json())
+            .then((response) => {
+                if (response.success) window.location.reload();
+                else alert("Erro ao inativar Serviço");
+            })
+    };
+
     return (
         <div className="tecnico">
             <p key={`${servico._id}_nome`}>NOME: {servico.nome}</p>
@@ -68,9 +51,9 @@ const ServicoBox = (props) => {
                 <Button onClick={() => {
                     setShow(true)
                 }}>Editar</Button>
-                <Button variant="danger" onClick={() => {
-                    handleExcluir(servico._id)
-                }}>Excluir</Button>
+                {servico.bd_status !== "INATIVO" && (
+                    <Button variant="danger" onClick={() => handleInativar(servico._id)}>Inativar</Button>
+                )}
             </ButtonGroup>
             <ServicoModal 
                 show={show} 
@@ -147,8 +130,9 @@ export default function Consultar_Clientes() {
                 </Dropdown>
             </InputGroup>
             <div id="chamados-main">
-                {servicos.length > 0 &&
-                    servicos.filter((servico) => {
+                {servicos.length > 0 && servicos
+                    .filter((servico) => servico.bd_status != "INATIVO")
+                    .filter((servico) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in servico) {

@@ -65,6 +65,7 @@ export default function Cadastrar_atendente() {
             "email": email,
             "senha": senha
         }
+        console.log("cpf inserido", dados.cpf);
         fetch('http://localhost:3001/inicio/atendentes/novo', {
             method: "POST",
             headers: {

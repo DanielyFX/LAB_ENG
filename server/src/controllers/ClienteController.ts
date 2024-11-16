@@ -15,10 +15,16 @@ class ClienteController {
         new_cliente.cidade = request.body.cidade;
         new_cliente.numero = request.body.numero;
 
-        const existe = await ClienteModel.exists({ documento: new_cliente.documento })
+        const existe = await ClienteModel.exists({ 
+            documento: new_cliente.documento,
+            bd_status: { $ne: "INATIVO"}
+        });
 
-        if (existe) {
-            return response.json({success: false})
+        if (existe){
+            return response.status(409).json({
+                success: false,
+                message: "Cliente já cadastrado com esse cpf."
+            });
         }
 
         try {
@@ -53,7 +59,31 @@ class ClienteController {
         return response.status(200).json({success: true})
     }
 
-    async delete(request: Request, response: Response) {
+    async inative(request: Request, response: Response) {
+        const { cliente_id } = request.body;
+        try {
+            let cliente = await ClienteModel.findById(cliente_id).exec();
+            
+            if (!cliente) {
+                return response.status(404).json({ success: false, message: "Cliente não encontrado" });
+            }
+            
+            cliente.set("bd_status", "INATIVO");
+
+            await cliente.save();
+
+            return response.status(200).json({ success: true, message: "Cliente inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+}
+
+export {ClienteController};
+
+/*RASCUNHO
+async delete(request: Request, response: Response) {
         const { cliente_id } = request.body;
         try {
             ClienteModel.findByIdAndDelete(cliente_id, { useFindAndModify: false }).exec()
@@ -63,6 +93,6 @@ class ClienteController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {ClienteController};
+
+*/

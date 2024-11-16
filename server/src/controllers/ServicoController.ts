@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import {ServicoModel} from "../models/Servico";
+import { TecnicoModel } from '../models/Tecnico';
 
 class ServicoController {
     async create(request: Request, response: Response) {
@@ -10,7 +11,9 @@ class ServicoController {
         new_servico.preco = request.body.preco;
 
         try{
-            const existe = await ServicoModel.exists({nome: new_servico.nome});
+            const existe = await ServicoModel.exists({
+                nome: new_servico.nome,
+                bd_status: { $ne: "INATIVO"}});
 
             if (existe){
                 return response.status(409).json({
@@ -59,7 +62,31 @@ class ServicoController {
         return response.status(200).json({success: true})
     }
 
-    async delete(request: Request, response: Response) {
+    async inative(request: Request, response: Response) {
+        const { servico_id } = request.body;
+        try {
+            let servico = await ServicoModel.findById(servico_id).exec();
+            
+            if (!servico) {
+                return response.status(404).json({ success: false, message: "Serviço não encontrado" });
+            }
+            
+            servico.set("bd_status", "INATIVO");
+
+            await servico.save();
+
+            return response.status(200).json({ success: true, message: "Serviço inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+}
+
+export {ServicoController};
+
+/* RASCUNHO
+async delete(request: Request, response: Response) {
         const { servico_id } = request.body;
         try {
             ServicoModel.findByIdAndDelete(servico_id, { useFindAndModify: false }).exec()
@@ -69,6 +96,5 @@ class ServicoController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {ServicoController};
+*/

@@ -14,10 +14,14 @@ class AtendenteController {
         new_atendente.salt = crypto.randomBytes(16).toString('hex');
         new_atendente.hash = crypto.pbkdf2Sync(request.body.senha, new_atendente.salt, 1000, 64, 'sha512').toString('base64');
 
-        const existe = await AtendenteModel.exists({ cpf: new_atendente.cpf })
+        const existe = await AtendenteModel.exists(
+            { cpf: new_atendente.cpf, bd_status: { $ne: "INATIVO"} })
 
-        if (existe) {
-            return response.json({success: false})
+        if (existe){
+            return response.status(409).json({
+                success: false,
+                message: "Atendente já cadastrado com esse cpf."
+            });
         }
 
         try {
@@ -52,6 +56,33 @@ class AtendenteController {
         return response.status(200).json({success: true})
     }
 
+    async inative(request: Request, response: Response) {
+        const { atendente_id } = request.body;
+        try {
+            let atendente = await AtendenteModel.findById(atendente_id).exec();
+            
+            if (!atendente) {
+                return response.status(404).json({ success: false, message: "Atendente não encontrado" });
+            }
+            
+            atendente.set("bd_status", "INATIVO");
+
+            await atendente.save();
+
+            return response.status(200).json({ success: true, message: "Chamado inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+
+    
+}
+
+export {AtendenteController};
+
+
+/*RASCUNHO
     async delete(request: Request, response: Response) {
         const { atendente_id } = request.body;
         try {
@@ -71,6 +102,5 @@ class AtendenteController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {AtendenteController};
+*/

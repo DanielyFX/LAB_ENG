@@ -1,17 +1,22 @@
-import mongoose, {Document, Schema, Types} from 'mongoose';
+import mongoose, { Schema, model, Types} from 'mongoose';
 
-interface Orcamento extends Document {
-    tecnico: Types.ObjectId;
+interface Despesa{
+    tipo: string,
+    valor: number
+}
+
+interface Orcamento{
     chamado: Types.ObjectId;
-    servico: Types.ObjectId;
-    situacao: string;
+    tecnico: Types.ObjectId;
     tempoExecucao: string;
-    garantia: string;
     enderecoServico: string;
     observacao: string;
-    dataCriacao: Date;
+    situacao: string;
     descontoServico: string;
+    dataCriacao: Date;
     precoTotal: number;
+    despesas: Despesa[];
+    
 }
 
 const OrcamentoSchema = new Schema({
@@ -25,22 +30,9 @@ const OrcamentoSchema = new Schema({
         ref: 'Chamado',
         required: true
     },
-    servico: {
-        type: Types.ObjectId,
-        ref: 'Servico',
-        required: true
-    },
-    situacao: {
-        type: String,
-        required: true,
-    },
     tempoExecucao: {
         type: String,
-        required: true,
-    },
-    garantia: {
-        type: String,
-        required: true,
+        required: true
     },
     enderecoServico: {
         type: String,
@@ -50,19 +42,28 @@ const OrcamentoSchema = new Schema({
         type: String,
         required: false,
     },
-    descontoServico: {
+    situacao: {
         type: String,
+        required: true,
+    },
+    descontoServico: {
+        type: Number,
         required: false,
     },
     precoTotal: {
         type: Number,
         required: true,
     },
-    dataCriacao: {
-        type: Date,
-        default: Date.now()
+    despesas: {
+        type: [
+            {
+            tipo: {type: String, required: true},
+            valor: {type: Number, required: true}
+            }
+        ],
+        required: false
     }
 });
 
-const OrcamentoModel = mongoose.model<Orcamento>('Orcamento', OrcamentoSchema);
+const OrcamentoModel = model<Orcamento>('Orcamento', OrcamentoSchema);
 export { OrcamentoModel, Orcamento };

@@ -17,10 +17,14 @@ class TecnicoController {
         new_tecnico.salt = crypto.randomBytes(16).toString('base64');
         new_tecnico.hash = crypto.pbkdf2Sync(request.body.senha, new_tecnico.salt, 1000, 64, 'sha512').toString('base64');
 
-        const existe = await TecnicoModel.exists({ cpf: new_tecnico.cpf })
+        const existe = await TecnicoModel.exists(
+            { cpf: new_tecnico.cpf, bd_status: {$ne: "INATIVO"} })
 
-        if (existe) {
-            return response.json({success: false})
+        if (existe){
+            return response.status(409).json({
+                success: false,
+                message: "Técnico já cadastrado com esse cpf."
+            });
         }
 
         try {
@@ -55,7 +59,34 @@ class TecnicoController {
         return response.status(200).json({success: true})
     }
 
-    async delete(request: Request, response: Response) {
+    async inative(request: Request, response: Response) {
+        const { tecnico_id } = request.body;
+        try {
+            let tecnico = await TecnicoModel.findById(tecnico_id).exec();
+            
+            if (!tecnico) {
+                return response.status(404).json({ success: false, message: "Técnico não encontrado" });
+            }
+            
+            tecnico.set("bd_status", "INATIVO");
+
+            await tecnico.save();
+
+            return response.status(200).json({ success: true, message: "Técnico inativado com sucesso" });
+        } catch (error) {
+            console.error(error);
+            return response.status(500).json({success: false});
+        }
+    }
+
+    
+}
+
+export {TecnicoController};
+
+
+/* RASCUNHO
+async delete(request: Request, response: Response) {
         const { tecnico_id } = request.body;
         console.log(request.body);
         try {
@@ -66,6 +97,5 @@ class TecnicoController {
             return response.status(500).json({success: false});
         }
     }
-}
 
-export {TecnicoController};
+*/

@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "generate-enum-json": "ts-node src/utils/generateEnumsJson.ts",
+    "build": "npm run generate-enum-json && tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts"
   },
