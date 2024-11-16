@@ -6,6 +6,12 @@ import Col from "react-bootstrap/Col";
 import ToggleButton  from "react-bootstrap/ToggleButton";
 import { ButtonGroup } from "react-bootstrap";
 import { useState } from 'react';
+import { 
+    Validar,
+    TelefoneCelular as TelCel,
+    TelefoneFixo as TelFixo,
+    CadastroPessoaFisica as CPF
+ } from '../pages/validacao';
 
 
 export default function AtendenteModal(props) {
@@ -13,14 +19,22 @@ export default function AtendenteModal(props) {
     const {handleClose, atendente, onHide} = props;
     const [ativo, setAtivo] = useState(atendente.ativo);
     const {setMsgAlert, setShowAlert, setTypeAlert} = props;
+
+    const [telefone, setTelefone] = useState(atendente.telefone);
+    const [celular, setCelular] = useState(atendente.celular);
+    const [email, setEmail] = useState(atendente.email);
+    
+    const [telefoneError, setTelefoneError] = useState('');
+    const [celularError, setCelularError] = useState('');
+    const [emailError, setEmailError] = useState('');
     
     let dados_novos = {
         "_id": atendente._id,
         "nome": atendente.nome,
-        "telefone": atendente.telefone,
-        "celular": atendente.celular,
+        "telefone": telefone,
+        "celular": celular,
         "dataContrato": atendente.dataContrato,
-        "email": atendente.email,
+        "email": email,
         "ativo": ativo
     }
 
@@ -90,45 +104,103 @@ export default function AtendenteModal(props) {
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>ID</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente._id} readOnly={true}
-                                                       disabled={true}/></Col>
+                            <Col sm={10}>
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={atendente._id}
+                                    readOnly={true}
+                                    disabled={true}
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Nome</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.nome}
-                                                       onChange={(e) => dados_novos.nome = e.target.value} disabled={true}/></Col>
+                            <Col sm={10}>
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={atendente.nome}
+                                    onChange={(e) => dados_novos.nome = e.target.value} 
+                                    disabled={true}
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>CPF</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.cpf} readOnly={true}
-                                                       disabled={true}/></Col>
+                            <Col sm={10}>
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={CPF.getFormated(atendente.cpf)}
+                                    readOnly={true}
+                                    disabled={true}/>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Telefone</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.telefone}
-                                                       onChange={(e) => dados_novos.telefone = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control
+                                    required
+                                    type="text"
+                                    defaultValue={TelFixo.getFormated(telefone)}
+                                    isInvalid={telefoneError}
+                                    onKeyDown={(e) => Validar.TelFixo.handleKeyDown(e)} 
+                                    onChange={(e) => Validar.TelFixo.handleOnChange(e.target.value, setTelefone, setTelefoneError)}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {telefoneError}
+                                </Form.Control.Feedback>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Celular</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.celular}
-                                                       onChange={(e) => dados_novos.celular = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    required 
+                                    type="text"
+                                    defaultValue={TelCel.getFormated(celular)}
+                                    isInvalid={celularError}
+                                    onKeyDown={(e) => Validar.TelCel.handleKeyDown(e)} 
+                                    onChange={(e) => Validar.TelCel.handleOnChange(e.target.value, setCelular, setCelularError)}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {celularError}
+                                </Form.Control.Feedback>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Email</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={atendente.email}
-                                                       onChange={(e) => dados_novos.email = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    required
+                                    type="text" 
+                                    defaultValue={atendente.email}
+                                    onChange={(e) => Validar.Email.handleOnChange(e.target.value, setEmail, setEmailError)}
+                                    onKeyDown={(e) => Validar.Email.handleKeyDown(e)}
+                                    isInvalid={emailError}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {emailError}
+                                </Form.Control.Feedback>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Data criação</Form.Label>
-                            <Col sm={10}><Form.Control type="date"
-                                                       defaultValue={new Date(atendente.dataCriacao).toISOString().substring(0, 10)}
-                                                       disabled={true} readOnly={true}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    type="date"
+                                    defaultValue={new Date(atendente.dataCriacao).toISOString().substring(0, 10)}
+                                    disabled={true} 
+                                    readOnly={true}/>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Data contrato</Form.Label>
-                            <Col sm={10}><Form.Control type="date"
-                                                       defaultValue={new Date(atendente.dataContrato).toISOString().substring(0, 10)}
-                                                       onChange={(e) => dados_novos.dataContrato = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    type="date"
+                                    min={Validar.DataContrato.TodayHTMLDatetimeLocalFormat}
+                                    defaultValue={new Date(atendente.dataContrato).toISOString().substring(0, 10)}
+                                    onChange={(e) => dados_novos.dataContrato = e.target.value}/>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb=3">
                             <ButtonGroup>

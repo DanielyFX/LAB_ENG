@@ -8,7 +8,6 @@ import AtendenteModal from "../../components/AtendenteModal";
 import searchIcon from "../../css/Icons";
 import Alert from 'react-bootstrap/Alert';
 import {
-    Validar,
     Data,
     CadastroPessoaFisica as CPF,
     TelefoneFixo as TelFixo,
