@@ -43,8 +43,32 @@ function ServicoModal(props) {
             body: JSON.stringify(body),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {/*console.log(response)*/})
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success){
+                handleClose();
+                setShowAlert(true);
+                setMsgAlert(`Alterações em ${servico.nome} realizadas com sucesso`);
+                setTypeAlert("success");
+                console.log(`Resposta: ${response.success}`);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000); 
+            }else{
+                setShowAlert(true);
+                setMsgAlert(`Não foi possível alterar o(a) atendente`);
+                setTypeAlert("info");
+            }
+        })
+        .catch((err) => {
+            setShowAlert(true);
+            setTypeAlert('danger');
+            if(err instanceof TypeError && err.message === "Failed to fetch")
+                setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+            else
+                setMsgAlert(`Erro: ${err.message}`);
+        });
+
         setTimeout(() => {
             onHide()
         }, 500);
