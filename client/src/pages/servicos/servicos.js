@@ -6,10 +6,15 @@ import { useState } from "react";
 import { ButtonGroup, Dropdown, InputGroup } from "react-bootstrap";
 import ServicoModal from "../../components/ServicoModal";
 import searchIcon from "../../css/Icons";
+import Alert from 'react-bootstrap/Alert';
+import {
+    Data
+} from '../validacao';
 
 const ServicoBox = (props) => {
     const [show, setShow] = useState(false);
     const {servico} = props;
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
 
     const handleExcluir = (servico_id) => {
         fetch('http://localhost:3001/inicio/servicos/deletar', {
@@ -22,9 +27,27 @@ const ServicoBox = (props) => {
         })
         .then((resultado) => resultado.json())
         .then((response) => {
-            if (response.success) window.location.reload();
-            else alert("Erro ao deletar Serviço");
+            if (response.success){
+                setShowAlert(true);
+                setMsgAlert(`Serviço excluído com sucesso`);
+                setTypeAlert("success");
+                setTimeout(() => {
+                    window.location.reload();  
+                }, 2000);
+            }else{
+                setShowAlert(true);
+                setMsgAlert(`Não foi possível excluir o serviço`);
+                setTypeAlert("info");
+            }
         })
+        .catch((err) => {
+            setShowAlert(true);
+            setTypeAlert('danger');
+            if(err instanceof TypeError && err.message === "Failed to fetch")
+                setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+            else
+                setMsgAlert(`Erro ao excluir: ${err.message}`);
+        });
     }
     return (
         <div className="tecnico">
@@ -38,7 +61,7 @@ const ServicoBox = (props) => {
             <hr/>
             <p key={`${servico._id}_preco`}>Preço: {servico.preco}</p>
             <hr/>
-            <p key={`${servico._id}_dataCriacao`}>DATA CRIAÇÃO: {servico.dataCriacao}</p>
+            <p key={`${servico._id}_dataCriacao`}>DATA CRIAÇÃO: {Data.getOnlyDateBRFormat(servico.dataCriacao)}</p>
             <hr/>
 
             <ButtonGroup>
@@ -49,7 +72,15 @@ const ServicoBox = (props) => {
                     handleExcluir(servico._id)
                 }}>Excluir</Button>
             </ButtonGroup>
-            <ServicoModal show={show} servico={servico} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ServicoModal 
+                show={show} 
+                servico={servico} 
+                onHide={() => setShow(false)} 
+                handleClose={() => setShow(false)}
+                setMsgAlert={setMsgAlert} 
+                setShowAlert={setShowAlert}
+                setTypeAlert={setTypeAlert}
+            />
         </div>
     );
 
@@ -61,6 +92,10 @@ export default function Consultar_Clientes() {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -87,6 +122,14 @@ export default function Consultar_Clientes() {
 
     return (
         <div className="body-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <InputGroup className="mb-3">
                 <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
                 <Form.Control placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)} />
@@ -143,7 +186,12 @@ export default function Consultar_Clientes() {
                         }
                     }).map((servico) => {
                         return (
-                            <ServicoBox servico={servico}/>
+                            <ServicoBox 
+                                servico={servico}
+                                setMsgAlert={setMsgAlert} 
+                                setShowAlert={setShowAlert}
+                                setTypeAlert={setTypeAlert}    
+                            />
                         );
                     })
                 }
