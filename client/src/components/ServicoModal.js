@@ -3,13 +3,19 @@ import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Validar } from '../pages/validacao';
+import { useState } from 'react';
 
 function ServicoModal(props) {
 
     const {handleClose, servico, onHide} = props;
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
+
+    const [nome, setNome] = useState(servico.nome);
+    const [nomeError, setNomeError] = useState('');
 
     let dados_novos = {
-        "nome": servico.nome,
+        "nome": nome,
         "tipo": servico.tipo,
         "descricao": servico.descricao,
         "preco": servico.preco,
@@ -57,27 +63,65 @@ function ServicoModal(props) {
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>ID</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={servico._id} disabled/></Col>
+                            <Col sm={10}>
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={servico._id}
+                                    disabled
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Nome</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={servico.nome}
-                                                       onChange={(e) => dados_novos.nome = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    type="text" 
+                                    required 
+                                    isInvalid={nomeError} 
+                                    defaultValue={servico.nome}
+                                    onKeyDown={(e) => Validar.NomeServiço.handleKeyDown(e)} 
+                                    onChange={(e) => Validar.NomeServiço.handleOnChange(e.target.value, setNome, setNomeError)}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {nomeError}
+                                </Form.Control.Feedback>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Tipo</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={servico.tipo}
-                                                       onChange={(e) => dados_novos.tipo = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    required
+                                    type="text" 
+                                    defaultValue={servico.tipo}
+                                    onChange={(e) => dados_novos.tipo = e.target.value}
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Descrição</Form.Label>
-                            <Col sm={10}><Form.Control as="textarea" rows={3} defaultValue={servico.descricao}
-                                                       onChange={(e) => dados_novos.descricao = e.target.value}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    required 
+                                    as="textarea" 
+                                    rows={3} 
+                                    defaultValue={servico.descricao}
+                                    onChange={(e) => dados_novos.descricao = e.target.value}
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Preço</Form.Label>
-                            <Col sm={10}><Form.Control type="number" defaultValue={parseFloat(servico.preco)}
-                                                       onChange={(e) => dados_novos.preco = parseFloat(e.target.value)}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    required
+                                    type="number" 
+                                    min="0" 
+                                    step="0.01" 
+                                    defaultValue={parseFloat(servico.preco)}
+                                    onChange={(e) => dados_novos.preco = parseFloat(e.target.value)}
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Data criação</Form.Label>
