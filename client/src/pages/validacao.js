@@ -727,21 +727,21 @@ export class CEP {
         try{
             const response = await fetch(CEP.#getURI(cep));
             if(!response.ok)
-                throw `Erro em obter o CEP. HTTP-${response.status}`;
+                throw new Error(`Erro em obter o CEP. HTTP-${response.status}`);
   
             const data = await response.json();
             if("erro" in data)
-                throw "CEP não encontrado";
+                throw new Error("CEP não encontrado");
             
             return data;
         }catch(err){
             if(err instanceof TypeError)
                 if(err.message === "Failed to fetch")
-                    throw `Verifique sua conexão com a internet`;
+                    throw new Error(`Verifique sua conexão com a internet`);
                 else
-                    throw err.message;
+                    throw new Error(err.message);
             else
-                throw err;
+                throw new Error(err);
         }
     }
 
