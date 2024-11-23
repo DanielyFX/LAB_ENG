@@ -655,7 +655,12 @@ export class Senha {
 export class Data {
     static get TodayHTMLDatetimeLocalFormat() {
         const today = new Date();
-        return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0]
+        return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0];
+    }
+
+    static get TodayHTMLDateFormat() {
+        const today = new Date();
+        return /\d{4}-\d\d-\d\d/.exec(today.toISOString())[0];
     }
 
     static getOnlyDateBRFormat(isoDate){
