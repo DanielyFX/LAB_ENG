@@ -58,6 +58,7 @@ export class CadastroPessoaFisica {
     static getFormated(cpf){
         if(/\d{11}/.test(cpf))
             return `${cpf.substr(0,3)}.${cpf.substr(3,3)}.${cpf.substr(6,3)}-${cpf.substr(9,2)}`;
+        return cpf;
     }
 
     static handleKeyDown(event){
@@ -188,6 +189,7 @@ export class CadastroNacionalPessoaJuridica {
     static getFormated(cnpj){
         if(/\d{14}/.test(cnpj))
             return `${cnpj.substr(0,2)}.${cnpj.substr(2,3)}.${cnpj.substr(5,3)}/${cnpj.substr(8,4)}-${cnpj.substr(12,2)}`;
+        return cnpj;
     }
 
     static handleKeyDown(event){
@@ -307,7 +309,7 @@ export class TelefoneFixo {
     static getFormated(telefone){
         if(this.isFormatValid(telefone))
             return `(${telefone.substr(0,2)})${telefone.substr(2,4)}-${telefone.substr(6,4)}`;
-        return "invalido";
+        return telefone;
     }
 
     static handleKeyDown(event){
@@ -696,6 +698,7 @@ export class CEP {
     static getFormated(cep){
         if(/^\d{8}$/.test(cep))
             return cep.substr(0,5) + "-" + cep.substr(5,7);
+        return cep;
     }
 
     static handleKeyDown(event){
