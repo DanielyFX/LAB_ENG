@@ -12,6 +12,7 @@ export default function InputDataContrato({valueSetter, msgError, msgErrorSetter
                 required={required} 
                 disabled={disabled} 
                 readOnly={readOnly} 
+                style={{minWidth: "160px", maxWidth: "200px"}} 
                 defaultValue={defaultValue ?? Validar.DataContrato.TodayHTMLDateFormat}
                 isInvalid={msgError ?? erro}
                 max={Validar.DataContrato.TodayHTMLDateFormat} 
