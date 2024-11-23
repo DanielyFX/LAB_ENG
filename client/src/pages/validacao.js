@@ -424,7 +424,7 @@ export class TelefoneCelular {
     }
 }
 
-export class NomePessoa {
+export class NomePessoaFisica {
     static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû]{3,}[a-zãõáéíóúäïüëöâêîôû ]*$/i;
     static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû]| /i;
 
@@ -444,7 +444,48 @@ export class NomePessoa {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`NomePessoaFisica -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(nome, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(nome)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(!this.isValid(nome)){
+                errorMsgSetter("Pelo menos 3 letras.");
+            }else{
+                errorMsgSetter("");
+                valueSetter(nome);
+            }
+        }catch(err){
+            console.error(`NomePessoaFisica -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class NomePessoaJuridica{
+    static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû\d\W]{3,}[a-zãõáéíóúäïüëöâêîôû\d\W\s]*$/i;
+    static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû\d\W]| /i;
+
+    static isValid(nome){
+        return this.#nomeReg.test(nome);
+    }
+
+    static isValidKey(key){
+        return this.#nomeKeys.test(key);
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`NomePessoajuridica -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -780,7 +821,8 @@ export class Validar {
     static CNPJ = CadastroNacionalPessoaJuridica;
     static TelFixo = TelefoneFixo;
     static TelCel = TelefoneCelular;
-    static NomePessoa = NomePessoa;
+    static NomePF = NomePessoaFisica;
+    static NomePJ = NomePessoaJuridica;
     static Email = Email;
     static Senha = Senha;
     static DataContrato = DataContrato;
