@@ -13,6 +13,7 @@ export class CadastroPessoaFisica {
 
     static get lengthMin() {return 11;}
     static get lengthMax() {return 14;}
+    static get mask() { return "000.000.000-00"; }
 
     static isNumericValid(cpf){
         if(this.isFormatValid(cpf)){
@@ -141,6 +142,7 @@ export class CadastroNacionalPessoaJuridica {
 
     static get maxLength () { return 18; }
     static get minLength () { return 14; }
+    static get mask() { return "00.000.000/0000-00"; }
 
     static isNumericValid(cnpj){
         if(this.isFormatValid(cnpj)){
@@ -270,6 +272,7 @@ export class TelefoneFixo {
 
     static get maxLength () { return 17; }
     static get minLength () { return 10; }
+    static get mask() { return "(00)0000-0000"; }
 
     static isFormatValid(telefone){
         return this.#strictMask.test(telefone);
@@ -348,6 +351,7 @@ export class TelefoneCelular {
 
     static get maxLength () { return 18; }
     static get minLength () { return 11; }
+    static get mask() { return "(00)00000-0000"; }
 
     static isFormatValid(telefone){
         return this.#strictMask.test(telefone);
@@ -503,6 +507,8 @@ export class NomeServiço {
 export class Email {
     static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
     static #emailKeys = /\w|\.|-|@|\S/;
+
+    static get mask() { return "exemplo@email.com"; }
 
     static isValid(email){
         return this.#emailReg.test(email);
@@ -662,6 +668,7 @@ export class CEP {
 
     static get maxLength () { return 9; }
     static get minLength () { return 8; }
+    static get mask() { return "00000-000"; }
 
     static isFormatValid(telefone){
         return CEP.#strictMask.test(telefone);
