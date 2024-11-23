@@ -73,7 +73,7 @@ export class CadastroPessoaFisica {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keDown evenet: ${err}`);
+            console.error(`${CadastroPessoaFisica.name} -> Erro handling keDown evenet: ${err}`);
         }
     }
 
@@ -91,7 +91,7 @@ export class CadastroPessoaFisica {
                 valueSetter(this.getOnlyDigits(cpf));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${CadastroPessoaFisica.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 
@@ -204,7 +204,7 @@ export class CadastroNacionalPessoaJuridica {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${CadastroNacionalPessoaJuridica.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -222,7 +222,7 @@ export class CadastroNacionalPessoaJuridica {
                 valueSetter(this.getOnlyDigits(cpf));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${CadastroNacionalPessoaJuridica.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 
@@ -324,7 +324,7 @@ export class TelefoneFixo {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${TelefoneFixo.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -340,7 +340,7 @@ export class TelefoneFixo {
                 valueSetter(this.getOnlyDigits(telefone));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${TelefoneFixo.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -403,7 +403,7 @@ export class TelefoneCelular {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${TelefoneCelular.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -419,7 +419,7 @@ export class TelefoneCelular {
                 valueSetter(this.getOnlyDigits(telefone));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${TelefoneCelular.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -454,13 +454,13 @@ export class NomePessoa {
                 errorMsgSetter("Obrigatório!");
             }
             else if(!this.isValid(nome)){
-                errorMsgSetter("Incompleto!");
+                errorMsgSetter("Pelo menos 3 letras.");
             }else{
                 errorMsgSetter("");
                 valueSetter(nome);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`NomePessoajuridica -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -485,7 +485,7 @@ export class NomeServiço {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${NomeServiço.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -501,7 +501,7 @@ export class NomeServiço {
                 valueSetter(nome);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${NomeServiço.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -528,7 +528,7 @@ export class Email {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${Email.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -544,7 +544,7 @@ export class Email {
                 valueSetter(email);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${Email.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -590,7 +590,7 @@ export class Senha {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${Senha.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -606,7 +606,7 @@ export class Senha {
                 valueSetter(senha);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${Senha.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -638,7 +638,7 @@ export class DataContrato extends Data {
                 errorMsgSetter("");
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${DataContrato.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -658,7 +658,7 @@ export class DataPrevisaoAtendimento extends Data {
                 errorMsgSetter("");
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${DataPrevisaoAtendimento.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
