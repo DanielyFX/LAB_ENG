@@ -17,7 +17,7 @@ async function conectarBanco(uri: string, descricao: string) {
         console.log(`CONECTADO AO ${descricao}`);
     } catch (err) {
         console.error(`ERRO AO CONECTAR AO ${descricao}:`, err);
-        throw err; // Lança o erro para capturar e tentar outra conexão
+        throw new Error(err); // Lança o erro para capturar e tentar outra conexão
     }
 }
 
