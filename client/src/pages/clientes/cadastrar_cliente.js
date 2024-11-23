@@ -8,6 +8,13 @@ import '../../css/clientes/cadclientes.css';
 import { ButtonGroup } from "react-bootstrap";
 import ToggleButton  from "react-bootstrap/ToggleButton";
 import { Validar } from "../validacao";
+import InputCPF from "../../components/Input-CPF";
+import InputCNPJ from "../../components/Input-CNPJ";
+import InputCEP from "../../components/Input-CEP";
+import InputTelefoneFixo from "../../components/Input-TelFixo";
+import InputTelefoneCelular from "../../components/Input-TelCel";
+import InputEmail from "../../components/Input-Email";
+import InputNomePessoa from "../../components/Input-NomePessoa";
 
 export default function Cadastrar_cliente() {
 
@@ -23,42 +30,32 @@ export default function Cadastrar_cliente() {
     const [cep, setCep] = useState('');
 
     const [cpfChecked, setCPFChecked] = useState(false);
-    const [nomeError, setNomeError] = useState('');
-    const [documentoError, setDocumentoError] = useState('');
-    const [telefoneError, setTelefoneError] = useState('');
-    const [celularError, setCelularError] = useState('');
-    const [emailError, setEmailError] = useState('');
     const [cepError, setCepError] = useState('');
 
     const [showAlert, setShowAlert] = useState(false);
     const [msgAlert, setMsgAlert] = useState('');
     const [typeAlert, setTypeAlert] = useState('');
 
-    const handleSelectedDocument = () => {
-        setCPFChecked(!cpfChecked);
-        document.getElementById("document").value = "";
-        document.getElementById("document").focus();
-    }
+    useEffect(()=>{
+        setDocumento('');
+        if(cpfChecked)
+            document.getElementById('cpf').focus();
+        else
+            document.getElementById('cnpj').focus();
+    }, [cpfChecked]);
 
-    async function handleCepChange(event){
-        try{
-            Validar.CEP.handleOnChange(event.target.value, setCep, setCepError);
-            
-            if(Validar.CEP.hasNextKey(event.target.value)) return;
-            
-            const digits = Validar.CEP.getOnlyDigits(event.target.value)
-            const dados = await Validar.CEP.getDataFrom(digits);
-
-            setBairro(dados.bairro || "");
-            setCidade(dados.estado || "");
-            setRua(dados.logradouro || "");
-        
-        }catch(err){
+    useEffect(()=>{
+        if(!Validar.CEP.isFormatValid(cep)) return;
+        Validar.CEP.getDataFrom(cep).then((data)=>{
+            setBairro(data.bairro ?? "");
+            setCidade(data.estado ?? "");
+            setRua(data.logradouro ?? "");
+        }).catch((err)=>{
             setShowAlert(true);
-            setMsgAlert(err.message);
-            setTypeAlert("danger");
-        }
-    };
+            setMsgAlert(err);
+            setTypeAlert("info");
+        });
+    }, [cep]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -126,16 +123,7 @@ export default function Cadastrar_cliente() {
                 <Form.Group as={Row} className="mb-2">
                     <Form.Label column sm={2}>Nome Completo</Form.Label>
                     <Col sm={10}>
-                        <Form.Control 
-                            required 
-                            type="text" 
-                            onChange={(e) => Validar.NomePessoa.handleOnChange(e.target.value, setNome, setNomeError)}
-                            onKeyDown={(e) => Validar.NomePessoa.handleKeyDown(e)}
-                            isInvalid={nomeError}
-                        />
-                        <Form.Control.Feedback>
-                            {nomeError}
-                        </Form.Control.Feedback>
+                        <InputNomePessoa required pf={cpfChecked} valueSetter={setNome}/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -146,7 +134,7 @@ export default function Cadastrar_cliente() {
                                 size="sm" 
                                 variant={cpfChecked?"primary":"secundary"} 
                                 checked={cpfChecked} 
-                                onClick={() => handleSelectedDocument()}
+                                onClick={() => setCPFChecked(true)}
                             >
                                 CPF
                             </ToggleButton>
@@ -155,79 +143,41 @@ export default function Cadastrar_cliente() {
                                 size="sm" 
                                 variant={!cpfChecked?"primary":"secundary"} 
                                 checked={!cpfChecked}
-                                onClick={() => handleSelectedDocument()}
+                                onClick={() => setCPFChecked(false)}
                             >
                                 CNPJ
                             </ToggleButton>
                         </ButtonGroup>    
                     </Form.Label>
                     <Col sm={8}>
-                        <Form.Control 
-                            required 
-                            id="document" 
-                            type="text" 
-                            maxLength={cpfChecked ? Validar.CPF.maxLength : Validar.CNPJ.maxLength}
-                            isInvalid={documentoError}
-                            placeholder={cpfChecked ? "000.000.000-00" : "00.000.000/0000-00"} 
-                            onChange={cpfChecked ? (e) => Validar.CPF.handleOnChange(e.target.value, setDocumento, setDocumentoError) : (e) => Validar.CNPJ.handleOnChange(e.target.value, setDocumento, setDocumentoError)}
-                            onKeyDown={cpfChecked?(e) => Validar.CPF.handleKeyDown(e) : (e) => Validar.CNPJ.handleKeyDown(e)}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {documentoError}
-                        </Form.Control.Feedback>
+                        {cpfChecked? 
+                            <InputCPF id={"cpf"} required valueSetter={setDocumento}/> 
+                            : 
+                            <InputCNPJ id={"cnpj"} required valueSetter={setDocumento}/>
+                        }
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Telefone</Form.Label>
                     <Col sm={10}>
-                    <Form.Control 
-                        required 
-                        id="telefone" 
-                        placeholder="(00) 0000-0000" 
-                        type="text" 
-                        maxLength={Validar.TelFixo.maxLength} 
-                        isInvalid={telefoneError}
-                        onChange={(e) => Validar.TelFixo.handleOnChange(e.target.value, setTelefone, setTelefoneError)}
-                        onKeyDown={(e) => Validar.TelFixo.handleKeyDown(e)}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                            {telefoneError}
-                    </Form.Control.Feedback>
+                        <InputTelefoneFixo required valueSetter={setTelefone} />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Celular</Form.Label>
                     <Col sm={10}>
-                        <Form.Control
-                            required 
-                            id="celular" 
-                            placeholder="(00) 00000-0000"
-                            type="text"
-                            maxLength={Validar.TelCel.maxLength}
-                            isInvalid={celularError}
-                            onChange={(e) => Validar.TelCel.handleOnChange(e.target.value, setCelular, setCelularError)}
-                            onKeyDown={(e) => Validar.TelCel.handleKeyDown(e)}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {celularError}
-                        </Form.Control.Feedback>
+                        <InputTelefoneCelular required valueSetter={setCelular} />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>CEP</Form.Label>
                     <Col sm={10}>
-                        <Form.Control 
-                            id="cep" 
+                        <InputCEP 
                             required 
-                            placeholder="00000-000" 
-                            maxLength={Validar.CEP.maxLength} 
-                            isInvalid={cepError} 
-                            onKeyDown={(e) => Validar.CEP.handleKeyDown(e)} 
-                            onChange={handleCepChange}
+                            valueSetter={setCep} 
+                            msgError={cepError} 
+                            msgErrorSetter={setCepError} 
                         />
-                        <Form.Control.Feedback type="invalid">
-                            {cepError}
-                        </Form.Control.Feedback>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -283,17 +233,7 @@ export default function Cadastrar_cliente() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>E-mail</Form.Label>
                     <Col sm={10}>
-                        <Form.Control 
-                            required  
-                            placeholder="exemplo@email.com" 
-                            type="email"
-                            isInvalid={emailError}
-                            onChange={(e) => Validar.Email.handleOnChange(e.target.value, setEmail, setEmailError)}
-                            onKeyDown={(e) => Validar.Email.handleKeyDown(e)}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {emailError}
-                        </Form.Control.Feedback>
+                        <InputEmail required={true} valueSetter={setEmail} />
                     </Col>
                 </Form.Group>
 
