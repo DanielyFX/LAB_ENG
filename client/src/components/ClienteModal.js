@@ -27,9 +27,9 @@ function ClienteModal(props) {
     const [celular, setCelular] = useState(cliente.celular);
     const [email, setEmail] = useState(cliente.email);
     const [cep, setCep] = useState(cliente.cep);
-    const [rua, setRua] = useState(cliente.rua || '');
-    const [cidade, setCidade] = useState(cliente.cidade || '');
-    const [bairro, setBairro] = useState(cliente.bairro || '');
+    const [rua, setRua] = useState(cliente.rua ?? '');
+    const [cidade, setCidade] = useState(cliente.cidade ?? '');
+    const [bairro, setBairro] = useState(cliente.bairro ?? '');
 
 
     useEffect(()=>{
