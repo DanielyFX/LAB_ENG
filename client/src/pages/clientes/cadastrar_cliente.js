@@ -45,16 +45,25 @@ export default function Cadastrar_cliente() {
     }, [cpfChecked]);
 
     useEffect(()=>{
-        if(!Validar.CEP.isFormatValid(cep)) return;
-        Validar.CEP.getDataFrom(cep).then((data)=>{
-            setBairro(data.bairro ?? "");
-            setCidade(data.estado ?? "");
-            setRua(data.logradouro ?? "");
-        }).catch((err)=>{
-            setShowAlert(true);
-            setMsgAlert(err);
-            setTypeAlert("info");
-        });
+        try{
+            if(!Validar.CEP.isFormatValid(cep)) return;
+            const updateCEP = async () => {
+                try{
+                    const data = await  Validar.CEP.getDataFrom(cep);
+                    if(data instanceof Object){
+                        if("bairro" in data) setBairro(data.bairro ?? '');
+                        if("estado" in data) setCidade(data.estado ?? '');
+                        if("logradouro" in data) setRua(data.logradouro ?? '');
+                    }
+                    setCepError('');
+                }catch(erro){
+                    setCepError(erro?.message);
+                }
+            }
+            updateCEP();
+        }catch(erro){
+            setCepError(erro?.message);
+        }
     }, [cep]);
 
     const handleSubmit = (event) => {
