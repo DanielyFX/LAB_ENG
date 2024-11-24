@@ -807,16 +807,29 @@ export class CEP {
 }
 
 export class NonEmptyField {
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!/[\w\W\d\s]/.test(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`NonEmptyField -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
     static handleOnChange(text, valueSetter, errorMsgSetter){
         try{
             if(!Validar.isNotEmptyStr(text)){
                 errorMsgSetter("Obrigatório!");
             }else{
                 errorMsgSetter("");
-                valueSetter(text);
             }
+            valueSetter(text);
         }catch(err){
-            console.error(`${NonEmptyField.name} -> Erro handling onChange event: ${err}`);
+            console.error(`NonEmptyField -> Erro handling onChange event: ${err}`);
         }
     }
 }
