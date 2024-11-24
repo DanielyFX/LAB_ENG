@@ -6,10 +6,18 @@ import {useState} from "react";
 import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import TecnicoModal from "../../components/TecnicoModal";
 import searchIcon from "../../css/Icons";
+import Alert from 'react-bootstrap/Alert';
+import { 
+    CadastroPessoaFisica as CPF,
+    TelefoneCelular as TelCel,
+    TelefoneFixo as TelFixo,
+    Data
+} from "../validacao";
 
 function TecnicoBox(props) {
 
     const [show, setShow] = useState(false);
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
     const { tecnico_modal } = props
     //console.log(tecnico_modal)
 
@@ -22,11 +30,36 @@ function TecnicoBox(props) {
             mode: "cors",
             body: JSON.stringify({tecnico_id})
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {
-                if (response.success) window.location.reload();
-                else alert("Erro ao inativar Técnico");
-            })
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if (response.success){
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Técnico inativado com sucesso`);
+                    setTypeAlert("success");
+                }
+                // console.log(`Resposta: ${response.success}`);
+                setTimeout(() => {
+                    window.location.reload();  
+                }, 2000);
+            }else if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setMsgAlert(`Não foi possível inativar o técnico`);
+                setTypeAlert("info");
+            }
+        })
+        .catch((err) => {
+            if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setTypeAlert('danger');
+                if(err instanceof TypeError && err.message === "Failed to fetch")
+                    setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+                else
+                    setMsgAlert(`Erro: ${err}`);
+            }else{
+                console.error(err);
+            }
+        });
     };
 
     return (
@@ -35,15 +68,15 @@ function TecnicoBox(props) {
             <hr/>
             <p key={`${tecnico_modal._id}_nome`}>NOME: {tecnico_modal.nome}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_cpf`}>CPF: {tecnico_modal.cpf}</p>
+            <p key={`${tecnico_modal._id}_cpf`}>CPF: {CPF.getFormated(tecnico_modal.cpf)}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_telefone`}>TELEFONE: {tecnico_modal.telefone}</p>
+            <p key={`${tecnico_modal._id}_telefone`}>TELEFONE: {TelFixo.getFormated(tecnico_modal.telefone)}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_celular`}>CELULAR: {tecnico_modal.celular}</p>
+            <p key={`${tecnico_modal._id}_celular`}>CELULAR: {TelCel.getFormated(tecnico_modal.celular)}</p>
             <hr/>
             <p key={`${tecnico_modal._id}_email`}>EMAIL: {tecnico_modal.email}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_dataContrato`}>DATA CONTRATO: {tecnico_modal.dataContrato}</p>
+            <p key={`${tecnico_modal._id}_dataContrato`}>DATA CONTRATO: {Data.getOnlyDateBRFormat(tecnico_modal.dataContrato)}</p>
             <hr/>
 
             <ButtonGroup>
@@ -55,7 +88,15 @@ function TecnicoBox(props) {
                 )}
             </ButtonGroup>
 
-            <TecnicoModal show={show} tecnico_box={tecnico_modal} onHide={() => setShow(false)} handleClose={() => {setShow(false);}}/>
+            <TecnicoModal 
+                show={show} 
+                tecnico_box={tecnico_modal} 
+                onHide={() => setShow(false)} 
+                handleClose={() => {setShow(false);}}
+                setMsgAlert={setMsgAlert} 
+                setShowAlert={setShowAlert} 
+                setTypeAlert={setTypeAlert}
+            />
         </div>
     );
 }
@@ -67,6 +108,10 @@ export default function Consultar_Tecnicos() {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
 
     const dropdown = (dropdown) => {
         let funcao, todos = true;
@@ -95,6 +140,14 @@ export default function Consultar_Tecnicos() {
 
     return (
         <div className="body-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <InputGroup className="mb-3">
                 <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
                 <Form.Control  placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
@@ -157,7 +210,12 @@ export default function Consultar_Tecnicos() {
                         }
                     }).map((tecnico) => {
                         return (
-                            <TecnicoBox tecnico_modal={tecnico}/>
+                            <TecnicoBox 
+                                tecnico_modal={tecnico}
+                                setMsgAlert={setMsgAlert} 
+                                setShowAlert={setShowAlert} 
+                                setTypeAlert={setTypeAlert}
+                            />
                         );
                     })
                 }
