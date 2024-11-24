@@ -15,6 +15,7 @@ import InputTelefoneFixo from "../../components/Input-TelFixo";
 import InputTelefoneCelular from "../../components/Input-TelCel";
 import InputEmail from "../../components/Input-Email";
 import InputNomePessoa from "../../components/Input-NomePessoa";
+import InputTextRelativeToCEP from "../../components/Input-TextRelativeToCEP";
 
 export default function Cadastrar_cliente() {
 
@@ -192,14 +193,7 @@ export default function Cadastrar_cliente() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Rua</Form.Label>
                     <Col sm={10}>
-                        <Form.Control
-                            id="rua" 
-                            readOnly={!(cepError && cepError !== "Obrigatório!" && cepError !== "Incompleto!")}
-                            value={rua} 
-                            className={(cepError && cepError !== "Obrigatório!" && cepError !== "Incompleto!")?"":"bg-secondary-subtle"} 
-                            type="text"
-                            onChange={(e) => setRua(e.target.value)}
-                        />
+                        <InputTextRelativeToCEP required msgCepError={cepError} value={rua} valueSetter={setRua}/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -216,27 +210,13 @@ export default function Cadastrar_cliente() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Bairro</Form.Label>
                     <Col sm={10}>
-                        <Form.Control 
-                            id="bairro" 
-                            readOnly={!(cepError && cepError !== "Obrigatório!" && cepError !== "Incompleto!")}
-                            value={bairro} 
-                            type="text" 
-                            className={(cepError && cepError !== "Obrigatório!" && cepError !== "Incompleto!")?"":"bg-secondary-subtle"} 
-                            onChange={(e) => setBairro(e.target.value)}
-                        />
+                        <InputTextRelativeToCEP required msgCepError={cepError} value={bairro} valueSetter={setBairro}/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Cidade</Form.Label>
                     <Col sm={10}>
-                        <Form.Control 
-                            id="cidade" 
-                            readOnly={!(cepError && cepError !== "Obrigatório!" && cepError !== "Incompleto!")}
-                            value={cidade} 
-                            className={(cepError && cepError !== "Obrigatório!" && cepError !== "Incompleto!")?"":"bg-secondary-subtle"}
-                            type="text" 
-                            onChange={(e) => setCidade(e.target.value)}
-                        />
+                        <InputTextRelativeToCEP required msgCepError={cepError} value={cidade} valueSetter={setCidade}/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">

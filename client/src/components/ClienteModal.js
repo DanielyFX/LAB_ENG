@@ -4,13 +4,17 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useState, useEffect } from 'react';
+import InputCPF from "./Input-CPF";
+import InputCNPJ from './Input-CNPJ';
+import InputCEP from './Input-CEP';
+import InputTextRelativeToCEP from './Input-TextRelativeToCEP';
+import InputTelefoneFixo from "./Input-TelFixo";
+import InputTelefoneCelular from "./Input-TelCel";
+import InputEmail from "./Input-Email";
+import InputNomePessoa from "./Input-NomePessoa";
 import {
-    CadastroPessoaFisica as CPF,
-    CadastroNacionalPessoaJuridica as CNPJ,
-    TelefoneCelular as TelCel,
-    TelefoneFixo as TelFixo,
-    CEP,
-    Validar
+    Validar,
+    CadastroPessoaFisica as CPF
 } from '../pages/validacao';
 
 function ClienteModal(props) {
@@ -18,9 +22,6 @@ function ClienteModal(props) {
     const {handleClose, cliente, onHide} = props;
     const {setShowAlert, setMsgAlert, setTypeAlert} = props;
 
-    const [telefoneError, setTelefoneError] = useState('');
-    const [celularError, setCelularError] = useState('');
-    const [emailError, setEmailError] = useState('');
     const [cepError, setCepError] = useState('');
     
     const [telefone, setTelefone] = useState(cliente.telefone);
@@ -30,7 +31,6 @@ function ClienteModal(props) {
     const [rua, setRua] = useState(cliente.rua ?? '');
     const [cidade, setCidade] = useState(cliente.cidade ?? '');
     const [bairro, setBairro] = useState(cliente.bairro ?? '');
-
 
     useEffect(()=>{
         try{
@@ -140,83 +140,66 @@ function ClienteModal(props) {
                     <Modal.Body>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>ID</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={cliente._id}
-                                                       disabled={true} readOnly={true}/></Col>
+                            <Col sm={10}>
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={cliente._id}
+                                    disabled 
+                                    readOnly
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Nome</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={cliente.nome}
-                                                       onChange={(e) => dados_novos.nome = e.target.value} disabled/></Col>
+                            <Col sm={10}>
+                                <InputNomePessoa pf disabled readOnly defaultValue={cliente.nome}/>
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>CPF/CNPJ</Form.Label>
-                            <Col sm={10}><Form.Control type="text" defaultValue={Validar.CPF.isFormatValid(cliente.documento)?CPF.getFormated(cliente.documento):CNPJ.getFormated(cliente.documento)}
-                                                       disabled={true} readOnly={true}/></Col>
+                            <Col sm={10}>
+                                {CPF.isFormatValid(cliente.documento)?
+                                    <InputCPF readOnly disabled defaultValue={cliente.documento}/>
+                                    :
+                                    <InputCNPJ readOnly disabled defaultValue={cliente.documento}/>
+                                }
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Email</Form.Label>
                             <Col sm={10}>
-                                <Form.Control 
-                                    type="email" 
-                                    isInvalid={emailError} 
-                                    defaultValue={cliente.email}
-                                    onChange={(e) => Validar.Email.handleOnChange(e.target.value, setEmail, setEmailError)}
-                                    onKeyDown={(e) => Validar.Email.handleKeyDown(e)}
-                                />
-                                <Form.Control.Feedback type='invalid'>
-                                    {emailError}
-                                </Form.Control.Feedback>
+                                <InputEmail required defaultValue={cliente.email} valueSetter={setEmail}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Telefone</Form.Label>
                             <Col sm={10}>
-                                <Form.Control 
-                                    type="text" 
-                                    isInvalid={telefoneError}
-                                    defaultValue={TelFixo.getFormated(cliente.telefone)}
-                                    onChange={(e) => Validar.TelFixo.handleOnChange(e.target.value, setTelefone, setTelefoneError)}
-                                    onKeyDown={(e) => Validar.TelFixo.handleKeyDown(e)}
-                                />
-                                <Form.Control.Feedback type='invalid'>
-                                    {telefoneError}
-                                </Form.Control.Feedback>
+                                <InputTelefoneFixo required defaultValue={cliente.telefone} valueSetter={setTelefone}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Celular</Form.Label>
                             <Col sm={10}>
-                                <Form.Control 
-                                    type="text" 
-                                    isInvalid={celularError}
-                                    defaultValue={TelCel.getFormated(cliente.celular)}
-                                    onChange={(e) => Validar.TelCel.handleOnChange(e.target.value, setCelular, setCelularError)}
-                                    onKeyDown={(e) => Validar.TelCel.handleKeyDown(e)}
-                                />
-                                <Form.Control.Feedback type='invalid'>
-                                    {celularError}
-                                </Form.Control.Feedback>
+                                <InputTelefoneCelular required defaultValue={cliente.celular} valueSetter={setCelular}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>CEP</Form.Label>
                             <Col sm={10}>
-                                <Form.Control
-                                    type="text" 
-                                    isInvalid={cepError}
-                                    defaultValue={CEP.getFormated(cliente.cep)} 
-                                    onChange={(e) => Validar.CEP.handleOnChange(e.target.value, setCep, setCepError)}
-                                    onKeyDown={(e) => Validar.CEP.handleKeyDown(e)}
+                                <InputCEP 
+                                    required 
+                                    defaultValue={cliente.cep} 
+                                    valueSetter={setCep} 
+                                    msgError={cepError} 
+                                    msgErrorSetter={setCepError}
                                 />
-                                <Form.Control.Feedback type='invalid'>
-                                    {cepError}
-                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Rua</Form.Label>
-                            <Col sm={10}><Form.Control type="text" value={rua}
-                                                       onChange={(e) => setRua(e.target.value)}/></Col>
+                            <Col sm={10}>
+                                <InputTextRelativeToCEP required msgCepError={cepError} value={rua} valueSetter={setRua}/> 
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Número</Form.Label>
@@ -233,18 +216,26 @@ function ClienteModal(props) {
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Bairro</Form.Label>
-                            <Col sm={10}><Form.Control type="text"  value={bairro}
-                                                       onChange={(e) => setBairro(e.target.value)}/></Col>
+                            <Col sm={10}>
+                            <InputTextRelativeToCEP required msgCepError={cepError} value={bairro} valueSetter={setBairro}/> 
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Cidade</Form.Label>
-                            <Col sm={10}><Form.Control type="text"  value={cidade}
-                                                       onChange={(e) => setCidade(e.target.value)}/></Col>
+                            <Col sm={10}>
+                            <InputTextRelativeToCEP required msgCepError={cepError} value={cidade} valueSetter={setCidade}/> 
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm={2}>Data Cadastro</Form.Label>
-                            <Col sm={10}><Form.Control type="date" defaultValue={new Date(cliente.dataCriacao).toISOString().substring(0,10)}
-                                                       disabled={true} readOnly={true}/></Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    type="date" 
+                                    defaultValue={new Date(cliente.dataCriacao).toISOString().substring(0,10)}
+                                    disabled={true} 
+                                    readOnly={true}
+                                />
+                            </Col>
                         </Form.Group>
 
                     </Modal.Body>
