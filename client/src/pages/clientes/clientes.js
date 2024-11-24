@@ -165,7 +165,7 @@ export default function Consultar_Clientes() {
             </InputGroup>
             <div id="chamados-main">
                 {clientes.length > 0 && clientes
-                    .filter((cliente) => cliente.bd_status != "INATIVO")
+                    .filter((cliente) => cliente.bd_status !== "INATIVO")
                     .filter((cliente) => {
                         switch (parametro) {
                             case "todos":
@@ -223,10 +223,11 @@ export default function Consultar_Clientes() {
                     }).map((cliente) => {
                         return (
                             <ClienteBox 
+                                key={`${cliente._id}-box`} 
                                 cliente={cliente} 
                                 setMsgAlert={setMsgAlert} 
                                 setShowAlert={setShowAlert} 
-                                setTypeAlert={setTypeAlert}
+                                setTypeAlert={setTypeAlert} 
                             />
                         );
                     })
