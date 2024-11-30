@@ -97,7 +97,7 @@ function ClienteBox(props) {
 }
 
 
-export default function Consultar_Clientes() {
+export default function ConsultarClientes() {
 
     let clientes = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");

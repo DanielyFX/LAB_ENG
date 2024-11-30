@@ -9,7 +9,7 @@ import { ButtonGroup } from "react-bootstrap";
 import ToggleButton  from "react-bootstrap/ToggleButton";
 import { Validar } from "../validacao";
 
-export default function Cadastrar_cliente() {
+export default function CadastrarCliente() {
 
     const [nome, setNome] = useState('');
     const [documento, setDocumento] = useState('');

@@ -4,7 +4,7 @@ import searchIcon from '../../css/Icons';
 import '../../css/atendentes/atendentes.css';
 import {useLoaderData} from "react-router-dom";
 
-export default function Servico_Realizado() {
+export default function ServicoRealizado() {
 
   const orcamentos = useLoaderData()
   console.log(orcamentos)

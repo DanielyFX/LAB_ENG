@@ -5,14 +5,6 @@ import '../css/menuLateral/menu.css';
 export default function Sidebar() {
     const [expandedMenu, setExpandedMenu] = useState(null);
 
-    const toggleSubMenu = (menuId) => {
-        if (expandedMenu === menuId) {
-            setExpandedMenu(null); 
-        } else {
-            setExpandedMenu(menuId); 
-        }
-    };
-
     return (
         <div id="sidebar-container" className="menu-lateral">
             <Dropdown>
@@ -108,3 +100,16 @@ export default function Sidebar() {
         </div>
     );
 }
+
+
+/*RASCUNHOS
+const toggleSubMenu = (menuId) => {
+        if (expandedMenu === menuId) {
+            setExpandedMenu(null); 
+        } else {
+            setExpandedMenu(menuId); 
+        }
+    };
+
+
+*/

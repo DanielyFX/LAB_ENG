@@ -77,7 +77,7 @@ function OrcamentoBox(props) {
 
 }
 
-export default function Consultar_orcamento() {
+export default function ConsultarOrcamento() {
 
     const {orcamentos, tecnicos, chamados, servicos} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");

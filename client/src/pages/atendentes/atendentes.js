@@ -103,7 +103,7 @@ function AtendenteBox(props) {
 
 }
 
-export default function Consultar_Atendentes() {
+export default function ConsultarAtendentes() {
 
     let atendentes = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");

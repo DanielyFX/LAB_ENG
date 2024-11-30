@@ -8,7 +8,7 @@ import {useState} from "react";
 import Alert from 'react-bootstrap/Alert';
 import { Validar } from "../validacao";
 
-export default function Cadastrar_servico() {
+export default function CadastrarServico() {
 
     const [nome, setNome] = useState('');
     const [tipo, setTipo] = useState('');

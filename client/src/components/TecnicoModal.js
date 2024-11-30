@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 
 export default function TecnicoModal(props) {
 
-    const {handleClose, tecnico_box, onHide} = props;
+    const {tecnico_box, onHide} = props;
     let dados = tecnico_box
 
     let dados_novos = {

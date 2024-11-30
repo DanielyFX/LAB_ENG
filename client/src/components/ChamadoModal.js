@@ -62,12 +62,9 @@ function pesquisacep(valor) {
 
 
 function ChamadoModal(props) {
-    const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, orcamento, onHide} = props;
+    const {chamado, clientes, servicos, orcamento, onHide} = props;
     console.log("Orçamento", orcamento);
     //console.log("Servicos no modal do chamado", servicos);
-    const atendentes_alfabetico = atendentes.sort((a, b) => {
-        return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
-    });
 
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -84,8 +81,8 @@ function ChamadoModal(props) {
     const [descricao, setDescricao] = useState(chamado.descricao);
     const [prioridade, setPrioridade] = useState(chamado.prioridade);
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
-    const [statusChamadoOriginal, setStatusChamadoOriginal] = useState(chamado.status);
-    const [statusOrcamentoOriginal, setStatusOrcamentooOriginal] = useState(orcamento?.situacao);
+    const [statusChamadoOriginal] = useState(chamado.status);
+    const [statusOrcamentoOriginal] = useState(orcamento?.situacao);
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
@@ -140,7 +137,6 @@ function ChamadoModal(props) {
     useEffect(() => {
         // Define a data e hora atuais no formato necessário para `datetime-local`
         const now = new Date();
-        const formattedDate = now.toISOString().slice(0, 16); // Retorna 'YYYY-MM-DDTHH:MM' no fuso horário local
         
         if (prioridade && prioridade !== 'Selecione...') {
             setPrevisaoAtendimento(calcularPrevisaoAtendimento(prioridade));
@@ -159,7 +155,7 @@ function ChamadoModal(props) {
             return;
         }
         
-        const servicoSelecionado = servicos.find(s => s.nome === servico && s.db_status != "INATIVO");
+        const servicoSelecionado = servicos.find(s => s.nome === servico && s.db_status !== "INATIVO");
         if (servicoSelecionado) {
             const novoServico = { _id: servicoSelecionado._id, nome: servicoSelecionado.nome, preco: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];
@@ -240,15 +236,15 @@ function ChamadoModal(props) {
         if (statusChamadoOriginal === enums.StatusChamadoEnum.nao_iniciado) {
             setStatusChamado(enums.StatusChamadoEnum.em_analise);
             setMensagem("Status alterado para 'Em Análise' com sucesso.");
-            setToastMessage("Status alterado para 'Em Análise' com sucesso.")
+            setToastMessage("Status alterado para 'Em Análise' com sucesso.");
             setSucesso(true);
         } else if (statusChamadoOriginal === enums.StatusChamadoEnum.em_analise) {
             setMensagem("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
-            setToastMessage("O orçamento ainda não foi feito e aceito. Não é possível avançar.")
+            setToastMessage("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
             setSucesso(false);
         } else {
             setMensagem("Este chamado não pode ser alterado para outro status.");
-            setToastMessage("Este chamado não pode ser alterado para outro status.").
+            setToastMessage("Este chamado não pode ser alterado para outro status.");
             setSucesso(false);
         }
         setShowToast(true);

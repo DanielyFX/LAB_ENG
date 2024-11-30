@@ -1,0 +1,31 @@
+/* ChamadoModal.css */
+
+/* Estiliza o fundo do modal */
+.custom-modal .modal-content {
+    background-color: #f8f9fa; /* cor de fundo */
+    border-radius: 10px; /* bordas arredondadas */
+    border: 2px solid #6c757d; /* borda */
+}
+
+/* Estilo do cabeçalho */
+.custom-modal .modal-header {
+    background-color: #343a40; /* cor de fundo */
+    color: #fff; /* cor do texto */
+    border-bottom: 1px solid #6c757d;
+}
+
+/* Estilo do botão de fechar */
+.custom-modal .close {
+    color: #fff;
+    opacity: 0.8;
+}
+
+/* Estilo do corpo do modal */
+.custom-modal .modal-body {
+    padding: 20px;
+}
+
+/* Estilo do rodapé do modal */
+.custom-modal .modal-footer {
+    background-color: #e9ecef;
+}

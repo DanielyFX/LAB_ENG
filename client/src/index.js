@@ -11,25 +11,25 @@ import jwt_decode from "jwt-decode";
 
 // PAGINAS
 import Inicio from "./pages/inicio";
-import Servico_Realizado from "./pages/servico_realizado/relatorio_servicos_realizados";
+import ServicoRealizado from "./pages/servico_realizado/relatorio_servicos_realizados";
 
-import Cadastrar_servico from "./pages/servicos/cadastrar_servico";
-import Consultar_Servicos from "./pages/servicos/servicos";
+import CadastrarServico from "./pages/servicos/cadastrar_servico";
+import ConsultarServicos from "./pages/servicos/servicos";
 
-import Cadastrar_tecnico from "./pages/tecnicos/cadastrar_tecnico";
-import Consultar_Tecnicos from "./pages/tecnicos/tecnicos";
+import CadastrarTecnico from "./pages/tecnicos/cadastrar_tecnico";
+import ConsultarTecnicos from "./pages/tecnicos/tecnicos";
 
-import Cadastrar_atendente from "./pages/atendentes/cadastrar_atendente";
-import Consultar_Atendentes from "./pages/atendentes/atendentes";
+import CadastrarAtendente from "./pages/atendentes/cadastrar_atendente";
+import ConsultarAtendentes from "./pages/atendentes/atendentes";
 
-import Cadastrar_cliente from "./pages/clientes/cadastrar_cliente";
-import Consultar_Clientes from "./pages/clientes/clientes";
+import CadastrarCliente from "./pages/clientes/cadastrar_cliente";
+import ConsultarClientes from "./pages/clientes/clientes";
 
-import Cadastrar_chamado from "./pages/chamados/cadastrar_chamado";
-import Consultar_Chamados from "./pages/chamados/chamados";
+import CadastrarChamado from "./pages/chamados/cadastrar_chamado";
+import ConsultarChamados from "./pages/chamados/chamados";
 
-import Orcamento_chamado from "./pages/orcamento/orcamento_chamado";
-import Consultar_orcamento from "./pages/orcamento/orcamentos";
+import OrcamentoChamado from "./pages/orcamento/orcamento_chamado";
+import ConsultarOrcamento from "./pages/orcamento/orcamentos";
 
 import Login from "./pages/logins/Login";
 import RecuperaSenha from "./pages/logins/recuperar_senha";
@@ -139,7 +139,7 @@ const router = createBrowserRouter([
         <Header titulo="Consultar Serviços" />
         <div id="body-container">
           <Sidebar />
-          <Consultar_Servicos />
+          <ConsultarServicos />
         </div>
       </div>
       </PrivateRoute>
@@ -153,7 +153,7 @@ const router = createBrowserRouter([
         <Header titulo="Cadastrar Serviço" />
         <div id="body-container">
           <Sidebar />
-          <Cadastrar_servico />
+          <CadastrarServico />
         </div>
       </div>
       </PrivateRoute>
@@ -172,7 +172,7 @@ const router = createBrowserRouter([
         <Header titulo="Consultar Técnicos" />
         <div id="body-container">
           <Sidebar />
-          <Consultar_Tecnicos />
+          <ConsultarTecnicos />
         </div>
       </div>
       </PrivateRoute>
@@ -186,7 +186,7 @@ const router = createBrowserRouter([
         <Header titulo="Cadastrar Técnico" />
         <div id="body-container">
           <Sidebar />
-          <Cadastrar_tecnico />
+          <CadastrarTecnico />
         </div>
       </div>
       </PrivateRoute>
@@ -205,7 +205,7 @@ const router = createBrowserRouter([
         <Header titulo="Consultar Atendente" />
         <div id="body-container">
           <Sidebar />
-          <Consultar_Atendentes />
+          <ConsultarAtendentes />
         </div>
       </div>
       </PrivateRoute>
@@ -219,7 +219,7 @@ const router = createBrowserRouter([
         <Header titulo="Cadastrar Atendente" />
         <div id="body-container">
           <Sidebar />
-          <Cadastrar_atendente />
+          <CadastrarAtendente />
         </div>
       </div>
       </PrivateRoute>
@@ -238,7 +238,7 @@ const router = createBrowserRouter([
         <Header titulo="Consultar Clientes" />
         <div id="body-container">
           <Sidebar />
-          <Consultar_Clientes />
+          <ConsultarClientes />
         </div>
       </div>
       </PrivateRoute>
@@ -252,7 +252,7 @@ const router = createBrowserRouter([
         <Header titulo="Cadastrar Cliente" />
         <div id="body-container">
           <Sidebar />
-          <Cadastrar_cliente />
+          <CadastrarCliente />
         </div>
       </div>
       </PrivateRoute>
@@ -275,7 +275,7 @@ const router = createBrowserRouter([
         <Header titulo="Cadastrar Chamado" />
         <div id="body-container">
           <Sidebar />
-          <Cadastrar_chamado />
+          <CadastrarChamado />
         </div>
       </div>
       </PrivateRoute>
@@ -300,7 +300,7 @@ const router = createBrowserRouter([
         <Header titulo="Consultar Chamados" />
         <div id="body-container">
           <Sidebar />
-          <Consultar_Chamados />
+          <ConsultarChamados />
         </div>
       </div>
       </PrivateRoute>
@@ -322,7 +322,7 @@ const router = createBrowserRouter([
         <Header titulo="Realizar Orçamento" />
         <div id="body-container">
           <Sidebar />
-          <Orcamento_chamado />
+          <OrcamentoChamado />
         </div>
       </div>
       </PrivateRoute>
@@ -345,7 +345,7 @@ const router = createBrowserRouter([
         <Header titulo="Consultar Orçamentos" />
         <div id="body-container">
           <Sidebar />
-          <Consultar_orcamento />
+          <ConsultarOrcamento />
         </div>
       </div>
       </PrivateRoute>
@@ -362,7 +362,7 @@ const router = createBrowserRouter([
         <Header titulo="Análise de Chamados/Orçamentos" />
         <div id="body-container">
           <Sidebar />
-          <Servico_Realizado />
+          <ServicoRealizado />
         </div>
       </div>
       </PrivateRoute>

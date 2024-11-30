@@ -9,15 +9,13 @@ import {useState, useEffect} from "react";
 import Table from "react-bootstrap/Table";
 import enums from "../../utils/enums.json";
 
-export default function Orcamento_chamado() {
+export default function OrcamentoChamado() {
 
     const { tecnicos, chamados, servicos } = useLoaderData();
 
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
-    const servicos_alfabetico = servicos.sort(sort_str)
-    const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
-
+    
     const [chamado, setChamado] = useState('');
     const [tecnico, setTecnico] = useState('');
     const [erroTecnico, setErroTecnico] = useState(false);

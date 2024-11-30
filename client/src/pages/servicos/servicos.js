@@ -69,7 +69,7 @@ const ServicoBox = (props) => {
 
 }
 
-export default function Consultar_Clientes() {
+export default function ConsultarServicos() {
 
     let servicos = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");

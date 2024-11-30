@@ -61,7 +61,7 @@ function TecnicoBox(props) {
 }
 
 
-export default function Consultar_Tecnicos() {
+export default function ConsultarTecnicos() {
 
     const tecnicos = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");

@@ -8,7 +8,7 @@ import { ButtonGroup } from "react-bootstrap";
 import { Validar } from '../validacao';
 import Alert from 'react-bootstrap/Alert';
 
-export default function Cadastrar_tecnico() {
+export default function CadastrarTecnico() {
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');

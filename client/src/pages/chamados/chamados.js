@@ -100,13 +100,13 @@ function ChamadoBox(props) {
                     <Button variant="danger" onClick={() => handleInativar(chamado._id)}>Inativar</Button>
                 )}
             </ButtonGroup>
-            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} servicos={servicos} orcamento={orcamento} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ChamadoModal show={show} chamado={chamado} clientes={clientes}  servicos={servicos} orcamento={orcamento} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
             
         </div>
     );
 }
 
-export default function Consultar_Chamados(props) {
+export default function ConsultarChamados(props) {
 
     const {chamados, clientes, atendentes, servicos, tecnicos, orcamentos} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");

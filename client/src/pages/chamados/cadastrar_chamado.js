@@ -61,7 +61,7 @@ function pesquisacep(valor) {
     }
 }
 
-export default function Cadastrar_chamado() {
+export default function CadastrarChamado() {
 
     const {clientes, atendentes, servicos, tecnicos} = useLoaderData()
     console.log(servicos)
@@ -146,7 +146,7 @@ export default function Cadastrar_chamado() {
         }
         
         const servicoSelecionado = servicos.find(s => 
-            s.nome === servico && s.bd_status != "INATIVO");
+            s.nome === servico && s.bd_status !== "INATIVO");
         if (servicoSelecionado) {
             const novoServico = { id: servicoSelecionado._id, servico: servicoSelecionado.nome, valor: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];

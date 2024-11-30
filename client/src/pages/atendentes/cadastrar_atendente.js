@@ -8,7 +8,7 @@ import { ButtonGroup } from 'react-bootstrap';
 import { useState } from "react";
 import { Validar } from '../validacao';
 
-export default function Cadastrar_atendente() {
+export default function CadastrarAtendente() {
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');

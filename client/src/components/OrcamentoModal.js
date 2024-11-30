@@ -10,14 +10,13 @@ import Table from "react-bootstrap/Table";
 
 export default function OrcamentoModal(props) {
 
-    const {handleClose, orcamento, tecnicos, chamados, servicos, onHide} = props;
+    const {orcamento, tecnicos, chamados, servicos, onHide} = props;
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
-    const servicos_alfabetico = servicos.sort(sort_str)
 
-    const [mensagem, setMensagem] = useState("");
-    const [sucesso, setSucesso] = useState(false);
+    //const [mensagem, setMensagem] = useState("");
+    //const [sucesso, setSucesso] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState(''); 
 
@@ -33,7 +32,7 @@ export default function OrcamentoModal(props) {
     const [precoTotal, setPrecoTotal] = useState(orcamento.precoTotal);
     const [errors, setErrors] = useState({});
 
-    const [statusOrcamentoOriginal, setStatusOrcamentooOriginal] = useState(orcamento.situacao);
+    const [statusOrcamentoOriginal] = useState(orcamento.situacao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
 
@@ -59,8 +58,8 @@ export default function OrcamentoModal(props) {
         setValorDespesa('');
         setDespesasSelecionadas(orcamento.despesas);
 
-        setMensagem("");
-        setSucesso(false);
+        //setMensagem("");
+        //setSucesso(false);
         setShowToast(false);
         setToastMessage('');
       }, [orcamento, props.show]);
@@ -74,7 +73,7 @@ export default function OrcamentoModal(props) {
             .reduce((total, servico) => total + parseFloat(servico.preco || 0), 0);
         setPrecoTotalServicos(totalServicos.toFixed(2));
             console.log("Preco total servicos", precoTotalServicos);
-    }, [orcamento, props.show]);
+    }, [orcamento, precoTotalServicos, props.show]);
 
     //useEffect(() => {
     //    calcularTotal();
@@ -98,17 +97,17 @@ export default function OrcamentoModal(props) {
     const handleAprovarOrcamento = () => {
         if (statusOrcamentoOriginal === enums.SituacaoEnum.realizado) {
             setSituacaoOrcamento(enums.SituacaoEnum.aprovado);
-            setMensagem("Situação do orçamento alterado para 'Aprovado' com sucesso.");
-            setToastMessage("Situação do orçamento alterado para 'Aprovado' com sucesso.")
-            setSucesso(true);
+            //setMensagem("Situação do orçamento alterado para 'Aprovado' com sucesso.");
+            setToastMessage("Situação do orçamento alterado para 'Aprovado' com sucesso.");
+            //setSucesso(true);
         } else if (statusOrcamentoOriginal === enums.SituacaoEnum.reprovado) {
-            setMensagem("O orçamento foi reprovado! Não é possível aprova-lo após reprovação. Por favor criar outro orçamento para avaliação.");
-            setToastMessage("Orçamento reprovado não pode ser alterado para aprovado!")
-            setSucesso(false);
+            //setMensagem("O orçamento foi reprovado! Não é possível aprova-lo após reprovação. Por favor criar outro orçamento para avaliação.");
+            setToastMessage("Orçamento reprovado não pode ser alterado para aprovado!");
+            //setSucesso(false);
         } else {
-            setMensagem("Este orçamento não pode ser alterado para outra situação.");
-            setToastMessage("Este orçamento não pode ser alterado para outra situação.").
-            setSucesso(false);
+            //setMensagem("Este orçamento não pode ser alterado para outra situação.");
+            setToastMessage("Este orçamento não pode ser alterado para outra situação.");
+            //setSucesso(false);
         }
         setShowToast(true);
     };
@@ -149,17 +148,17 @@ export default function OrcamentoModal(props) {
     const handleReprovarOrcamento = () => {
         if (statusOrcamentoOriginal === enums.SituacaoEnum.realizado) {
             setSituacaoOrcamento(enums.SituacaoEnum.reprovado);
-            setMensagem("Situação do orçamento alterado para 'Reprovado' com sucesso.");
-            setToastMessage("Situação do orçamento alterado para 'Reprovado' com sucesso.")
-            setSucesso(true);
+            //setMensagem("Situação do orçamento alterado para 'Reprovado' com sucesso.");
+            setToastMessage("Situação do orçamento alterado para 'Reprovado' com sucesso.");
+            //setSucesso(true);
         } else if (statusOrcamentoOriginal === enums.SituacaoEnum.aprovado) {
-            setMensagem("O orçamento foi aprovado! Não é possível reprova-lo após aprovação. Por favor criar outro orçamento para avaliação.");
-            setToastMessage("Orçamento aprovado não pode ser alterado para reprovado!")
-            setSucesso(false);
+            //setMensagem("O orçamento foi aprovado! Não é possível reprova-lo após aprovação. Por favor criar outro orçamento para avaliação.");
+            setToastMessage("Orçamento aprovado não pode ser alterado para reprovado!");
+            //setSucesso(false);
         } else {
-            setMensagem("Este orçamento não pode ser alterado para outra situação.");
-            setToastMessage("Este orçamento não pode ser alterado para outra situação.").
-            setSucesso(false);
+            //setMensagem("Este orçamento não pode ser alterado para outra situação.");
+            setToastMessage("Este orçamento não pode ser alterado para outra situação.");
+            //setSucesso(false);
         }
         setShowToast(true);
     };
@@ -167,13 +166,13 @@ export default function OrcamentoModal(props) {
     const handleCancelarOrcamento = () => {
         if (orcamento.situacao !== enums.SituacaoEnum.cancelado) {
             setSituacaoOrcamento(enums.SituacaoEnum.cancelado);
-            setMensagem("Status alterado para 'Cancelado' com sucesso.");
+            //setMensagem("Status alterado para 'Cancelado' com sucesso.");
             setToastMessage("Orçamento cancelado com sucesso!");
-            setSucesso(true);
+            //setSucesso(true);
         } else {
-            setMensagem("Este orçamento já está cancelado.");
-            setToastMessage("Este orçamento já está cancelado.")
-            setSucesso(false);
+            //setMensagem("Este orçamento já está cancelado.");
+            setToastMessage("Este orçamento já está cancelado.");
+            //setSucesso(false);
         }
         setShowToast(true);
     };
