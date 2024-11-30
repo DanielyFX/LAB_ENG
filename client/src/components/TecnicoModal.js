@@ -3,19 +3,32 @@ import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import InputCPF from "./Input-CPF";
+import InputTelefoneFixo from "./Input-TelFixo";
+import InputTelefoneCelular from "./Input-TelCel";
+import InputEmail from "./Input-Email";
+import InputNomePessoa from "./Input-NomePessoa";
+import { useState } from 'react';
 
 export default function TecnicoModal(props) {
 
-    const {tecnico_box, onHide} = props;
+    const {handleClose, tecnico_box, onHide} = props;
+    const {setShowAlert, setMsgAlert, setTypeAlert} = props;
+
+    
     let dados = tecnico_box
+    
+    const [telefone, setTelefone] = useState(dados.telefone ?? '');
+    const [celular, setCelular] = useState(dados.celular ?? '');
+    const [email, setEmail] = useState(dados.email ?? '');
 
     let dados_novos = {
         "_id": dados._id,
         "nome": dados.nome,
-        "telefone": dados.telefone,
-        "celular": dados.celular,
+        "telefone": telefone,
+        "celular": celular,
         "dataContrato": dados.dataContrato,
-        "email": dados.email
+        "email": email
     }
 
     const handleSubmit = (e) =>{
@@ -39,8 +52,36 @@ export default function TecnicoModal(props) {
             body: JSON.stringify(body),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {/*console.log(response)*/})
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success){
+                handleClose();
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Alterações realizadas com sucesso`);
+                    setTypeAlert("success");
+                }
+            }else{
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Não foi possível fazer a atualização do técnico`);
+                    setTypeAlert("info");
+                }
+            }
+        })
+        .catch((err)=>{
+            if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setTypeAlert('danger');
+                if(err instanceof TypeError && err.message === "Failed to fetch")
+                    setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+                else
+                    setMsgAlert(`Erro: ${err.message}`);
+            }else{
+                console.error(err);
+            }
+        });
+
         //console.log("esperando 1 segundo")
         setTimeout(() => {
             onHide()
@@ -61,39 +102,55 @@ export default function TecnicoModal(props) {
                         <Modal.Body>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>ID</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados._id} readOnly={true}
-                                                           disabled={true}/></Col>
+                                <Col sm={10}>
+                                    <Form.Control 
+                                        type="text" 
+                                        defaultValue={dados._id} 
+                                        readOnly
+                                        disabled
+                                    />
+                                </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Nome</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.nome}
-                                                           onChange={(e) => dados_novos.nome = e.target.value} disabled/></Col>
+                                <Col sm={10}>
+                                    <InputNomePessoa pf disabled defaultValue={dados.nome}/>
+                                </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>CPF</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.cpf} readOnly={true}
-                                                           disabled={true}/></Col>
+                                <Col sm={10}>
+                                    <InputCPF disabled defaultValue={dados.cpf}/>
+                                </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Telefone</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.telefone}
-                                                           onChange={(e) => dados_novos.telefone = e.target.value}/></Col>
+                                <Col sm={10}>
+                                    <InputTelefoneFixo required defaultValue={dados.telefone} valueSetter={setTelefone}/>
+                                </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Celular</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.celular}
-                                                           onChange={(e) => dados_novos.celular = e.target.value}/></Col>
+                                <Col sm={10}>
+                                    <InputTelefoneCelular required defaultValue={dados.celular} valueSetter={setCelular}/>
+                                </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Email</Form.Label>
-                                <Col sm={10}><Form.Control type="text" defaultValue={dados.email}
-                                                           onChange={(e) => dados_novos.email = e.target.value}/></Col>
+                                <Col sm={10}>
+                                    <InputEmail required defaultValue={dados.email} valueSetter={setEmail}/>
+                                </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Data contrato</Form.Label>
-                                <Col sm={10}><Form.Control type="date"
-                                                           defaultValue={new Date(dados.dataContrato).toISOString().substring(0, 10)}
-                                                           onChange={(e) => dados_novos.dataContrato = e.target.value} disabled/></Col>
+                                <Col sm={10}>
+                                    <Form.Control 
+                                        type="date"
+                                        defaultValue={new Date(dados.dataContrato).toISOString().substring(0, 10)}
+                                        onChange={(e) => dados_novos.dataContrato = e.target.value} 
+                                        disabled
+                                    />
+                                </Col>
                             </Form.Group>
 
                         </Modal.Body>

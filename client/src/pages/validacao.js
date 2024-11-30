@@ -13,6 +13,7 @@ export class CadastroPessoaFisica {
 
     static get lengthMin() {return 11;}
     static get lengthMax() {return 14;}
+    static get mask() { return "000.000.000-00"; }
 
     static isNumericValid(cpf){
         if(this.isFormatValid(cpf)){
@@ -57,6 +58,7 @@ export class CadastroPessoaFisica {
     static getFormated(cpf){
         if(/\d{11}/.test(cpf))
             return `${cpf.substr(0,3)}.${cpf.substr(3,3)}.${cpf.substr(6,3)}-${cpf.substr(9,2)}`;
+        return cpf;
     }
 
     static handleKeyDown(event){
@@ -71,7 +73,7 @@ export class CadastroPessoaFisica {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keDown evenet: ${err}`);
+            console.error(`${CadastroPessoaFisica.name} -> Erro handling keDown evenet: ${err}`);
         }
     }
 
@@ -89,7 +91,7 @@ export class CadastroPessoaFisica {
                 valueSetter(this.getOnlyDigits(cpf));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${CadastroPessoaFisica.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 
@@ -141,6 +143,7 @@ export class CadastroNacionalPessoaJuridica {
 
     static get maxLength () { return 18; }
     static get minLength () { return 14; }
+    static get mask() { return "00.000.000/0000-00"; }
 
     static isNumericValid(cnpj){
         if(this.isFormatValid(cnpj)){
@@ -186,6 +189,7 @@ export class CadastroNacionalPessoaJuridica {
     static getFormated(cnpj){
         if(/\d{14}/.test(cnpj))
             return `${cnpj.substr(0,2)}.${cnpj.substr(2,3)}.${cnpj.substr(5,3)}/${cnpj.substr(8,4)}-${cnpj.substr(12,2)}`;
+        return cnpj;
     }
 
     static handleKeyDown(event){
@@ -200,7 +204,7 @@ export class CadastroNacionalPessoaJuridica {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${CadastroNacionalPessoaJuridica.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -218,7 +222,7 @@ export class CadastroNacionalPessoaJuridica {
                 valueSetter(this.getOnlyDigits(cpf));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${CadastroNacionalPessoaJuridica.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 
@@ -270,6 +274,7 @@ export class TelefoneFixo {
 
     static get maxLength () { return 17; }
     static get minLength () { return 10; }
+    static get mask() { return "(00)0000-0000"; }
 
     static isFormatValid(telefone){
         return this.#strictMask.test(telefone);
@@ -304,7 +309,7 @@ export class TelefoneFixo {
     static getFormated(telefone){
         if(this.isFormatValid(telefone))
             return `(${telefone.substr(0,2)})${telefone.substr(2,4)}-${telefone.substr(6,4)}`;
-        return "invalido";
+        return telefone;
     }
 
     static handleKeyDown(event){
@@ -319,7 +324,7 @@ export class TelefoneFixo {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${TelefoneFixo.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -335,7 +340,7 @@ export class TelefoneFixo {
                 valueSetter(this.getOnlyDigits(telefone));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${TelefoneFixo.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -348,6 +353,7 @@ export class TelefoneCelular {
 
     static get maxLength () { return 18; }
     static get minLength () { return 11; }
+    static get mask() { return "(00)00000-0000"; }
 
     static isFormatValid(telefone){
         return this.#strictMask.test(telefone);
@@ -397,7 +403,7 @@ export class TelefoneCelular {
                 event.target.value += this.getNextFormatKey(event.target.value);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${TelefoneCelular.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -413,12 +419,12 @@ export class TelefoneCelular {
                 valueSetter(this.getOnlyDigits(telefone));
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${TelefoneCelular.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
 
-export class NomePessoa {
+export class NomePessoaFisica {
     static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû]{3,}[a-zãõáéíóúäïüëöâêîôû ]*$/i;
     static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû]| /i;
 
@@ -438,7 +444,7 @@ export class NomePessoa {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`NomePessoaFisica -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -448,13 +454,54 @@ export class NomePessoa {
                 errorMsgSetter("Obrigatório!");
             }
             else if(!this.isValid(nome)){
-                errorMsgSetter("Incompleto!");
+                errorMsgSetter("Pelo menos 3 letras.");
             }else{
                 errorMsgSetter("");
                 valueSetter(nome);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`NomePessoaFisica -> Erro handling onChange evenet: ${err}`);
+        }
+    }
+}
+
+export class NomePessoaJuridica{
+    static #nomeReg = /^[a-zãõáéíóúäïüëöâêîôû\d\W]{3,}[a-zãõáéíóúäïüëöâêîôû\d\W\s]*$/i;
+    static #nomeKeys = /[a-zãõáéíóúäïüëöâêîôû\d\W]| /i;
+
+    static isValid(nome){
+        return this.#nomeReg.test(nome);
+    }
+
+    static isValidKey(key){
+        return this.#nomeKeys.test(key);
+    }
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!this.isValidKey(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`NomePessoajuridica -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
+    static handleOnChange(nome, valueSetter, errorMsgSetter){
+        try{
+            if(!Validar.isNotEmptyStr(nome)){
+                errorMsgSetter("Obrigatório!");
+            }
+            else if(!this.isValid(nome)){
+                errorMsgSetter("Pelo menos 3 letras.");
+            }else{
+                errorMsgSetter("");
+                valueSetter(nome);
+            }
+        }catch(err){
+            console.error(`NomePessoajuridica -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -479,7 +526,7 @@ export class NomeServiço {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${NomeServiço.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -495,7 +542,7 @@ export class NomeServiço {
                 valueSetter(nome);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${NomeServiço.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -503,6 +550,8 @@ export class NomeServiço {
 export class Email {
     static #emailReg = /^[^\s.][\w-]+(.[\w-]+)*@([\w-]+.)+[\w-]{2,}$/;
     static #emailKeys = /\w|\.|-|@|\S/;
+
+    static get mask() { return "exemplo@email.com"; }
 
     static isValid(email){
         return this.#emailReg.test(email);
@@ -520,7 +569,7 @@ export class Email {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${Email.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -536,7 +585,7 @@ export class Email {
                 valueSetter(email);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${Email.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -582,7 +631,7 @@ export class Senha {
                 event.preventDefault();
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling keyDown evenet: ${err}`);
+            console.error(`${Senha.name} -> Erro handling keyDown evenet: ${err}`);
         }
     }
 
@@ -598,7 +647,7 @@ export class Senha {
                 valueSetter(senha);
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${Senha.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -606,7 +655,12 @@ export class Senha {
 export class Data {
     static get TodayHTMLDatetimeLocalFormat() {
         const today = new Date();
-        return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0]
+        return /\d{4}-\d\d-\d\dT\d\d:\d\d/.exec(today.toISOString())[0];
+    }
+
+    static get TodayHTMLDateFormat() {
+        const today = new Date();
+        return /\d{4}-\d\d-\d\d/.exec(today.toISOString())[0];
     }
 
     static getOnlyDateBRFormat(isoDate){
@@ -630,7 +684,7 @@ export class DataContrato extends Data {
                 errorMsgSetter("");
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${DataContrato.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -650,7 +704,7 @@ export class DataPrevisaoAtendimento extends Data {
                 errorMsgSetter("");
             }
         }catch(err){
-            console.error(`${this.name} -> Erro handling onChange evenet: ${err}`);
+            console.error(`${DataPrevisaoAtendimento.name} -> Erro handling onChange evenet: ${err}`);
         }
     }
 }
@@ -662,6 +716,7 @@ export class CEP {
 
     static get maxLength () { return 9; }
     static get minLength () { return 8; }
+    static get mask() { return "00000-000"; }
 
     static isFormatValid(telefone){
         return CEP.#strictMask.test(telefone);
@@ -689,6 +744,7 @@ export class CEP {
     static getFormated(cep){
         if(/^\d{8}$/.test(cep))
             return cep.substr(0,5) + "-" + cep.substr(5,7);
+        return cep;
     }
 
     static handleKeyDown(event){
@@ -751,16 +807,29 @@ export class CEP {
 }
 
 export class NonEmptyField {
+
+    static handleKeyDown(event){
+        try{
+            if(Validar.isCaracterDeControle(event.key)) return;
+    
+            if(!/[\w\W\d\s]/.test(event.key)){
+                event.preventDefault();
+            }
+        }catch(err){
+            console.error(`NonEmptyField -> Erro handling keyDown evenet: ${err}`);
+        }
+    }
+
     static handleOnChange(text, valueSetter, errorMsgSetter){
         try{
             if(!Validar.isNotEmptyStr(text)){
                 errorMsgSetter("Obrigatório!");
             }else{
                 errorMsgSetter("");
-                valueSetter(text);
             }
+            valueSetter(text);
         }catch(err){
-            console.error(`${NonEmptyField.name} -> Erro handling onChange event: ${err}`);
+            console.error(`NonEmptyField -> Erro handling onChange event: ${err}`);
         }
     }
 }
@@ -770,7 +839,8 @@ export class Validar {
     static CNPJ = CadastroNacionalPessoaJuridica;
     static TelFixo = TelefoneFixo;
     static TelCel = TelefoneCelular;
-    static NomePessoa = NomePessoa;
+    static NomePF = NomePessoaFisica;
+    static NomePJ = NomePessoaJuridica;
     static Email = Email;
     static Senha = Senha;
     static DataContrato = DataContrato;

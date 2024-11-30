@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../css/login.css";
-import { ButtonGroup } from "react-bootstrap";
+import {Alert, AlertHeading, ButtonGroup } from "react-bootstrap";
 import { Image } from "react-bootstrap";
 import logo_empresa from "../../assets/image/logo_empresa.jpeg";
 import { useNavigate, Link } from 'react-router-dom'; 
-
 
 
 export default function Login() {
@@ -14,6 +13,12 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [emailError, setEmailError] = useState(""); 
   const [senhaError, setSenhaError] = useState("");
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [msgAlert, setMsgAlert] = useState('');
+  const [headerAlert, setHeaderAlert] = useState('');
+  const [typeAlert, setTypeAlert] = useState('');
+
 
   const navigate = useNavigate()
 
@@ -54,30 +59,58 @@ export default function Login() {
   .then((response) => response.json())
   .then((data) => {
       if(data.success) {
-          localStorage.setItem("authToken", data.token);
-          console.log("Token armazenado:", data.token);
-          alert("Bem vindo!");
+        setTypeAlert("success");
+        setHeaderAlert("Bem vindo!");
+        setShowAlert(true);
+        localStorage.setItem("authToken", data.token);
+        console.log("Token armazenado:", data.token);
+          // alert("Bem vindo!");
+        setTimeout(() => {
           navigate("/inicio");
+        }, 1500); 
       } else {
-          alert(`Erro ${data.message || "Erro desconhecido ao cadastrar o serviço."}`);
+        setTypeAlert("warning");
+        setHeaderAlert("Ops! Não foi possível realizar o login");
+        setMsgAlert(data.message);
+        setShowAlert(true);
+        // alert(`Erro ${data.message || "Erro desconhecido ao cadastrar o serviço."}`);
       }
   })
-
   .catch((error) => {
-       if (error.message.includes('400')){
-           alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
-       }
-       else if(error.message.includes('500')){
-           alert("Erro: Falha no servidor. Tente novamente mais tarde.");
-       }
-       else{
-           alert(`Erro: ${error.message}`);
-       }
+    setShowAlert(true);
+    setTypeAlert("danger");
+    if (error.message.includes('400')){
+    setHeaderAlert("Dados inválidos");
+    setMsgAlert("Dados inválidos fornecidos. Verifique os campos e tente novamente.");
+    // alert("Erro: Dados inválidos fornecidos. Verifique os campos e tente novamente.")
+    }
+    else if(error.message.includes('500')){
+    setHeaderAlert("Ops! Não foi possível realizar o login");
+    setMsgAlert("Falha no servidor. Tente novamente mais tarde.");
+    // alert("Erro: Falha no servidor. Tente novamente mais tarde.");
+    }
+    else{
+    setHeaderAlert("Ops! Não foi possível realizar o login");
+    setMsgAlert(error.message);
+    // alert(`Erro: ${error.message}`);
+    }
     });
   };
 
   return(
     <div id="login-main" class="container">
+      <Alert 
+          variant={typeAlert} 
+          show={showAlert} 
+          onClose={() => setShowAlert(false)} 
+          dismissible
+      >
+        <AlertHeading
+          style={msgAlert? {} : {textAlign: 'center'}} 
+        >{headerAlert}</AlertHeading>
+        
+        {msgAlert ? <><br/><strong><p>{msgAlert}</p></strong></> : <></>}
+      </Alert>
       <div id="login-inicio" class="row">
         <div id="Entrar" class="col-12 text-center">
           <h1>Sistema de Controle de Chamados</h1>
