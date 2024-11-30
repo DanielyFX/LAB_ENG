@@ -66,7 +66,7 @@ function ClienteBox(props) {
         <div className="tecnico">
             <p key={`${cliente._id}`}>ID: {cliente._id}</p><hr/>
             <p key={`${cliente._id}_nome`}>NOME: {cliente.nome}</p><hr/>
-            <p key={`${cliente._id}_documento`}>CPF/CNPJ: {CPF.isFormatValid(cliente.documento)?CPF.getFormated(cliente.documento):CNPJ.getFormated(cliente.documento)}</p><hr/>
+            <p key={`${cliente._id}_documento`}>{CPF.isFormatValid(cliente.documento)? "CPF" : "CNPJ"}: {CPF.isFormatValid(cliente.documento)?CPF.getFormated(cliente.documento):CNPJ.getFormated(cliente.documento)}</p><hr/>
             <p key={`${cliente._id}_email`}>EMAIL: {cliente.email}</p><hr/>
             <p key={`${cliente._id}_telefone`}>TELEFONE: {TelFixo.getFormated(cliente.telefone)}</p><hr/>
             <p key={`${cliente._id}_celular`}>CELULAR: {TelCel.getFormated(cliente.celular)}</p><hr/>
