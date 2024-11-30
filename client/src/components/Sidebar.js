@@ -3,7 +3,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import '../css/menuLateral/menu.css';
 
 export default function Sidebar() {
-    const [expandedMenu, setExpandedMenu] = useState(null);
+    const [expandedMenu] = useState(null); //setExpandedMenu
 
     return (
         <div id="sidebar-container" className="menu-lateral">

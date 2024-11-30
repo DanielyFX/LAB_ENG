@@ -68,7 +68,7 @@ function OrcamentoBox(props) {
             <OrcamentoModal show={show}
                             orcamento={orcamento}
                             tecnicos={tecnicos}
-                            chamados={chamados} servicos={servicos}
+                            chamados={chamados}
                             onHide={() => setShow(false)}
                             handleClose={() => setShow(false)}
             />
@@ -134,14 +134,14 @@ export default function ConsultarOrcamento() {
             <div id="chamados-main">
                 {
                     orcamentos
-                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status != "CANCELADO" && orcamento.situacao != "REPROVADO")
+                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status !== "CANCELADO" && orcamento.situacao !== "REPROVADO")
                         .filter((orcamento) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in orcamento) {
                                     if (orcamento[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return orcamento._id.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             case "chamado":

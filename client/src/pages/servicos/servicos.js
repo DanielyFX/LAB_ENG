@@ -138,7 +138,7 @@ export default function ConsultarServicos() {
                                 for (let parametro in servico) {
                                     if (servico[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return servico._id.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             case "nome":
@@ -150,7 +150,7 @@ export default function ConsultarServicos() {
                             case "descricao":
                                 return servico.descricao.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             case "preco":
-                                return servico.preco.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
+                                return servico.preco.toString().toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             default:
                                 return true;
                         }

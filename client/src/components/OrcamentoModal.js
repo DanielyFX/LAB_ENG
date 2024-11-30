@@ -4,13 +4,13 @@ import Toast from 'react-bootstrap/Toast';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import enums from "../utils/enums.json";
 import Table from "react-bootstrap/Table";
 
 export default function OrcamentoModal(props) {
 
-    const {orcamento, tecnicos, chamados, servicos, onHide} = props;
+    const {orcamento, tecnicos, chamados, onHide} = props;
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
@@ -177,7 +177,7 @@ export default function OrcamentoModal(props) {
         setShowToast(true);
     };
 
-    const calcularTotal = () => {
+    const calcularTotal = useCallback(() => {
         // 1. Calcula o total dos serviços
         const totalAtualServicos = precoTotalServicos;
 
@@ -193,7 +193,7 @@ export default function OrcamentoModal(props) {
     
         // Define o preço total com duas casas decimais
         setPrecoTotal(precoFinal.toFixed(2));
-    };
+    }, [descontoServico, despesasSelecionadas, precoTotalServicos]);
 
     const handleSubmit = (e) =>{
         e.preventDefault();

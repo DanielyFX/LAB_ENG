@@ -10,7 +10,7 @@ import enums from "../../utils/enums.json"
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
-    const {chamado, clientes, atendentes, tecnicos, servicos, orcamento} = props
+    const {chamado, clientes, servicos, orcamento} = props //atendentes
     //console.log("Chamado único", chamado);
     //console.log("Orçamento", orcamento);
 
@@ -108,7 +108,7 @@ function ChamadoBox(props) {
 
 export default function ConsultarChamados(props) {
 
-    const {chamados, clientes, atendentes, servicos, tecnicos, orcamentos} = useLoaderData();
+    const {chamados, clientes, servicos, orcamentos} = useLoaderData(); // chamados, clientes, atendentes, servicos, tecnicos, orcamentos
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
@@ -178,7 +178,7 @@ export default function ConsultarChamados(props) {
                                 for (let parametro in chamado) {
                                     if (chamado[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return chamado._id.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "descricao":
@@ -186,18 +186,18 @@ export default function ConsultarChamados(props) {
                             case "prioridade":
                                 return chamado.prioridade.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "orcamento":
-                                const orcamentoRelacionado = getOrcamentoRelacionado(chamado);
-                                return orcamentoRelacionado ? orcamentoRelacionado.status.toLowerCase().includes(pesquisa.toLowerCase()) : enums.SituacaoEnum.nao_realizado;   
+                                const orcamentoRelacionadoStatus = getOrcamentoRelacionado(chamado).status || enums.SituacaoEnum.nao_realizado;
+                                return orcamentoRelacionadoStatus.toLowerCase().includes(pesquisa.toLowerCase());  
                             case "previsaoAtendimento":
                                 return chamado.previsaoAtendimento.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "atendente":
-                                return chamado.atendente.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                                return chamado.atendente.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "tecnico":
-                                return chamado.tecnico.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                                return chamado.tecnico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "status":
                                 return chamado.status.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             case "cliente":
-                                return chamado.cliente.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
+                                return chamado.cliente.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? chamado : false
                             default:
                                 return true;
                         }
@@ -210,8 +210,7 @@ export default function ConsultarChamados(props) {
                             case "atendente":
                             case "tecnico":
                             case "cliente":
-                                sort_string(a[parametroOrd], b[parametroOrd]);
-                                break;
+                                return sort_string(a[parametroOrd], b[parametroOrd]); //Retorna o resultado
                             case "_id":
                                 return parseInt(a["_id"]) - parseInt(b["_id"])
                             case "dataCriacao":
@@ -219,7 +218,7 @@ export default function ConsultarChamados(props) {
                             case "previsaoAtendimento":
                                 return new Date(a["previsaoAtendimento"]) - new Date(b["previsaoAtendimento"]);
                             default:
-                                return true;
+                                return 0;
                         }
                     }).map((chamado) => {
                         //console.log(chamado)
@@ -230,8 +229,8 @@ export default function ConsultarChamados(props) {
                             <ChamadoBox 
                             chamado={chamado} 
                             clientes={clientes} 
-                            atendentes={atendentes} 
-                            tecnicos={tecnicos}
+                            //atendentes={atendentes} 
+                            //tecnicos={tecnicos}
                             servicos={servicos} 
                             orcamento={orcamentoRelacionado}/>
                         );

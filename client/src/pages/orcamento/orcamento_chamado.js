@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import '../../css/chamados/cadchamados.css'
 import { ButtonGroup } from "react-bootstrap";
 import {useLoaderData} from "react-router-dom";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import Table from "react-bootstrap/Table";
 import enums from "../../utils/enums.json";
 
@@ -18,15 +18,15 @@ export default function OrcamentoChamado() {
     
     const [chamado, setChamado] = useState('');
     const [tecnico, setTecnico] = useState('');
-    const [erroTecnico, setErroTecnico] = useState(false);
+    //const [erroTecnico, setErroTecnico] = useState(false);
 
     const [servicosChamado, setServicosChamado] = useState([]);
     const [tempoExecucao, setTempoExecucao] = useState('');
-    const [atendimento, setAtendimento] = useState('');
+    //const [atendimento, setAtendimento] = useState('');
     const [enderecoServico, setEnderecoServico] = useState('');
     const [observacao, setObservacao] = useState('');
     const [descontoServico, setDescontoServico] = useState('');
-    const [situacaoOrcamento, setSituacaoOrcamento] = useState(enums.SituacaoEnum.realizado);
+    const [situacaoOrcamento] = useState(enums.SituacaoEnum.realizado); //setSituacaoOrcamento
     const [precoTotal, setPrecoTotal] = useState('');
 
     const [tipoDespesa, setTipoDespesa] = useState('');
@@ -34,7 +34,7 @@ export default function OrcamentoChamado() {
     const [despesasSelecionadas, setDespesasSelecionadas] = useState([]);
     
     console.log("Despesas selecionadas", despesasSelecionadas)
-    const calcularTempoExecucao = () => {
+    const calcularTempoExecucao = useCallback(() => {
         if (chamado && chamado.dataAbertura && chamado.previsao) {
             const dataAbertura = new Date(chamado.dataAbertura); // Certifique-se de que a data de abertura é do tipo Date
             const previsao = new Date(chamado.previsao); // Certifique-se de que a previsão também é do tipo Date
@@ -49,7 +49,7 @@ export default function OrcamentoChamado() {
 
             setTempoExecucao(`${diffDias}d ${diffHoras}h ${diffMinutos}m`); // Formato: 5h 30m
         }
-    };
+    }, [chamado]);
 
     const handleDescontoChange = (e) => {
         const valor = parseFloat(e.target.value);
@@ -111,7 +111,7 @@ export default function OrcamentoChamado() {
         setDespesasSelecionadas(novasDespesas);
     };
 
-    const calcularTotal = () => {
+    const calcularTotal = useCallback(() => {
         // 1. Calcula o total dos serviços
         const totalServicos = servicosChamado.reduce((acc, servico) => acc + parseFloat(servico.preco || 0), 0);
 
@@ -127,7 +127,7 @@ export default function OrcamentoChamado() {
     
         // Define o preço total com duas casas decimais
         setPrecoTotal(precoFinal.toFixed(2));
-    };
+    }, [servicosChamado, descontoServico, despesasSelecionadas]);
 
 
     useEffect(() => {
@@ -234,7 +234,7 @@ export default function OrcamentoChamado() {
                             <option value="">Selecione...</option>
                             {tecnicos_alfabetico.length > 0 ? (
                                 tecnicos_alfabetico
-                                    .filter((tecnico) => tecnico.bd_status != "INATIVO")
+                                    .filter((tecnico) => tecnico.bd_status !== "INATIVO")
                                     .map((tecnico) => (
                                     <option key={tecnico._id} value={tecnico._id}>
                                         {tecnico.nome}

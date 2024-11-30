@@ -171,10 +171,15 @@ export default function ConsultarAtendentes() {
                     .filter((atendente) => {
                         switch (parametro) {
                             case "todos":
-                                for (let parametro in atendente) {
-                                    if (atendente[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
+                                for (let key in atendente) {
+                                    if (atendente[key] &&
+                                        atendente[key] === "string" &&
+                                        atendente[key].toLowerCase().includes(pesquisa.toLowerCase())
+                                    ) {
+                                        return true
+                                      }
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return atendente._id.toLowerCase().includes(pesquisa.toLowerCase()) ? atendente : false
                             case "nome":

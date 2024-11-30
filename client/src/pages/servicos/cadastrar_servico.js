@@ -40,7 +40,7 @@ export default function CadastrarServico() {
 
         .then((resultado) => {
               if (!resultado.ok){
-                    if (resultado.status == 409){
+                    if (resultado.status === 409){
                         throw new Error("Serviço já cadastrado com esse nome.");
                     }
                     throw new Error("Erro interno do servidor! Tente novamente mais tarde.")

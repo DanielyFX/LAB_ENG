@@ -136,7 +136,6 @@ function ChamadoModal(props) {
 
     useEffect(() => {
         // Define a data e hora atuais no formato necessário para `datetime-local`
-        const now = new Date();
         
         if (prioridade && prioridade !== 'Selecione...') {
             setPrevisaoAtendimento(calcularPrevisaoAtendimento(prioridade));
