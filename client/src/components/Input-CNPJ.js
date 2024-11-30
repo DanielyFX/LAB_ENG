@@ -2,7 +2,7 @@ import Form from "react-bootstrap/Form";
 import { Validar } from "../pages/validacao";
 import { useState } from "react";
 
-export default function InputCNPJ({id, valueSetter, msgError, msgErrorSetter, defaultValue, required=false, disabled=false, readOnly=false}){
+export default function InputCNPJ({id, valueSetter, msgError, msgErrorSetter, defaultValue, onBlur, required=false, disabled=false, readOnly=false}){
     const [erro, setErro] = useState('');
 
     return (
@@ -20,6 +20,7 @@ export default function InputCNPJ({id, valueSetter, msgError, msgErrorSetter, de
                 minLength={Validar.CNPJ.minLength}
                 maxLength={Validar.CNPJ.maxLength}
                 onKeyDown={(e) => Validar.CNPJ.handleKeyDown(e)}
+                onBlur={onBlur? (e) => onBlur(e.target.value) : undefined}
                 onChange={(e) => {
                     if(valueSetter && msgErrorSetter)
                         Validar.CNPJ.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
