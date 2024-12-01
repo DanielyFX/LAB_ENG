@@ -7,7 +7,7 @@ import {router} from './routes';
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
-
+// ver como arrumar rota para deploy
 app.use(express.json());
 //app.use(cors({ origin: ['https://lab-eng-6zt6.vercel.app', 'http://localhost:3000'] }));
 
