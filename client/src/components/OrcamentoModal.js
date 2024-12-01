@@ -42,6 +42,24 @@ export default function OrcamentoModal(props) {
 
     const isBlocked = situacaoOrcamento === "APROVADO" || situacaoOrcamento === "REPROVADO";
 
+    const calcularTotal = useCallback(() => {
+        // 1. Calcula o total dos serviços
+        const totalAtualServicos = precoTotalServicos;
+
+        // 2. Aplica o desconto, caso exista
+        const desconto = parseFloat(descontoServico) >= 0 ? parseFloat(descontoServico) : 0;
+        const totalComDesconto = totalAtualServicos - desconto;
+    
+        // 3. Calcula o total das despesas adicionais
+        const totalDespesas = despesasSelecionadas.reduce((acc, despesa) => acc + despesa.valor, 0);
+    
+        // 4. Calcula o preço total final
+        const precoFinal = totalComDesconto + totalDespesas;
+    
+        // Define o preço total com duas casas decimais
+        setPrecoTotal(precoFinal.toFixed(2));
+    }, [descontoServico, despesasSelecionadas, precoTotalServicos]);
+    
     useEffect(() => {
         setChamado(orcamento.chamado._id);
         setTecnico(orcamento.tecnico._id);
@@ -66,7 +84,7 @@ export default function OrcamentoModal(props) {
     
     useEffect(() => {
         calcularTotal();
-      }, [descontoServico, despesasSelecionadas, precoTotalServicos]);
+      }, [descontoServico, despesasSelecionadas, precoTotalServicos, calcularTotal]);
 
     useEffect(() => {
         let totalServicos = orcamento.chamado.servicos
@@ -86,7 +104,7 @@ export default function OrcamentoModal(props) {
         console.log("Preço total", precoTotal);
         console.log("Preço total dos serviços", precoTotalServicos);
         if (parseFloat(descontoServico) < 0) newErrors.descontoServico = "Desconto não pode ser negativo.";
-        if (parseFloat(precoTotal) <= 0 || parseFloat(precoTotal) <= parseFloat(precoTotalServicos)) newErrors.precoTotal = "Preço total não pode ser  0 ou negativo e nem menor ou igual do que o custo base dos serviços.";
+        if (parseFloat(precoTotal) <= 0 || parseFloat(precoTotal) < parseFloat(precoTotalServicos)) newErrors.precoTotal = "Preço total não pode ser  0 ou negativo do que o custo base dos serviços.";
         if (parseFloat(despesasSelecionadas) < 0) newErrors.despesas = "Despesas não podem ser negativas.";
 
         setErrors(newErrors);
@@ -176,24 +194,6 @@ export default function OrcamentoModal(props) {
         }
         setShowToast(true);
     };
-
-    const calcularTotal = useCallback(() => {
-        // 1. Calcula o total dos serviços
-        const totalAtualServicos = precoTotalServicos;
-
-        // 2. Aplica o desconto, caso exista
-        const desconto = parseFloat(descontoServico) >= 0 ? parseFloat(descontoServico) : 0;
-        const totalComDesconto = totalAtualServicos - desconto;
-    
-        // 3. Calcula o total das despesas adicionais
-        const totalDespesas = despesasSelecionadas.reduce((acc, despesa) => acc + despesa.valor, 0);
-    
-        // 4. Calcula o preço total final
-        const precoFinal = totalComDesconto + totalDespesas;
-    
-        // Define o preço total com duas casas decimais
-        setPrecoTotal(precoFinal.toFixed(2));
-    }, [descontoServico, despesasSelecionadas, precoTotalServicos]);
 
     const handleSubmit = (e) =>{
         e.preventDefault();

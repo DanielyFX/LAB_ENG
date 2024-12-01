@@ -10,7 +10,7 @@ import searchIcon from "../../css/Icons";
 
 function OrcamentoBox(props) {
     const [show, setShow] = useState(false)
-    const {orcamento, tecnicos, chamados, servicos} = props
+    const {orcamento, tecnicos, chamados} = props //orcamento, tecnicos, chamados, servicos
     //console.log("Orcamento unico", orcamento);
 
     const handleExcluir = (orcamento_id) => {
@@ -165,7 +165,7 @@ export default function ConsultarOrcamento() {
                             case "precoTotal":
                                 return orcamento.precoTotal.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             default:
-                                return true;
+                                return false;
                         }
                     }).sort((a,b) => {
                         switch (parametroOrd) {
@@ -193,7 +193,7 @@ export default function ConsultarOrcamento() {
                     }).map((orcamento) => {
                         return (
                             <OrcamentoBox orcamento={orcamento} tecnicos={tecnicos}
-                                          chamados={chamados} servicos={servicos}/>
+                                          chamados={chamados} /> //servicos={servicos}
                         );
                     })
                 }

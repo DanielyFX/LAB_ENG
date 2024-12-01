@@ -132,7 +132,7 @@ export default function OrcamentoChamado() {
 
     useEffect(() => {
         calcularTotal();
-      }, [servicosChamado, descontoServico, despesasSelecionadas]);
+      }, [servicosChamado, descontoServico, despesasSelecionadas, calcularTotal]);
     
     useEffect(() => {
         calcularTempoExecucao();
