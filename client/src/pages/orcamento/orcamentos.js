@@ -181,7 +181,6 @@ export default function ConsultarOrcamento() {
                             case "garantia":
                             case "enderecoServico":
                             case "observacao":
-                            // case "situacao":
                             case "descontoServico":
                                 return sort_string(a[parametroOrd], b[parametroOrd]);
                             case "precoTotal":
