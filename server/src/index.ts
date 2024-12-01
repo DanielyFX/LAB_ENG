@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import * as dotenv from "dotenv";
-import * as cors from 'cors';
+import cors from 'cors';
 
 dotenv.config();
 import {router} from './routes';
@@ -8,8 +8,8 @@ import {router} from './routes';
 const app: Express = express();
 const port = process.env.PORT || 3001;
 
-app.use(express.json());
-// app.use(cors({origin: 'http://localhost:3000'}));
+//app.use(express.json());
+app.use(cors({ origin: ['https://lab-eng-6zt6.vercel.app', 'http://localhost:3000'] }));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
