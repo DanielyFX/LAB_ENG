@@ -171,7 +171,7 @@ export default function ConsultarTecnicos() {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in tecnico) {
-                                    if (tecnico[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
+                                    if (tecnico[parametro].toString().toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
                                 return false;
                             case "_id":

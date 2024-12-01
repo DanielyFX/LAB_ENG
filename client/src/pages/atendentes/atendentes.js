@@ -174,7 +174,7 @@ export default function ConsultarAtendentes() {
                                 for (let key in atendente) {
                                     if (atendente[key] &&
                                         atendente[key] === "string" &&
-                                        atendente[key].toLowerCase().includes(pesquisa.toLowerCase())
+                                        atendente[key].toString().toLowerCase().includes(pesquisa.toLowerCase())
                                     ) {
                                         return true
                                       }

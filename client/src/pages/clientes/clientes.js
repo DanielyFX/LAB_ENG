@@ -170,7 +170,7 @@ export default function ConsultarClientes() {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in cliente) {
-                                    if (cliente[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true;
+                                    if (cliente[parametro].toString().toLowerCase().includes(pesquisa.toLowerCase())) return true;
                                 }
                                 return false;
                             case "_id":

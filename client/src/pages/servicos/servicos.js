@@ -136,7 +136,7 @@ export default function ConsultarServicos() {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in servico) {
-                                    if (servico[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
+                                    if (servico[parametro].toString().toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
                                 return false;
                             case "_id":

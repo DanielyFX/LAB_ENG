@@ -138,7 +138,7 @@ export default function ConsultarOrcamento() {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in orcamento) {
-                                    if (orcamento[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true;
+                                    if (orcamento[parametro].toString().toLowerCase().includes(pesquisa.toLowerCase())) return true;
                                 }
                                 return false;
                             case "_id":
