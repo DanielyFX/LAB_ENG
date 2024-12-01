@@ -8,7 +8,7 @@ import {useState} from "react";
 import Alert from 'react-bootstrap/Alert';
 import { Validar } from "../validacao";
 
-export default function Cadastrar_servico() {
+export default function CadastrarServico() {
 
     const [nome, setNome] = useState('');
     const [tipo, setTipo] = useState('');
@@ -40,7 +40,7 @@ export default function Cadastrar_servico() {
 
         .then((resultado) => {
               if (!resultado.ok){
-                    if (resultado.status == 409){
+                    if (resultado.status === 409){
                         throw new Error("Serviço já cadastrado com esse nome.");
                     }
                     throw new Error("Erro interno do servidor! Tente novamente mais tarde.")

@@ -4,20 +4,19 @@ import Toast from 'react-bootstrap/Toast';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import enums from "../utils/enums.json";
 import Table from "react-bootstrap/Table";
 
 export default function OrcamentoModal(props) {
 
-    const {handleClose, orcamento, tecnicos, chamados, servicos, onHide} = props;
+    const {orcamento, tecnicos, chamados, onHide} = props;
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
-    const servicos_alfabetico = servicos.sort(sort_str)
 
-    const [mensagem, setMensagem] = useState("");
-    const [sucesso, setSucesso] = useState(false);
+    //const [mensagem, setMensagem] = useState("");
+    //const [sucesso, setSucesso] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState(''); 
 
@@ -33,7 +32,7 @@ export default function OrcamentoModal(props) {
     const [precoTotal, setPrecoTotal] = useState(orcamento.precoTotal);
     const [errors, setErrors] = useState({});
 
-    const [statusOrcamentoOriginal, setStatusOrcamentooOriginal] = useState(orcamento.situacao);
+    const [statusOrcamentoOriginal] = useState(orcamento.situacao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
 
@@ -43,6 +42,24 @@ export default function OrcamentoModal(props) {
 
     const isBlocked = situacaoOrcamento === "APROVADO" || situacaoOrcamento === "REPROVADO";
 
+    const calcularTotal = useCallback(() => {
+        // 1. Calcula o total dos serviços
+        const totalAtualServicos = precoTotalServicos;
+
+        // 2. Aplica o desconto, caso exista
+        const desconto = parseFloat(descontoServico) >= 0 ? parseFloat(descontoServico) : 0;
+        const totalComDesconto = totalAtualServicos - desconto;
+    
+        // 3. Calcula o total das despesas adicionais
+        const totalDespesas = despesasSelecionadas.reduce((acc, despesa) => acc + despesa.valor, 0);
+    
+        // 4. Calcula o preço total final
+        const precoFinal = totalComDesconto + totalDespesas;
+    
+        // Define o preço total com duas casas decimais
+        setPrecoTotal(precoFinal.toFixed(2));
+    }, [descontoServico, despesasSelecionadas, precoTotalServicos]);
+    
     useEffect(() => {
         setChamado(orcamento.chamado._id);
         setTecnico(orcamento.tecnico._id);
@@ -59,22 +76,22 @@ export default function OrcamentoModal(props) {
         setValorDespesa('');
         setDespesasSelecionadas(orcamento.despesas);
 
-        setMensagem("");
-        setSucesso(false);
+        //setMensagem("");
+        //setSucesso(false);
         setShowToast(false);
         setToastMessage('');
       }, [orcamento, props.show]);
     
     useEffect(() => {
         calcularTotal();
-      }, [descontoServico, despesasSelecionadas, precoTotalServicos]);
+      }, [descontoServico, despesasSelecionadas, precoTotalServicos, calcularTotal]);
 
     useEffect(() => {
         let totalServicos = orcamento.chamado.servicos
             .reduce((total, servico) => total + parseFloat(servico.preco || 0), 0);
         setPrecoTotalServicos(totalServicos.toFixed(2));
             console.log("Preco total servicos", precoTotalServicos);
-    }, [orcamento, props.show]);
+    }, [orcamento, precoTotalServicos, props.show]);
 
     //useEffect(() => {
     //    calcularTotal();
@@ -87,7 +104,7 @@ export default function OrcamentoModal(props) {
         console.log("Preço total", precoTotal);
         console.log("Preço total dos serviços", precoTotalServicos);
         if (parseFloat(descontoServico) < 0) newErrors.descontoServico = "Desconto não pode ser negativo.";
-        if (parseFloat(precoTotal) <= 0 || parseFloat(precoTotal) <= parseFloat(precoTotalServicos)) newErrors.precoTotal = "Preço total não pode ser  0 ou negativo e nem menor ou igual do que o custo base dos serviços.";
+        if (parseFloat(precoTotal) <= 0 || parseFloat(precoTotal) < parseFloat(precoTotalServicos)) newErrors.precoTotal = "Preço total não pode ser  0 ou negativo do que o custo base dos serviços.";
         if (parseFloat(despesasSelecionadas) < 0) newErrors.despesas = "Despesas não podem ser negativas.";
 
         setErrors(newErrors);
@@ -98,17 +115,17 @@ export default function OrcamentoModal(props) {
     const handleAprovarOrcamento = () => {
         if (statusOrcamentoOriginal === enums.SituacaoEnum.realizado) {
             setSituacaoOrcamento(enums.SituacaoEnum.aprovado);
-            setMensagem("Situação do orçamento alterado para 'Aprovado' com sucesso.");
-            setToastMessage("Situação do orçamento alterado para 'Aprovado' com sucesso.")
-            setSucesso(true);
+            //setMensagem("Situação do orçamento alterado para 'Aprovado' com sucesso.");
+            setToastMessage("Situação do orçamento alterado para 'Aprovado' com sucesso.");
+            //setSucesso(true);
         } else if (statusOrcamentoOriginal === enums.SituacaoEnum.reprovado) {
-            setMensagem("O orçamento foi reprovado! Não é possível aprova-lo após reprovação. Por favor criar outro orçamento para avaliação.");
-            setToastMessage("Orçamento reprovado não pode ser alterado para aprovado!")
-            setSucesso(false);
+            //setMensagem("O orçamento foi reprovado! Não é possível aprova-lo após reprovação. Por favor criar outro orçamento para avaliação.");
+            setToastMessage("Orçamento reprovado não pode ser alterado para aprovado!");
+            //setSucesso(false);
         } else {
-            setMensagem("Este orçamento não pode ser alterado para outra situação.");
-            setToastMessage("Este orçamento não pode ser alterado para outra situação.").
-            setSucesso(false);
+            //setMensagem("Este orçamento não pode ser alterado para outra situação.");
+            setToastMessage("Este orçamento não pode ser alterado para outra situação.");
+            //setSucesso(false);
         }
         setShowToast(true);
     };
@@ -149,17 +166,17 @@ export default function OrcamentoModal(props) {
     const handleReprovarOrcamento = () => {
         if (statusOrcamentoOriginal === enums.SituacaoEnum.realizado) {
             setSituacaoOrcamento(enums.SituacaoEnum.reprovado);
-            setMensagem("Situação do orçamento alterado para 'Reprovado' com sucesso.");
-            setToastMessage("Situação do orçamento alterado para 'Reprovado' com sucesso.")
-            setSucesso(true);
+            //setMensagem("Situação do orçamento alterado para 'Reprovado' com sucesso.");
+            setToastMessage("Situação do orçamento alterado para 'Reprovado' com sucesso.");
+            //setSucesso(true);
         } else if (statusOrcamentoOriginal === enums.SituacaoEnum.aprovado) {
-            setMensagem("O orçamento foi aprovado! Não é possível reprova-lo após aprovação. Por favor criar outro orçamento para avaliação.");
-            setToastMessage("Orçamento aprovado não pode ser alterado para reprovado!")
-            setSucesso(false);
+            //setMensagem("O orçamento foi aprovado! Não é possível reprova-lo após aprovação. Por favor criar outro orçamento para avaliação.");
+            setToastMessage("Orçamento aprovado não pode ser alterado para reprovado!");
+            //setSucesso(false);
         } else {
-            setMensagem("Este orçamento não pode ser alterado para outra situação.");
-            setToastMessage("Este orçamento não pode ser alterado para outra situação.").
-            setSucesso(false);
+            //setMensagem("Este orçamento não pode ser alterado para outra situação.");
+            setToastMessage("Este orçamento não pode ser alterado para outra situação.");
+            //setSucesso(false);
         }
         setShowToast(true);
     };
@@ -167,33 +184,15 @@ export default function OrcamentoModal(props) {
     const handleCancelarOrcamento = () => {
         if (orcamento.situacao !== enums.SituacaoEnum.cancelado) {
             setSituacaoOrcamento(enums.SituacaoEnum.cancelado);
-            setMensagem("Status alterado para 'Cancelado' com sucesso.");
+            //setMensagem("Status alterado para 'Cancelado' com sucesso.");
             setToastMessage("Orçamento cancelado com sucesso!");
-            setSucesso(true);
+            //setSucesso(true);
         } else {
-            setMensagem("Este orçamento já está cancelado.");
-            setToastMessage("Este orçamento já está cancelado.")
-            setSucesso(false);
+            //setMensagem("Este orçamento já está cancelado.");
+            setToastMessage("Este orçamento já está cancelado.");
+            //setSucesso(false);
         }
         setShowToast(true);
-    };
-
-    const calcularTotal = () => {
-        // 1. Calcula o total dos serviços
-        const totalAtualServicos = precoTotalServicos;
-
-        // 2. Aplica o desconto, caso exista
-        const desconto = parseFloat(descontoServico) >= 0 ? parseFloat(descontoServico) : 0;
-        const totalComDesconto = totalAtualServicos - desconto;
-    
-        // 3. Calcula o total das despesas adicionais
-        const totalDespesas = despesasSelecionadas.reduce((acc, despesa) => acc + despesa.valor, 0);
-    
-        // 4. Calcula o preço total final
-        const precoFinal = totalComDesconto + totalDespesas;
-    
-        // Define o preço total com duas casas decimais
-        setPrecoTotal(precoFinal.toFixed(2));
     };
 
     const handleSubmit = (e) =>{

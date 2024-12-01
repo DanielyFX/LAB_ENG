@@ -69,7 +69,7 @@ const ServicoBox = (props) => {
 
 }
 
-export default function Consultar_Clientes() {
+export default function ConsultarServicos() {
 
     let servicos = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
@@ -131,14 +131,14 @@ export default function Consultar_Clientes() {
             </InputGroup>
             <div id="chamados-main">
                 {servicos.length > 0 && servicos
-                    .filter((servico) => servico.bd_status != "INATIVO")
+                    .filter((servico) => servico.bd_status !== "INATIVO")
                     .filter((servico) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in servico) {
                                     if (servico[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return servico._id.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             case "nome":
@@ -150,7 +150,7 @@ export default function Consultar_Clientes() {
                             case "descricao":
                                 return servico.descricao.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             case "preco":
-                                return servico.preco.toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
+                                return servico.preco.toString().toLowerCase().includes(pesquisa.toLowerCase()) ? servico : false
                             default:
                                 return true;
                         }

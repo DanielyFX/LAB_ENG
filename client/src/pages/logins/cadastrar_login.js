@@ -3,9 +3,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../css/cad_login.css";
 import { ButtonGroup } from "react-bootstrap";
-import { Image } from "react-bootstrap";
-import logo_empresa from "../../assets/image/logo_empresa.jpeg";
-import { useNavigate, Link } from 'react-router-dom'; 
 
 
 export default function CadastrarLogin() {

@@ -1,5 +1,5 @@
 import "../../css/tecnicos/tecnicos.css"
-import {useLoaderData, useNavigate} from "react-router-dom";
+import {useLoaderData} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useState} from "react";
@@ -102,7 +102,7 @@ function TecnicoBox(props) {
 }
 
 
-export default function Consultar_Tecnicos() {
+export default function ConsultarTecnicos() {
 
     const tecnicos = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
@@ -173,7 +173,7 @@ export default function Consultar_Tecnicos() {
                                 for (let parametro in tecnico) {
                                     if (tecnico[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return tecnico._id.toLowerCase().includes(pesquisa.toLowerCase()) ? tecnico : false
                             case "nome":
@@ -206,7 +206,7 @@ export default function Consultar_Tecnicos() {
                             case "dataContrato":
                                 return new Date(a["dataContrato"]) - new Date(b["dataContrato"]);
                             default:
-                                return true;
+                                return 0;
                         }
                     }).map((tecnico) => {
                         return (

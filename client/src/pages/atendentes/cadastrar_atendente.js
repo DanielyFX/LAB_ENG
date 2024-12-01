@@ -15,7 +15,7 @@ import InputNomePessoa from "../../components/Input-NomePessoa";
 import InputPassword from "../../components/Input-Password";
 import InputDataContrato from "../../components/Input-DataContrato";
 
-export default function Cadastrar_atendente() {
+export default function CadastrarAtendente() {
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');

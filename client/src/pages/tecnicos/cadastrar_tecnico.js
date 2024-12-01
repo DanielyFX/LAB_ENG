@@ -15,7 +15,7 @@ import InputTelefoneCelular from "../../components/Input-TelCel";
 import InputEmail from "../../components/Input-Email";
 import InputNomePessoa from "../../components/Input-NomePessoa";
 
-export default function Cadastrar_tecnico() {
+export default function CadastrarTecnico() {
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');

@@ -10,7 +10,7 @@ import searchIcon from "../../css/Icons";
 
 function OrcamentoBox(props) {
     const [show, setShow] = useState(false)
-    const {orcamento, tecnicos, chamados, servicos} = props
+    const {orcamento, tecnicos, chamados} = props //orcamento, tecnicos, chamados, servicos
     //console.log("Orcamento unico", orcamento);
 
     const handleExcluir = (orcamento_id) => {
@@ -68,7 +68,7 @@ function OrcamentoBox(props) {
             <OrcamentoModal show={show}
                             orcamento={orcamento}
                             tecnicos={tecnicos}
-                            chamados={chamados} servicos={servicos}
+                            chamados={chamados}
                             onHide={() => setShow(false)}
                             handleClose={() => setShow(false)}
             />
@@ -77,9 +77,9 @@ function OrcamentoBox(props) {
 
 }
 
-export default function Consultar_orcamento() {
+export default function ConsultarOrcamento() {
 
-    const {orcamentos, tecnicos, chamados, servicos} = useLoaderData();
+    const {orcamentos, tecnicos, chamados} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
@@ -134,36 +134,38 @@ export default function Consultar_orcamento() {
             <div id="chamados-main">
                 {
                     orcamentos
-                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status != "CANCELADO" && orcamento.situacao != "REPROVADO")
+                        .filter((orcamento) => orcamento.chamado.bd_status !== "INATIVO" && orcamento.chamado.status !== "CANCELADO" && orcamento.situacao !== "REPROVADO")
                         .filter((orcamento) => {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in orcamento) {
-                                    if (orcamento[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
+                                    if (orcamento[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true;
                                 }
-                                break;
+                                return false;
                             case "_id":
-                                return orcamento._id.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento._id.toLowerCase().includes(pesquisa.toLowerCase());
                             case "chamado":
-                                return orcamento.chamado.descricao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.chamado.descricao.toLowerCase().includes(pesquisa.toLowerCase());
                             case "tecnico":
-                                return orcamento.tecnico.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.tecnico.nome.toLowerCase().includes(pesquisa.toLowerCase());
                             case "servicos":
-                                return orcamento.chamado.servicos.nome.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.chamado.servicos.some(servico =>
+                                    servico.nome.toLowerCase().includes(pesquisa.toLowerCase())
+                                  );
                             case "tempoExecucao":
-                                return orcamento.tempoExecucao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.tempoExecucao.toLowerCase().includes(pesquisa.toLowerCase())
                             case "garantia":
-                                return orcamento.garantia.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.garantia.toLowerCase().includes(pesquisa.toLowerCase())
                             case "enderecoServico":
-                                return orcamento.enderecoServico.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.enderecoServico.toLowerCase().includes(pesquisa.toLowerCase())
                             case "observacao":
-                                return orcamento.observacao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.observacao.toLowerCase().includes(pesquisa.toLowerCase())
                             case "situacao":
-                                return orcamento.situacao.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.situacao.toLowerCase().includes(pesquisa.toLowerCase())
                             case "descontoServico":
-                                return orcamento.descontoServico.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.descontoServico.toLowerCase().includes(pesquisa.toLowerCase())
                             case "precoTotal":
-                                return orcamento.precoTotal.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
+                                return orcamento.precoTotal.toLowerCase().includes(pesquisa.toLowerCase())
                             default:
                                 return true;
                         }
@@ -179,7 +181,6 @@ export default function Consultar_orcamento() {
                             case "garantia":
                             case "enderecoServico":
                             case "observacao":
-                            // case "situacao":
                             case "descontoServico":
                                 return sort_string(a[parametroOrd], b[parametroOrd]);
                             case "precoTotal":
@@ -193,7 +194,7 @@ export default function Consultar_orcamento() {
                     }).map((orcamento) => {
                         return (
                             <OrcamentoBox orcamento={orcamento} tecnicos={tecnicos}
-                                          chamados={chamados} servicos={servicos}/>
+                                          chamados={chamados} /> //servicos={servicos}
                         );
                     })
                 }

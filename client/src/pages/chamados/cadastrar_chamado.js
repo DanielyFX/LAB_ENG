@@ -68,7 +68,7 @@ function pesquisacep(valor) {
     }
 }
 
-export default function Cadastrar_chamado() {
+export default function CadastrarChamado() {
 
     const {clientes, atendentes, servicos, tecnicos} = useLoaderData()
     console.log(servicos)

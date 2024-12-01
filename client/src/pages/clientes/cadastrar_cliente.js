@@ -17,7 +17,7 @@ import InputEmail from "../../components/Input-Email";
 import InputNomePessoa from "../../components/Input-NomePessoa";
 import InputTextRelativeToCEP from "../../components/Input-TextRelativeToCEP";
 
-export default function Cadastrar_cliente() {
+export default function CadastrarCliente() {
 
     const [nome, setNome] = useState('');
     const [documento, setDocumento] = useState('');

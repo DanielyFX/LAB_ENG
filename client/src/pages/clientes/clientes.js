@@ -97,7 +97,7 @@ function ClienteBox(props) {
 }
 
 
-export default function Consultar_Clientes() {
+export default function ConsultarClientes() {
 
     let clientes = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
@@ -122,7 +122,7 @@ export default function Consultar_Clientes() {
                 <Dropdown.Item as="button" onClick={() => funcao("dataCriacao")}>Data de Criação</Dropdown.Item>
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("documento")}>CPF/CNPJ</Dropdown.Item>}
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("telefone")}>Telefone</Dropdown.Item>}
-                {todos && <Dropdown.Item as="button" onClick={() => funcao("celular")}>Telefone</Dropdown.Item>}
+                {todos && <Dropdown.Item as="button" onClick={() => funcao("celular")}>Celular</Dropdown.Item>}
                 {todos && <Dropdown.Item as="button" onClick={() => funcao("email")}>Email</Dropdown.Item>}
                 <Dropdown.Item as="button" onClick={() => funcao("cep")}>CEP</Dropdown.Item>
                 <Dropdown.Item as="button" onClick={() => funcao("rua")}>Rua</Dropdown.Item>
@@ -170,9 +170,9 @@ export default function Consultar_Clientes() {
                         switch (parametro) {
                             case "todos":
                                 for (let parametro in cliente) {
-                                    if (cliente[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true
+                                    if (cliente[parametro].toLowerCase().includes(pesquisa.toLowerCase())) return true;
                                 }
-                                break;
+                                return false;
                             case "_id":
                                 return cliente._id.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "nome":
@@ -192,7 +192,7 @@ export default function Consultar_Clientes() {
                             case "rua":
                                 return cliente.rua.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "numero":
-                                return cliente.numero.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
+                                return cliente.numero.toString().toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "bairro":
                                 return cliente.bairro.toLowerCase().includes(pesquisa.toLowerCase()) ? cliente : false
                             case "cidade":

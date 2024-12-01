@@ -3,15 +3,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import '../css/menuLateral/menu.css';
 
 export default function Sidebar() {
-    const [expandedMenu, setExpandedMenu] = useState(null);
-
-    const toggleSubMenu = (menuId) => {
-        if (expandedMenu === menuId) {
-            setExpandedMenu(null); 
-        } else {
-            setExpandedMenu(menuId); 
-        }
-    };
+    const [expandedMenu] = useState(null); //setExpandedMenu
 
     return (
         <div id="sidebar-container" className="menu-lateral">
@@ -108,3 +100,16 @@ export default function Sidebar() {
         </div>
     );
 }
+
+
+/*RASCUNHOS
+const toggleSubMenu = (menuId) => {
+        if (expandedMenu === menuId) {
+            setExpandedMenu(null); 
+        } else {
+            setExpandedMenu(menuId); 
+        }
+    };
+
+
+*/
