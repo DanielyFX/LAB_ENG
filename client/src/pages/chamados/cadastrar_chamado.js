@@ -9,6 +9,13 @@ import {useLoaderData} from "react-router-dom";
 import { Table } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import enums from '../../utils/enums.json';
+import ToggleButton  from "react-bootstrap/ToggleButton";
+import { Validar } from "../validacao";
+import InputCPF from "../../components/Input-CPF";
+import InputCNPJ from "../../components/Input-CNPJ";
+import InputCEP from "../../components/Input-CEP";
+import InputNomePessoa from "../../components/Input-NomePessoa";
+import InputTelefoneFixo from "../../components/Input-TelFixo";
 
 function limpa_formulário_cep() {
     document.getElementById('rua').value = "";
@@ -87,6 +94,9 @@ export default function Cadastrar_chamado() {
     const [numero, setNumero] = useState('');
     const [cep, setCep] = useState('');
 
+    const [cpfChecked, setCPFChecked] = useState(false);
+    const [cepError, setCepError] = useState('');
+
     const [dataAbertura, setDataAbertura] = useState('');
 
     const [servico, setServico] = useState('');
@@ -146,7 +156,7 @@ export default function Cadastrar_chamado() {
         }
         
         const servicoSelecionado = servicos.find(s => 
-            s.nome === servico && s.bd_status != "INATIVO");
+            s.nome === servico && s.bd_status !== "INATIVO");
         if (servicoSelecionado) {
             const novoServico = { id: servicoSelecionado._id, servico: servicoSelecionado.nome, valor: servicoSelecionado.preco };
             const novosServicos = [...servicosSelecionados, novoServico];
@@ -182,10 +192,10 @@ export default function Cadastrar_chamado() {
     };
 
     
-    const handleCepChange = (e) => {
-        const { value } = e.target;
-        setCep(value);
-    };
+    // const handleCepChange = (e) => {
+    //     const { value } = e.target;
+    //     setCep(value);
+    // };
 
     const handleCepDesfoque = (e) => {
         pesquisacep(e.target.value); 
@@ -230,17 +240,27 @@ export default function Cadastrar_chamado() {
         })
         .then((resultado) => resultado.json())
         .then((response) => {
+            setShowAlert(true);
             if(response.success) {
-                setShowAlert(true);
                 setMsgAlert("Chamado cadastrado com sucesso!");
                 setTypeAlert("success");
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
             } else {
-                alert("Erro ao cadastrar o chamado!")
+                setMsgAlert("Naõ foi possível realizar o cadastro!");
+                setTypeAlert("info");
+                // alert("Erro ao cadastrar o chamado!")
             }
         })
+        .catch((err) => {
+            setShowAlert(true);
+            setTypeAlert("danger");
+            if(err instanceof TypeError && err.message === "Failed to fetch")
+                setMsgAlert(`Verifique sua conexão com a internet (${err.message}).`);
+            else
+                setMsgAlert(err.message);
+        });
     };
 
 
@@ -257,17 +277,54 @@ export default function Cadastrar_chamado() {
             <Form id="cadchamado-form" onSubmit={handleSubmit}>
                 
                 <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>CPF/CNPJ</Form.Label>  {/*busca cpf do cliente, caso não encontre deve mostrar uma mensagem de não encontrado cliente */}
-                    <Col sm={10}><Form.Control required placeholder="Ex.: 000.000.000-00 ou 00.000.000/0000-00" maxLength={18} type="text" rows={3}
-                                               onChange={(e)=> setDocumentoCliente(e.target.value)} onBlur={handleDocumentoCliente}/></Col>
+                    <Form.Label column sm="auto" md={2}>
+                        <ButtonGroup>
+                            <ToggleButton
+                                type="radio" 
+                                size="sm" 
+                                variant={cpfChecked?"primary":"secundary"} 
+                                checked={cpfChecked} 
+                                onClick={() => setCPFChecked(true)}
+                            >
+                                CPF
+                            </ToggleButton>
+                            <ToggleButton
+                                type="radio"
+                                size="sm" 
+                                variant={!cpfChecked?"primary":"secundary"} 
+                                checked={!cpfChecked}
+                                onClick={() => setCPFChecked(false)}
+                            >
+                                CNPJ
+                            </ToggleButton>
+                        </ButtonGroup>    
+                    </Form.Label>
+                    <Col sm={8}>
+                        {cpfChecked? 
+                            <InputCPF id={"cpf"} required valueSetter={setDocumentoCliente} onBlur={handleDocumentoCliente}/> 
+                            : 
+                            <InputCNPJ id={"cnpj"} required valueSetter={setDocumentoCliente} onBlur={handleDocumentoCliente}/>
+                        }
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Nome Cliente</Form.Label>  {/*Deve trazer o cliente pesquisado pelo cpf  */}
-                    <Col sm={10}><Form.Control required type="text" rows={3} value={clienteCampo} disabled/></Col>
+                    <Col sm={10}>
+                        <InputNomePessoa pf={cpfChecked} value={clienteCampo} disabled/>
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>CEP</Form.Label>
-                    <Col sm={10}><Form.Control required placeholder="Ex.: 00000-000" maxLength={9} value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque}/></Col>
+                    <Col sm={10}>
+                        <InputCEP 
+                            required 
+                            msgError={cepError} 
+                            msgErrorSetter={setCepError} 
+                            valueSetter={setCep} 
+                            onBlur={handleCepDesfoque}
+                        />
+                        {/* <Form.Control required placeholder="Ex.: 00000-000" maxLength={9} value={cep} onChange={handleCepChange} onBlur={handleCepDesfoque}/> */}
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Rua</Form.Label>
@@ -275,7 +332,15 @@ export default function Cadastrar_chamado() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Número</Form.Label>
-                    <Col sm={10}><Form.Control required type="text" onChange={(e) => setNumero(e.target.value)}/></Col>
+                    <Col sm={10}>
+                        <Form.Control
+                            required
+                            type="number"
+                            min={1}
+                            step={1}
+                            onChange={(e) => setNumero(e.target.value)}
+                        />
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Bairro</Form.Label>
@@ -287,7 +352,9 @@ export default function Cadastrar_chamado() {
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Numero telefone</Form.Label>  {/*Deve o numero do cliente pesquisado pelo cpf  */}
-                    <Col sm={10}><Form.Control required type="text" rows={3} value={clienteContato} disabled/></Col>
+                    <Col sm={10}>
+                        <InputTelefoneFixo disabled defaultValue={clienteContato}/>
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Descrição Chamado</Form.Label>
@@ -297,14 +364,20 @@ export default function Cadastrar_chamado() {
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Data de Abertura</Form.Label>
                 <Col sm={10}>
-                    <Form.Control required type="datetime-local" value={dataAbertura} onChange={(e) => setDataAbertura(e.target.value)} />
+                    <Form.Control 
+                        required
+                        type="datetime-local"
+                        value={dataAbertura}
+                        max={Validar.Data.TodayHTMLDatetimeLocalFormat} 
+                        onChange={(e) => setDataAbertura(e.target.value)} 
+                    />
                 </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Prioridade</Form.Label> 
                     <Col sm={10}>
-                    <Form.Control required as="select" onChange={e => setPrioridade(e.target.value)} value={prioridade}>
-                    <option value="">Selecione...</option>
+                    <Form.Control required as="select" defaultValue={'default'} onChange={e => setPrioridade(e.target.value)} value={prioridade}>
+                    <option key='default' disabled >Selecione...</option>
                     {Object.entries(enums.PrioridadeEnum).map(([key, value]) => (
                         <option key={key} value={key}>{value}</option>
                     ))}
@@ -317,6 +390,7 @@ export default function Cadastrar_chamado() {
                     <Form.Control
                         type="date"
                         onChange={(e) => setPrevisaoAtendimento(e.target.value)} 
+                        min={Validar.Data.TodayHTMLDateFormat} 
                         value={previsaoAtendimento} // Permite que o usuário altere o valor
                     />
                 </Col>
@@ -358,7 +432,7 @@ export default function Cadastrar_chamado() {
                                 {tecnicos_alfabetico
                                     .filter((tecnico) => tecnico.bd_status !== "INATIVO")
                                     .map((tecnico) => {
-                                    return (<option value={tecnico._id}>{tecnico.nome}</option>)
+                                    return (<option key={`key-${tecnico._id}`} value={tecnico._id}>{tecnico.nome}</option>)
                                 })}</> :
                                 <option selected disabled>Não há nenhum técnico cadastrado.</option>
                             }
