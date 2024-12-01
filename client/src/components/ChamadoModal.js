@@ -73,7 +73,7 @@ function ChamadoModal(props) {
     const [clienteCampo, setClienteCampo] = useState(chamado.cliente.nome);
     const [clienteObj, setClienteObj] = useState(chamado.cliente._id);
     const [atendente, setAtendente] = useState(chamado.atendente._id);
-    const [tecnico, setTecnico] = useState(chamado.tecnico._id);
+    const [tecnico, setTecnico] = useState(chamado.tecnico?._id);
 
     const [mensagem, setMensagem] = useState("");
     const [sucesso, setSucesso] = useState(false); 
@@ -109,7 +109,7 @@ function ChamadoModal(props) {
         setClienteCampo(chamado.cliente.nome || '');
         setClienteObj(chamado.cliente._id || '');
         setAtendente(chamado.atendente._id || '');
-        setTecnico(chamado.tecnico._id || '');
+        setTecnico(chamado.tecnico?._id || '');
         setDescricao(chamado.descricao || '');
         setPrioridade(chamado.prioridade || '');
         setStatusChamado(chamado.status || '');
@@ -316,15 +316,15 @@ function ChamadoModal(props) {
         let alterados = [];
         for (let propriedade in dados_novos) {
             if (propriedade === "atendente") {
-                if (chamado.atendente._id !== dados_novos.atendente) {
+                if (chamado.atendente?._id && chamado.atendente?._id !== dados_novos.atendente) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "cliente") {
-                if (chamado.cliente._id !== dados_novos.cliente) {
+                if (chamado.cliente?._id && chamado.cliente?._id !== dados_novos.cliente) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "tecnico") {
-                if (chamado.tecnico._id !== dados_novos.tecnico) {
+                if (chamado.tecnico?._id &&  chamado.tecnico?._id !== dados_novos.tecnico) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "servicos") {
@@ -349,8 +349,36 @@ function ChamadoModal(props) {
             body: JSON.stringify(body),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => { console.log(response); });
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success){
+                handleClose();
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Alterações realizadas com sucesso`);
+                    setTypeAlert("success");
+                }
+            }else{
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Não foi possível fazer a atualização do cliente`);
+                    setTypeAlert("info");
+                }
+            }
+        })
+        .catch((err) => {
+            if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setTypeAlert('danger');
+                if(err instanceof TypeError && err.message === "Failed to fetch")
+                    setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+                else
+                    setMsgAlert(`Erro: ${err.message}`);
+            }else{
+                console.error(err);
+            }
+        });
+
         setTimeout(() => {
             onHide();
         }, 500);
@@ -366,6 +394,7 @@ function ChamadoModal(props) {
         window.location.reload();
     };
 
+    console.groupEnd('Chamado Modal');
     return (
         <>
             {chamado &&
@@ -514,21 +543,21 @@ function ChamadoModal(props) {
     </Modal>
     {/* Toast de feedback */}
     <Toast
-                onClose={() => setShowToast(false)}
-                show={showToast}
-                delay={3000} // O toast ficará visível por 3 segundos
-                autohide
-                style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)', // Centraliza o toast
-                    zIndex: 1060,
-                    color: 'blue'
-                }}
-            >
-                <Toast.Body>{toastMessage}</Toast.Body>
-            </Toast>
+        onClose={() => setShowToast(false)}
+        show={showToast}
+        delay={3000} // O toast ficará visível por 3 segundos
+        autohide
+        style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)', // Centraliza o toast
+            zIndex: 1060,
+            color: 'blue'
+        }}
+    >
+        <Toast.Body>{toastMessage}</Toast.Body>
+    </Toast>
         
     </>
     );

@@ -2,7 +2,7 @@ import Form from "react-bootstrap/Form";
 import { Validar } from "../pages/validacao";
 import { useState } from "react";
 
-export default function InputNomePessoa({valueSetter, msgError, msgErrorSetter, defaultValue, pf, pj, required=false, disabled=false, readOnly=false}){
+export default function InputNomePessoa({valueSetter, msgError, msgErrorSetter, defaultValue, pf, pj, value, required=false, disabled=false, readOnly=false}){
     const [erro, setErro] = useState('');
     pf = pf ?? false;
     pj = pf ? false : true;
@@ -16,6 +16,7 @@ export default function InputNomePessoa({valueSetter, msgError, msgErrorSetter, 
                 readOnly={readOnly} 
                 defaultValue={defaultValue ?? ''} 
                 isInvalid={disabled? false : msgError ?? erro}
+                value={value} 
                 onKeyDown={(e) => pf ? Validar.NomePF.handleKeyDown(e) : Validar.NomePJ.handleKeyDown(e) }
                 onChange={(e) => {
                     if(disabled) return;
