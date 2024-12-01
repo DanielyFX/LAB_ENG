@@ -10,13 +10,15 @@ import Table from "react-bootstrap/Table";
 
 export default function OrcamentoModal(props) {
 
-    const {orcamento, tecnicos, chamados, onHide} = props;
+    const {handleClose, orcamento, tecnicos, chamados, servicos, onHide} = props;
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
+    const servicos_alfabetico = servicos.sort(sort_str)
 
-    //const [mensagem, setMensagem] = useState("");
-    //const [sucesso, setSucesso] = useState(false);
+
+    const [mensagem, setMensagem] = useState("");
+    const [sucesso, setSucesso] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState(''); 
 

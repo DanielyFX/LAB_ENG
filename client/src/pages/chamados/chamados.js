@@ -16,7 +16,9 @@ import {
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
-    const {chamado, clientes, servicos, orcamento} = props //atendentes
+    const {chamado, clientes, atendentes, tecnicos, servicos, orcamento} = props
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
+
     //console.log("Chamado único", chamado);
     //console.log("Orçamento", orcamento);
     console.groupCollapsed('Chamado Box');
@@ -140,7 +142,21 @@ function ChamadoBox(props) {
                     <Button variant="danger" onClick={() => handleInativar(chamado._id)}>Inativar</Button>
                 )}
             </ButtonGroup>
-            <ChamadoModal show={show} chamado={chamado} clientes={clientes}  servicos={servicos} orcamento={orcamento} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ChamadoModal 
+                show={show}
+                chamado={chamado}
+                clientes={clientes}
+                atendentes={atendentes}
+                tecnicos={tecnicos}
+                servicos={servicos}
+                orcamento={orcamento}
+                onHide={() => setShow(false)} 
+                handleClose={() => setShow(false)} 
+                setMsgAlert={setMsgAlert} 
+                setShowAlert={setShowAlert} 
+                setTypeAlert={setTypeAlert}
+            />
+
             
         </div>
     );
