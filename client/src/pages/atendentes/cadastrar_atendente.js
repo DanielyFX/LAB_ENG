@@ -45,6 +45,7 @@ export default function CadastrarAtendente() {
             console.error("Formulário inválido:");
             return;
         }
+        
 
         const dados = {
             "nome": nome,

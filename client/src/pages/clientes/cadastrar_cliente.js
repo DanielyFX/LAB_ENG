@@ -199,7 +199,8 @@ export default function CadastrarCliente() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Número</Form.Label>
                     <Col sm={10}>
-                        <Form.Control 
+                        <Form.Control
+                            required
                             id="cepNumber" 
                             type="number"
                             min="1" 

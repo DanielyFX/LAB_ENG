@@ -59,7 +59,7 @@ export default function CadastrarLogin() {
             window.location.reload()
             throw new Error("Usuário já cadastrado com esse email.");
           }
-          if (resultado.status == 400){
+          if (resultado.status === 400){
             window.location.reload()
             throw new Error("Não existem usuários cadastrados com o e-mail inserido");
           }
