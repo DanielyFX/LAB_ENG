@@ -62,7 +62,7 @@ function pesquisacep(valor) {
 
 
 function ChamadoModal(props) {
-    const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, orcamento, onHide} = props;
+    const {handleClose, chamado, clientes, servicos, orcamento, onHide} = props; //handleClose, chamado, clientes, atendentes, tecnicos, servicos, orcamento, onHide
     const {setMsgAlert, setShowAlert, setTypeAlert} = props;
     
     console.groupCollapsed('Chamado Modal');

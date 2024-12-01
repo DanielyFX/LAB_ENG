@@ -9,14 +9,13 @@ import searchIcon from "../../css/Icons";
 import enums from "../../utils/enums.json";
 import Alert from 'react-bootstrap/Alert';
 import { 
-    Validar,
     CadastroNacionalPessoaJuridica as CNPJ,
     CadastroPessoaFisica as CPF
 } from "../validacao";
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
-    const {chamado, clientes, atendentes, tecnicos, servicos, orcamento} = props
+    const {chamado, clientes, servicos, orcamento} = props //chamado, clientes, atendentes, tecnicos, servicos, orcamento
     const {setMsgAlert, setShowAlert, setTypeAlert} = props;
 
     //console.log("Chamado único", chamado);
@@ -146,8 +145,6 @@ function ChamadoBox(props) {
                 show={show}
                 chamado={chamado}
                 clientes={clientes}
-                atendentes={atendentes}
-                tecnicos={tecnicos}
                 servicos={servicos}
                 orcamento={orcamento}
                 onHide={() => setShow(false)} 

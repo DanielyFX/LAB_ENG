@@ -70,7 +70,6 @@ function OrcamentoBox(props) {
                             tecnicos={tecnicos}
                             chamados={chamados}
                             onHide={() => setShow(false)}
-                            handleClose={() => setShow(false)}
             />
         </div>
     )
