@@ -8,8 +8,8 @@ import {router} from './routes';
 const app: Express = express();
 const port = process.env.PORT || 3001;
 
-//app.use(express.json());
-app.use(cors({ origin: ['https://lab-eng-6zt6.vercel.app', 'http://localhost:3000'] }));
+app.use(express.json());
+//app.use(cors({ origin: ['https://lab-eng-6zt6.vercel.app', 'http://localhost:3000'] }));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
