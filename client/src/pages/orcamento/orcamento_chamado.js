@@ -136,7 +136,7 @@ export default function OrcamentoChamado() {
     
     useEffect(() => {
         calcularTempoExecucao();
-    }, [chamado]);
+    }, [chamado, calcularTempoExecucao]);
 
     useEffect(()=>{
         if (chamado.tecnico){

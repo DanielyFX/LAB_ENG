@@ -131,7 +131,7 @@ export default function ConsultarServicos() {
             </InputGroup>
             <div id="chamados-main">
                 {servicos.length > 0 && servicos
-                    .filter((servico) => servico.bd_status != "INATIVO")
+                    .filter((servico) => servico.bd_status !== "INATIVO")
                     .filter((servico) => {
                         switch (parametro) {
                             case "todos":

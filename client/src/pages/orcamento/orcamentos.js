@@ -79,7 +79,7 @@ function OrcamentoBox(props) {
 
 export default function ConsultarOrcamento() {
 
-    const {orcamentos, tecnicos, chamados, servicos} = useLoaderData();
+    const {orcamentos, tecnicos, chamados} = useLoaderData();
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("nome");
     const [parametroOrd, setParametroOrd] = useState("nome");
