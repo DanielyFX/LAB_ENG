@@ -165,7 +165,7 @@ export default function ConsultarOrcamento() {
                             case "precoTotal":
                                 return orcamento.precoTotal.toLowerCase().includes(pesquisa.toLowerCase()) ? orcamento : false
                             default:
-                                return false;
+                                return true;
                         }
                     }).sort((a,b) => {
                         switch (parametroOrd) {
