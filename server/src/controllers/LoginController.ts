@@ -50,7 +50,8 @@ class LoginController {
                 new_login.permission = 'tecnico';
             }
             else{
-                new_login.permission = 'proprietario';
+                return response.status(400).json({success: false, message: "Não existem usuários cadastrados com o e-mail inserido"});
+                //new_login.permission = 'proprietario';
             }
             await new_login.save();
             return response.status(200).json({success: true, message: "Usuário cadastrado com sucesso"});
