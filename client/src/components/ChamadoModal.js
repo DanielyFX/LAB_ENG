@@ -76,7 +76,7 @@ function ChamadoModal(props) {
     const [clienteCampo, setClienteCampo] = useState(chamado.cliente.nome);
     const [clienteObj, setClienteObj] = useState(chamado.cliente._id);
     const [atendente, setAtendente] = useState(chamado.atendente._id);
-    const [tecnico, setTecnico] = useState(chamado.tecnico._id);
+    const [tecnico, setTecnico] = useState(chamado.tecnico?._id);
 
     const [mensagem, setMensagem] = useState("");
     const [sucesso, setSucesso] = useState(false); 
@@ -112,7 +112,7 @@ function ChamadoModal(props) {
         setClienteCampo(chamado.cliente.nome || '');
         setClienteObj(chamado.cliente._id || '');
         setAtendente(chamado.atendente._id || '');
-        setTecnico(chamado.tecnico._id || '');
+        setTecnico(chamado.tecnico?._id || '');
         setDescricao(chamado.descricao || '');
         setPrioridade(chamado.prioridade || '');
         setStatusChamado(chamado.status || '');
@@ -325,11 +325,11 @@ function ChamadoModal(props) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "cliente") {
-                if (chamado.cliente._id !== dados_novos.cliente) {
+                if (chamado.cliente?._id && chamado.cliente?._id !== dados_novos.cliente) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "tecnico") {
-                if (chamado.tecnico._id !== dados_novos.tecnico) {
+                if (chamado.tecnico?._id &&  chamado.tecnico?._id !== dados_novos.tecnico) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "servicos") {
