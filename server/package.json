@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "generate-enum-json": "ts-node src/utils/generateEnumsJson.ts",
-    "build": "npm run generate-enum-json && tsc",
+    "build": "tsc",
     "start": "node src/index.js",
     "dev": "nodemon src/index.ts"
   },
