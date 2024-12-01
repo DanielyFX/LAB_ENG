@@ -63,7 +63,16 @@ function pesquisacep(valor) {
 
 function ChamadoModal(props) {
     const {handleClose, chamado, clientes, atendentes, tecnicos, servicos, orcamento, onHide} = props;
-    console.log("Orçamento", orcamento);
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
+    
+    console.groupCollapsed('Chamado Modal');
+    console.group('Dados');
+    for(let property in props){
+        console.group(`${property}`);
+        console.dir(props[property]);
+        console.groupEnd(`${property}`);
+    }
+    console.groupEnd('Dados');
     //console.log("Servicos no modal do chamado", servicos);
     const atendentes_alfabetico = atendentes.sort((a, b) => {
         return a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
@@ -321,7 +330,7 @@ function ChamadoModal(props) {
         let alterados = [];
         for (let propriedade in dados_novos) {
             if (propriedade === "atendente") {
-                if (chamado.atendente._id !== dados_novos.atendente) {
+                if (chamado.atendente?._id && chamado.atendente?._id !== dados_novos.atendente) {
                     alterados.push(propriedade);
                 }
             } else if (propriedade === "cliente") {
@@ -354,8 +363,36 @@ function ChamadoModal(props) {
             body: JSON.stringify(body),
             mode: 'cors'
         })
-            .then((resultado) => resultado.json())
-            .then((response) => { console.log(response); });
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if(response.success){
+                handleClose();
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Alterações realizadas com sucesso`);
+                    setTypeAlert("success");
+                }
+            }else{
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Não foi possível fazer a atualização do cliente`);
+                    setTypeAlert("info");
+                }
+            }
+        })
+        .catch((err) => {
+            if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setTypeAlert('danger');
+                if(err instanceof TypeError && err.message === "Failed to fetch")
+                    setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+                else
+                    setMsgAlert(`Erro: ${err.message}`);
+            }else{
+                console.error(err);
+            }
+        });
+
         setTimeout(() => {
             onHide();
         }, 500);
@@ -371,6 +408,7 @@ function ChamadoModal(props) {
         window.location.reload();
     };
 
+    console.groupEnd('Chamado Modal');
     return (
         <>
             {chamado &&
@@ -519,21 +557,21 @@ function ChamadoModal(props) {
     </Modal>
     {/* Toast de feedback */}
     <Toast
-                onClose={() => setShowToast(false)}
-                show={showToast}
-                delay={3000} // O toast ficará visível por 3 segundos
-                autohide
-                style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)', // Centraliza o toast
-                    zIndex: 1060,
-                    color: 'blue'
-                }}
-            >
-                <Toast.Body>{toastMessage}</Toast.Body>
-            </Toast>
+        onClose={() => setShowToast(false)}
+        show={showToast}
+        delay={3000} // O toast ficará visível por 3 segundos
+        autohide
+        style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)', // Centraliza o toast
+            zIndex: 1060,
+            color: 'blue'
+        }}
+    >
+        <Toast.Body>{toastMessage}</Toast.Body>
+    </Toast>
         
     </>
     );
