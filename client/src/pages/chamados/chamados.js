@@ -6,13 +6,29 @@ import {useState} from "react";
 import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ChamadoModal from "../../components/ChamadoModal";
 import searchIcon from "../../css/Icons";
-import enums from "../../utils/enums.json"
+import enums from "../../utils/enums.json";
+import Alert from 'react-bootstrap/Alert';
+import { 
+    Validar,
+    CadastroNacionalPessoaJuridica as CNPJ,
+    CadastroPessoaFisica as CPF
+} from "../validacao";
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);
     const {chamado, clientes, atendentes, tecnicos, servicos, orcamento} = props
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
+
     //console.log("Chamado único", chamado);
     //console.log("Orçamento", orcamento);
+    console.groupCollapsed('Chamado Box');
+    console.group('Dados');
+    for(let property in props){
+        console.group(`${property}`);
+        console.dir(props[property]);
+        console.groupEnd(`${property}`);
+    }
+    console.groupEnd('Dados');
 
     const handleInativar = (chamado_id) => {
         fetch('http://localhost:3001/inicio/chamados/inativar', {
@@ -23,13 +39,39 @@ function ChamadoBox(props) {
             mode: "cors",
             body: JSON.stringify({chamado_id})
         })
-            .then((resultado) => resultado.json())
-            .then((response) => {
-                if (response.success) window.location.reload();
-                else alert("Erro ao inativar Chamado");
-            })
+        .then((resultado) => resultado.json())
+        .then((response) => {
+            if (response.success){
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Chamado inativado com sucesso`);
+                    setTypeAlert("success");
+                }
+                // console.log(`Resposta: ${response.success}`);
+                setTimeout(() => {
+                    window.location.reload();  
+                }, 500);
+            }else if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setMsgAlert(`Não foi possível inativar o chamado`);
+                setTypeAlert("info");
+            }
+        })
+        .catch((err) => {
+            if(setShowAlert && setMsgAlert && setTypeAlert){
+                setShowAlert(true);
+                setTypeAlert('danger');
+                if(err instanceof TypeError && err.message === "Failed to fetch")
+                    setMsgAlert(`Erro: Verifique sua conexão com a internet (${err.message}).`);
+                else
+                    setMsgAlert(`Erro: ${err.message}`);
+            }else{
+                console.error(err);
+            }
+        });
     };
 
+    console.groupEnd('Chamado Box');
     return (
         <div className="chamado">
             <p key={`${chamado._id}`}>ID: {chamado._id}</p><hr/>
@@ -58,7 +100,7 @@ function ChamadoBox(props) {
                     <hr />
                 </>
             )}
-            <p key={`${chamado._id}_documento`}>CPF/CNPJ: {chamado.cliente.documento}</p><hr/>
+            <p key={`${chamado._id}_documento`}>{CPF.isFormatValid(chamado.cliente.documento)?`CPF: ${CPF.getFormated(chamado.cliente.documento)}`:`CNPJ: ${CNPJ.getFormated(chamado.cliente.documento)}`}</p><hr/>
             <p key={`${chamado._id}_descricao`}>DESCRIÇÃO: {chamado.descricao}</p><hr/>
             <p key={`${chamado._id}_urgencia`}>PRIORIDADE: {chamado.prioridade}</p><hr/>
             <p key={`${chamado._id}_status`}>STATUS CHAMADO: {chamado.status}</p><hr/>
@@ -100,7 +142,20 @@ function ChamadoBox(props) {
                     <Button variant="danger" onClick={() => handleInativar(chamado._id)}>Inativar</Button>
                 )}
             </ButtonGroup>
-            <ChamadoModal show={show} chamado={chamado} clientes={clientes} atendentes={atendentes} tecnicos={tecnicos} servicos={servicos} orcamento={orcamento} onHide={() => setShow(false)} handleClose={() => setShow(false)} />
+            <ChamadoModal 
+                show={show}
+                chamado={chamado}
+                clientes={clientes}
+                atendentes={atendentes}
+                tecnicos={tecnicos}
+                servicos={servicos}
+                orcamento={orcamento}
+                onHide={() => setShow(false)} 
+                handleClose={() => setShow(false)} 
+                setMsgAlert={setMsgAlert} 
+                setShowAlert={setShowAlert} 
+                setTypeAlert={setTypeAlert}
+            />
             
         </div>
     );
@@ -112,7 +167,19 @@ export default function Consultar_Chamados(props) {
     const [pesquisa, setPesquisa] = useState("");
     const [parametro, setParametro] = useState("chamado");
     const [parametroOrd, setParametroOrd] = useState("chamado");
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [typeAlert, setTypeAlert] = useState('');
     
+    console.groupCollapsed('Chamado Consultar');
+    console.group('Dados');
+    for(let property in props){
+        console.group(`${property}`);
+        console.dir(props[property]);
+        console.groupEnd(`${property}`);
+    }
+    console.groupEnd('Dados');
     // console.log("chamados", chamados)
     // console.log("clientes", clientes)
     // console.log("atendentes", atendentes)
@@ -150,9 +217,18 @@ export default function Consultar_Chamados(props) {
     const sort_string = (a, b) => {
         return a > b ? a === b ? 1 : 0 : -1;
     };
+    console.groupEnd('Chamado Consultar');
 
     return (
         <div className="body-main">
+            <Alert 
+                variant={typeAlert} 
+                show={showAlert} 
+                onClose={() => setShowAlert(false)} 
+                dismissible
+            >
+                <strong><p>{msgAlert}</p></strong>
+            </Alert>
             <InputGroup className="mb-3">
                 <InputGroup.Text style={{ opacity: 0.5 }} >{searchIcon}</InputGroup.Text>
                 <Form.Control  placeholder='Buscar...' onChange={e => setPesquisa(e.target.value)}/>
@@ -228,12 +304,16 @@ export default function Consultar_Chamados(props) {
                         //console.log("Orçamento relacionado", orcamentoRelacionado);
                         return (
                             <ChamadoBox 
-                            chamado={chamado} 
-                            clientes={clientes} 
-                            atendentes={atendentes} 
-                            tecnicos={tecnicos}
-                            servicos={servicos} 
-                            orcamento={orcamentoRelacionado}/>
+                                chamado={chamado} 
+                                clientes={clientes} 
+                                atendentes={atendentes} 
+                                tecnicos={tecnicos}
+                                servicos={servicos} 
+                                orcamento={orcamentoRelacionado}
+                                setMsgAlert={setMsgAlert} 
+                                setShowAlert={setShowAlert} 
+                                setTypeAlert={setTypeAlert}
+                            />
                         );
                     })
                 }
