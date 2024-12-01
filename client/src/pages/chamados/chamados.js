@@ -167,8 +167,8 @@ export default function ConsultarChamados(props) {
     const [parametroOrd, setParametroOrd] = useState("chamado");
 
     const [showAlert, setShowAlert] = useState(false);
-    const [msgAlert, setMsgAlert] = useState('');
-    const [typeAlert, setTypeAlert] = useState('');
+    const [msgAlert] = useState('');
+    const [typeAlert] = useState('');
     
     console.groupCollapsed('Chamado Consultar');
     console.group('Dados');
