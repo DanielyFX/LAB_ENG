@@ -83,6 +83,13 @@ export default function CadastrarCliente() {
             "cep": cep,
         }
 
+        for(let property in dados){
+            if(Validar.isNotEmptyStr(dados[property]))
+                continue;
+            else
+                return;
+        }
+
         console.log(dados)
 
         fetch('http://localhost:3001/inicio/clientes/novo', {

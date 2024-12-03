@@ -41,6 +41,15 @@ export default function CadastrarTecnico() {
             "email": email,
             "senha": senha
         }
+
+        for(let property in dados){
+            if(Validar.isNotEmptyStr(dados[property]))
+                continue;
+            else
+                return;
+        }
+
+
         fetch('http://localhost:3001/inicio/tecnicos/novo', {
             method: "POST",
             headers: {
