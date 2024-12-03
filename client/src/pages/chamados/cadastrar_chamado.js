@@ -205,7 +205,7 @@ export default function CadastrarChamado() {
         e.preventDefault();
 
         const dados = {
-            "cliente": clienteObj._id,
+            "cliente": clienteObj?._id,
             "atendente": atendente,
             "tecnico": tecnico,
             "prioridade": prioridade,
