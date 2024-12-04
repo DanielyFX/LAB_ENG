@@ -205,7 +205,7 @@ export default function CadastrarChamado() {
         e.preventDefault();
 
         const dados = {
-            "cliente": clienteObj._id,
+            "cliente": clienteObj?._id,
             "atendente": atendente,
             "tecnico": tecnico,
             "prioridade": prioridade,
@@ -221,6 +221,49 @@ export default function CadastrarChamado() {
             "numero": numero,
             "servicos": servicosSelecionados.map(s => s.id),
         }
+
+
+        for(let property in dados){
+            if(property === "tecnico")
+                continue;
+            if(dados[property] !== undefined && dados[property] !== null){
+                switch(property){
+                    case "prioridade":
+                    case "atendimento":
+                    case "atendente":
+                        console.log(`validando 1 :${property} valor 1:${document.getElementById(property).value}`)
+                        if(document.getElementById(property).value === "Selecione...")
+                            break;
+                        else continue;
+
+                    case "cep":
+                    case "numero":
+                    case "rua":
+                    case "bairro":
+                    case "descricao":
+                    case "cidade":
+                    case "previsao":
+                    case "dataAbertura":
+                        console.log(`validando 2: ${property} valor 2: ${dados[property]} ${dados[property] === ''}`)
+                        if(Validar.isNotEmptyStr(dados[property]))
+                            continue;
+                        else break;
+
+                    default:
+                        console.log(`validando 3 :${property}`)
+                        continue;
+                }
+            }
+            
+            setShowAlert(true);
+            setTypeAlert("info");
+            setMsgAlert(`Por favor, preencha o campo ${property}`);
+            return;
+            
+        }
+        setShowAlert(false);
+
+        //return;
 
         // por ser opcional o tecnico é inserido apenas se for declarado
         // Adicione o técnico somente se tiver sido selecionado
@@ -376,7 +419,7 @@ export default function CadastrarChamado() {
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Prioridade</Form.Label> 
                     <Col sm={10}>
-                    <Form.Control required as="select" defaultValue={'default'} onChange={e => setPrioridade(e.target.value)} value={prioridade}>
+                    <Form.Control id="prioridade" required as="select" defaultValue={'default'} onChange={e => setPrioridade(e.target.value)} value={prioridade}>
                     <option key='default' disabled >Selecione...</option>
                     {Object.entries(enums.PrioridadeEnum).map(([key, value]) => (
                         <option key={key} value={key}>{value}</option>
@@ -398,7 +441,7 @@ export default function CadastrarChamado() {
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Atendimento</Form.Label> 
                     <Col sm={10}>
-                    <Form.Control required as="select" onChange={e => setAtendimento(e.target.value)} value={atendimento}>
+                    <Form.Control id="atendimento" required as="select" onChange={e => setAtendimento(e.target.value)} value={atendimento}>
                     <option selected disabled>Selecione...</option>
                     {Object.entries(enums.AtendimentoEnum).map(([key, value]) => (
                         <option key={key} value={key}>{value}</option>
@@ -409,7 +452,7 @@ export default function CadastrarChamado() {
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Atendente</Form.Label> {/*Deve trazer todos os atendentes cadastrados, em ordem alfabetica  */}
                     <Col sm={10}>
-                        <Form.Control required as="select" onChange={(e)=> setAtendente(e.target.value)} value={atendente._id}>
+                        <Form.Control id="atendente" required as="select" onChange={(e)=> setAtendente(e.target.value)} value={atendente._id}>
                             {atendentes_alfabetico.length > 0 ?
                                 <><option selected disabled >Selecione...</option>
                                 {atendentes_alfabetico
@@ -443,7 +486,7 @@ export default function CadastrarChamado() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Serviço</Form.Label>
                     <Col sm={8}>
-                        <Form.Control as="select" value={servico} onChange={(e) => setServico(e.target.value)}>
+                        <Form.Control id="servico" as="select" value={servico} onChange={(e) => setServico(e.target.value)}>
                             <option value="">Selecione um serviço...</option>
                             {servicos
                                 .filter((s) => s.bd_status !== "INATIVO")
