@@ -328,8 +328,16 @@ export default function OrcamentoChamado() {
         </Table>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Desconto</Form.Label>
-                    <Col sm={10}><Form.Control  type="number" min="0" placeholder="Valor do desconto"
-                                               value={descontoServico} onChange={handleDescontoChange}/></Col>
+                    <Col sm={10}>
+                        <Form.Control
+                            type="number"
+                            min="0" 
+                            step="0.01" 
+                            placeholder="Valor do desconto"
+                            value={descontoServico} 
+                            onChange={handleDescontoChange}
+                        />
+                    </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Preço Total</Form.Label>
