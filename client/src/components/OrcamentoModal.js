@@ -10,7 +10,9 @@ import Table from "react-bootstrap/Table";
 
 export default function OrcamentoModal(props) {
 
-    const {orcamento, tecnicos, chamados, onHide} = props; //handleClose, orcamento, tecnicos, chamados, servicos, onHide
+    const {handleClose, orcamento, tecnicos, chamados, onHide} = props; //handleClose, orcamento, tecnicos, chamados, servicos, onHide
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
+
     const sort_str = (a, b) =>  a["nome"] > b["nome"] ? a["nome"] === b["nome"] ? 1 : 0 : -1;
     const chamados_alfabetico = chamados.sort((a,b) => a["descricao"] > b["descricao"] ? a["descricao"] === b["descricao"] ? 1 : 0 : -1)
     const tecnicos_alfabetico = tecnicos.sort(sort_str)
@@ -80,7 +82,7 @@ export default function OrcamentoModal(props) {
         //setSucesso(false);
         setShowToast(false);
         setToastMessage('');
-      }, [orcamento, props.show]);
+      }, [orcamento]);
     
     useEffect(() => {
         calcularTotal();
@@ -240,7 +242,23 @@ export default function OrcamentoModal(props) {
             mode: 'cors'
         })
         .then((resultado) => resultado.json())
-        .then((response) => {console.log(response)})
+        .then((response) => {
+            if(response.success){
+                handleClose();
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Alterações realizadas com sucesso`);
+                    setTypeAlert("success");
+                }
+            }else{
+                if(setShowAlert && setMsgAlert && setTypeAlert){
+                    setShowAlert(true);
+                    setMsgAlert(`Não foi possível fazer a atualização do cliente`);
+                    setTypeAlert("info");
+                }  
+            }
+            window.location.reload();
+        })
         setTimeout(() => {
             onHide()
         }, 500);

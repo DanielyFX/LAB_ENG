@@ -94,7 +94,7 @@ function ChamadoModal(props) {
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
     const [statusChamadoOriginal, setStatusChamadoOriginal] = useState(chamado.status);
 
-    const [statusOrcamentoOriginal, setStatusOrcamentoOriginal] = useState(orcamento.situacao);
+    const [statusOrcamentoOriginal, setStatusOrcamentoOriginal] = useState(orcamento?.situacao || "Não realizado");
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
@@ -121,7 +121,7 @@ function ChamadoModal(props) {
         setShowToast(false);
         setMensagem("");
         setSucesso(false);
-        setStatusOrcamentoOriginal(orcamento.situacao || '');
+        setStatusOrcamentoOriginal(orcamento?.situacao || "Não realizado");
         setDocumento(chamado.cliente.documento || '');
         setClienteCampo(chamado.cliente.nome || '');
         setClienteObj(chamado.cliente._id || '');
@@ -144,7 +144,7 @@ function ChamadoModal(props) {
         const totalInicial = chamado.servicos.reduce((acc, item) => acc + item.preco, 0);
         setTotalServicos(totalInicial);
 
-    }, [chamado, props.show]);
+    }, [chamado]);
 
     useEffect(() => {
         const totalAtualizado = servicosSelecionados.reduce((acc, item) => acc + item.preco, 0);
@@ -397,6 +397,7 @@ function ChamadoModal(props) {
                     setTypeAlert("info");
                 }
             }
+            window.location.reload();
         })
         .catch((err) => {
             if(setShowAlert && setMsgAlert && setTypeAlert){
