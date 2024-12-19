@@ -14,7 +14,7 @@ export default function InputTextRelativeToCEP({id, value, valueSetter, msgCepEr
                 required={required} 
                 disabled={disabled} 
                 readOnly={readOnly || !(msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!")} 
-                className={(msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!")?"":"bg-secondary-subtle"} 
+                className={(msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!")?"mb-1":"bg-secondary-subtle mb-1"} 
                 defaultValue={defaultValue}
                 isInvalid={msgError ?? erro} 
                 onKeyDown={(e) => Validar.NonEmptyField.handleKeyDown(e)} 
