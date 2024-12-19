@@ -16,6 +16,8 @@ import InputTelefoneCelular from "../../components/Input-TelCel";
 import InputEmail from "../../components/Input-Email";
 import InputNomePessoa from "../../components/Input-NomePessoa";
 import InputTextRelativeToCEP from "../../components/Input-TextRelativeToCEP";
+import InputEndereco from '../../components/Input-Endereco';
+import InputDadosCliente from "../../components/Input-DadosCliente";
 
 export default function CadastrarCliente() {
 
@@ -233,6 +235,8 @@ export default function CadastrarCliente() {
                         <InputEmail required={true} valueSetter={setEmail} />
                     </Col>
                 </Form.Group>
+                <InputDadosCliente/>
+                <InputEndereco/>
 
                 {/*<Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Data de Cadastro</Form.Label>
