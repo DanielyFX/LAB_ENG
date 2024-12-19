@@ -7,12 +7,12 @@ import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import ClienteModal from "../../components/ClienteModal";
 import searchIcon from "../../css/Icons";
 import Alert from 'react-bootstrap/Alert';
+import CEP from "../../utils/cep";
 import { 
     CadastroPessoaFisica as CPF,
     CadastroNacionalPessoaJuridica as CNPJ,
     TelefoneCelular as TelCel,
     TelefoneFixo as TelFixo,
-    CEP,
     Data
 } from "../validacao";
 
