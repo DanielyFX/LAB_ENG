@@ -7,12 +7,10 @@ import {Dropdown, InputGroup, ButtonGroup} from "react-bootstrap";
 import AtendenteModal from "../../components/AtendenteModal";
 import searchIcon from "../../css/Icons";
 import Alert from 'react-bootstrap/Alert';
-import {
-    Data,
-    CadastroPessoaFisica as CPF,
-    TelefoneFixo as TelFixo,
-    TelefoneCelular as TelCel
-} from '../validacao';
+import Data from "../../utils/data";
+import CPF from "../../utils/cpf";
+import TelefoneFixo from '../../utils/telefone-fixo';
+import TelefoneCelular from '../../utils/telefone-celular';
 
 function AtendenteBox(props) {
     const [show, setShow] = useState(false);
@@ -68,9 +66,9 @@ function AtendenteBox(props) {
             <hr/>
             <p key={`${atendente._id}_cpf`}>CPF: {CPF.getFormated(atendente.cpf)}</p>
             <hr/>
-            <p key={`${atendente._id}_telefone`}>TELEFONE: {TelFixo.getFormated(atendente.telefone)}</p>
+            <p key={`${atendente._id}_telefone`}>TELEFONE: {TelefoneFixo.getFormated(atendente.telefone)}</p>
             <hr/>
-            <p key={`${atendente._id}_celular`}>CELULAR: {TelCel.getFormated(atendente.celular)}</p>
+            <p key={`${atendente._id}_celular`}>CELULAR: {TelefoneCelular.getFormated(atendente.celular)}</p>
             <hr/>
             <p key={`${atendente._id}_email`}>EMAIL: {atendente.email}</p>
             <hr/>

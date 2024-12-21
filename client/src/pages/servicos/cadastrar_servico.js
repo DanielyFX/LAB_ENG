@@ -6,7 +6,7 @@ import '../../css/servicos/cadservicos.css'
 import { ButtonGroup } from "react-bootstrap";
 import {useState} from "react";
 import Alert from 'react-bootstrap/Alert';
-import { Validar } from "../validacao";
+import NomeServico from '../../utils/nome-servico';
 
 export default function CadastrarServico() {
 
@@ -96,8 +96,8 @@ export default function CadastrarServico() {
                             required 
                             type="text"
                             isInvalid={nomeError}
-                            onKeyDown={(e) => Validar.NomeServiço.handleKeyDown(e)}
-                            onChange={(e) => Validar.NomeServiço.handleOnChange(e.target.value, setNome, setNomeError)}
+                            onKeyDown={(e) => NomeServico.handleKeyDown(e)}
+                            onChange={(e) => NomeServico.handleOnChange(e.target.value, setNome, setNomeError)}
                         />
                         <Form.Control.Feedback type="invalid">
                             {nomeError}

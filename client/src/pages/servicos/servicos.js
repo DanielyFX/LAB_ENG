@@ -7,9 +7,7 @@ import { ButtonGroup, Dropdown, InputGroup } from "react-bootstrap";
 import ServicoModal from "../../components/ServicoModal";
 import searchIcon from "../../css/Icons";
 import Alert from 'react-bootstrap/Alert';
-import {
-    Data
-} from '../validacao';
+import Data from '../../utils/data';
 
 const ServicoBox = (props) => {
     const [show, setShow] = useState(false);

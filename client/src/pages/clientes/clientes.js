@@ -8,13 +8,11 @@ import ClienteModal from "../../components/ClienteModal";
 import searchIcon from "../../css/Icons";
 import Alert from 'react-bootstrap/Alert';
 import CEP from "../../utils/cep";
-import { 
-    CadastroPessoaFisica as CPF,
-    CadastroNacionalPessoaJuridica as CNPJ,
-    TelefoneCelular as TelCel,
-    TelefoneFixo as TelFixo,
-    Data
-} from "../validacao";
+import CPF from "../../utils/cpf";
+import CNPJ from "../../utils/cnpj";
+import TelefoneCelular from "../../utils/telefone-celular";
+import TelefoneFixo from "../../utils/telefone-fixo";
+import Data from "../../utils/data";
 
 function ClienteBox(props) {
     const [show, setShow] = useState(false);
@@ -68,8 +66,8 @@ function ClienteBox(props) {
             <p key={`${cliente._id}_nome`}>NOME: {cliente.nome}</p><hr/>
             <p key={`${cliente._id}_documento`}>{CPF.isFormatValid(cliente.documento)? "CPF" : "CNPJ"}: {CPF.isFormatValid(cliente.documento)?CPF.getFormated(cliente.documento):CNPJ.getFormated(cliente.documento)}</p><hr/>
             <p key={`${cliente._id}_email`}>EMAIL: {cliente.email}</p><hr/>
-            <p key={`${cliente._id}_telefone`}>TELEFONE: {TelFixo.getFormated(cliente.telefone)}</p><hr/>
-            <p key={`${cliente._id}_celular`}>CELULAR: {TelCel.getFormated(cliente.celular)}</p><hr/>
+            <p key={`${cliente._id}_telefone`}>TELEFONE: {TelefoneFixo.getFormated(cliente.telefone)}</p><hr/>
+            <p key={`${cliente._id}_celular`}>CELULAR: {TelefoneCelular.getFormated(cliente.celular)}</p><hr/>
             <p key={`${cliente._id}_cep`}>CEP: {CEP.getFormated(cliente.cep)}</p><hr/>
             <p key={`${cliente._id}_rua`}>RUA: {cliente.rua}</p><hr/>
             <p key={`${cliente._id}_bairro`}>BAIRRO: {cliente.bairro}</p><hr/>

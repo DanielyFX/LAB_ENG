@@ -12,10 +12,9 @@ import InputTelefoneFixo from "./Input-TelFixo";
 import InputTelefoneCelular from "./Input-TelCel";
 import InputEmail from "./Input-Email";
 import InputNomePessoa from "./Input-NomePessoa";
-import {
-    Validar,
-    CadastroPessoaFisica as CPF
-} from '../pages/validacao';
+import Validar from '../utils/validar';
+import CPF from '../utils/cpf';
+import CEP from '../utils/cep';
 
 function ClienteModal(props) {
 
@@ -34,10 +33,10 @@ function ClienteModal(props) {
 
     useEffect(()=>{
         try{
-            if(!Validar.CEP.isFormatValid(cep)) return;
+            if(!Validar.CEP(cep)) return;
             const updateCEP = async () => {
                 try{
-                    const data = await  Validar.CEP.getDataFrom(cep);
+                    const data = await  CEP.getDataFrom(cep);
                     if(data instanceof Object){
                         if("bairro" in data) setBairro(data.bairro);
                         if("estado" in data) setCidade(data.estado);

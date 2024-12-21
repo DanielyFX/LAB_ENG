@@ -1,4 +1,5 @@
-import { Validar } from '../pages/validacao';
+import Key from "./key";
+import Str from "./str";
 
 export default class CEP {
     static #strictMask = /^\d{5}-?\d{3}$/;
@@ -40,7 +41,7 @@ export default class CEP {
 
     static handleKeyDown(event){
         try{
-            if(Validar.isCaracterDeControle(event.key)) return;
+            if(Key.isControl(event.key)) return;
     
             if(!CEP.isValidKey(event.key)){
                 event.preventDefault();
@@ -49,24 +50,24 @@ export default class CEP {
             }else{
                 event.target.value += CEP.getNextFormatKey(event.target.value);
             }
-        }catch(err){
-            console.error(`${CEP.name} -> Erro handling keyDown evenet: ${err}`);
+        }catch(error){
+            console.error(`CEP -> Erro handling keyDown event: ${error.message}`);
         }
     }
 
     static handleOnChange(cep, valueSetter, errorMsgSetter){
         try{
-            if(!Validar.isNotEmptyStr(cep)){
+            if(!Str.isNotEmpty(cep)){
                 errorMsgSetter("Obrigatório!");
             }
             else if(CEP.hasNextKey(cep)){
                 errorMsgSetter("Incompleto!");
             }else{
                 errorMsgSetter("");
-                valueSetter(CEP.getOnlyDigits(cep));
             }
-        }catch(err){
-            console.error(`${CEP.name} -> Erro handling onChange evenet: ${err}`);
+            valueSetter(cep);
+        }catch(error){
+            console.error(`CEP -> Erro handling onChange event: ${error.message}`);
         }
     }
 

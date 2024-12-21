@@ -7,7 +7,9 @@ import Alert from 'react-bootstrap/Alert';
 import '../../css/clientes/cadclientes.css';
 import { ButtonGroup } from "react-bootstrap";
 import ToggleButton  from "react-bootstrap/ToggleButton";
-import { Validar } from "../validacao";
+import CEP from "../../utils/cep";
+import Str from "../../utils/str";
+import Validar from "../../utils/validar";
 import InputCPF from "../../components/Input-CPF";
 import InputCNPJ from "../../components/Input-CNPJ";
 import InputCEP from "../../components/Input-CEP";
@@ -49,10 +51,10 @@ export default function CadastrarCliente() {
 
     useEffect(()=>{
         try{
-            if(!Validar.CEP.isFormatValid(cep)) return;
+            if(!Validar.CEP(cep)) return;
             const updateCEP = async () => {
                 try{
-                    const data = await  Validar.CEP.getDataFrom(cep);
+                    const data = await  CEP.getDataFrom(cep);
                     if(data instanceof Object){
                         if("bairro" in data) setBairro(data.bairro ?? '');
                         if("estado" in data) setCidade(data.estado ?? '');
@@ -86,7 +88,7 @@ export default function CadastrarCliente() {
         }
 
         for(let property in dados){
-            if(Validar.isNotEmptyStr(dados[property]))
+            if(Str.isNotEmpty(dados[property]))
                 continue;
             else
                 return;
@@ -235,8 +237,20 @@ export default function CadastrarCliente() {
                         <InputEmail required={true} valueSetter={setEmail} />
                     </Col>
                 </Form.Group>
-                <InputDadosCliente/>
-                <InputEndereco/>
+                <InputDadosCliente
+                    docSetter={setDocumento} 
+                    nameSetter={setNome} 
+                    telSetter={setTelefone} 
+                    celSetter={setCelular} 
+                    emailSetter={setEmail}
+                />
+                <InputEndereco
+                    cepSetter={setCep} 
+                    citySetter={setCidade} 
+                    neighborhoodSetter={setBairro} 
+                    streetSetter={setRua}
+                    numberSetter={setNumero}
+                />
 
                 {/*<Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>Data de Cadastro</Form.Label>

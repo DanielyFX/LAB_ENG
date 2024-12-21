@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import CPF from '../utils/cpf'
 import { useState } from "react";
 
 export default function InputCPF({valueSetter, msgError, msgErrorSetter, defaultValue, feedbackStyle, ...props}){
@@ -10,18 +10,18 @@ export default function InputCPF({valueSetter, msgError, msgErrorSetter, default
             <Form.Control
                 {...props} 
                 type="text" 
-                defaultValue={Validar.CPF.getFormated(defaultValue ?? '')}
+                defaultValue={CPF.getFormated(defaultValue ?? '')}
                 style={{minWidth: "160px", maxWidth: "170px"}}
                 isInvalid={msgError ?? erro}
-                placeholder={Validar.CPF.mask}
-                minLength={Validar.CPF.minLength}
-                maxLength={Validar.CPF.maxLength}
-                onKeyDown={(e) => Validar.CPF.handleKeyDown(e)} 
+                placeholder={CPF.mask}
+                minLength={CPF.minLength}
+                maxLength={CPF.maxLength}
+                onKeyDown={(e) => CPF.handleKeyDown(e)} 
                 onChange={(e) => {
                     if(valueSetter && msgErrorSetter)
-                        Validar.CPF.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        CPF.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.CPF.handleOnChange(e.target.value, valueSetter, setErro);
+                        CPF.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
             <Form.Control.Feedback type="invalid" style={feedbackStyle}>

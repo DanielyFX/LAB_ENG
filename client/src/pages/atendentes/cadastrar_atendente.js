@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import '../../css/atendentes/cadatendentes.css';
 import { ButtonGroup } from 'react-bootstrap';
 import { useState } from "react";
-import { Validar } from '../validacao';
+import CPF from "../../utils/cpf";
 import InputCPF from "../../components/Input-CPF";
 import InputTelefoneFixo from "../../components/Input-TelFixo";
 import InputTelefoneCelular from "../../components/Input-TelCel";
@@ -76,7 +76,7 @@ export default function CadastrarAtendente() {
                 }, 2000);
             } else {
                 setShowAlert(true);
-                setMsgAlert(`CPF ${Validar.CPF.getFormated(dados.cpf)} já cadastrado!`);
+                setMsgAlert(`CPF ${CPF.getFormated(dados.cpf)} já cadastrado!`);
                 setTypeAlert("info");
             }
         })
