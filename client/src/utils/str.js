@@ -1,5 +1,7 @@
 export default class Str {
     static isNotEmpty(str){
-        return str !== "" && str.trim() !== "";
+        if(typeof str === 'string')
+            return str !== "" && str.trim() !== "";
+        return false;
     }
 }
