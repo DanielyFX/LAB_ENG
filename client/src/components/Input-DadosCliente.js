@@ -34,7 +34,7 @@ export default function InputDadosCliente({
             </Col>
             <Col>
                 <Form.Label>Nome Completo</Form.Label>
-                <InputNomePessoa required value={name} valueSetter={nameSetter}/>
+                <InputNomePessoa required pf={cpfChecked} value={name} valueSetter={nameSetter}/>
             </Col>
         </Row>
         <Form.FloatingLabel className='display-6 border-bottom border-secondary-subtle my-3'>Contatos</Form.FloatingLabel>
