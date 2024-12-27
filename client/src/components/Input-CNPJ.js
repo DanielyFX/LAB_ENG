@@ -4,13 +4,23 @@ import { useState } from "react";
 
 export default function InputCNPJ({ valueSetter, msgError, msgErrorSetter, defaultValue, feedbackStyle, ...props}){
     const [erro, setErro] = useState('');
+    const {value, disabled, readOnly} = props;
+    
+    // Para resolver o problema do controle ir de UNCONTROLED TO CONTROLED
+    if(value !== undefined && defaultValue !== undefined){
+        if(disabled !== undefined || readOnly !== undefined){
+            props.value = undefined;
+        }else{
+            defaultValue = undefined;
+        }
+    }
 
     return (
         <>
             <Form.Control
                 {...props}
                 type="text"
-                defaultValue={CNPJ.getFormated(defaultValue ?? '')}
+                defaultValue={defaultValue ? CNPJ.getFormated(defaultValue) : undefined}
                 style={{minWidth: "190px", maxWidth: "200px"}}
                 isInvalid={msgError ?? erro}
                 placeholder={CNPJ.mask}
