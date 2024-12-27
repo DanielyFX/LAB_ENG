@@ -1,25 +1,20 @@
 import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Alert from 'react-bootstrap/Alert';
 import '../../css/clientes/cadclientes.css';
 import { ButtonGroup } from "react-bootstrap";
-import ToggleButton  from "react-bootstrap/ToggleButton";
-import CEP from "../../utils/cep";
 import Str from "../../utils/str";
+import CPF from "../../utils/cpf";
+import CNPJ from "../../utils/cnpj";
+import CEP from "../../utils/cep";
 import Validar from "../../utils/validar";
-import InputCPF from "../../components/Input-CPF";
-import InputCNPJ from "../../components/Input-CNPJ";
-import InputCEP from "../../components/Input-CEP";
-import InputTelefoneFixo from "../../components/Input-TelFixo";
-import InputTelefoneCelular from "../../components/Input-TelCel";
-import InputEmail from "../../components/Input-Email";
-import InputNomePessoa from "../../components/Input-NomePessoa";
-import InputTextRelativeToCEP from "../../components/Input-TextRelativeToCEP";
-import InputEndereco from '../../components/Input-Endereco';
+import TelefoneCelular from "../../utils/telefone-celular";
+import TelefoneFixo from "../../utils/telefone-fixo";
+import InputEndereco, {searchCEP} from '../../components/Input-Endereco';
 import InputDadosCliente from "../../components/Input-DadosCliente";
+
+const searchForCEP = searchCEP();
 
 export default function CadastrarCliente() {
 
@@ -34,7 +29,7 @@ export default function CadastrarCliente() {
     const [email, setEmail] = useState('');
     const [cep, setCep] = useState('');
 
-    const [cpfChecked, setCPFChecked] = useState(false);
+    const [cpfChecked, setCPFChecked] = useState(true);
     const [cepError, setCepError] = useState('');
 
     const [showAlert, setShowAlert] = useState(false);
@@ -43,28 +38,26 @@ export default function CadastrarCliente() {
 
     useEffect(()=>{
         setDocumento('');
-        if(cpfChecked)
-            document.getElementById('cpf').focus();
-        else
-            document.getElementById('cnpj').focus();
     }, [cpfChecked]);
 
     useEffect(()=>{
+        const updateCEP = async () => {
+            try{
+                const data = await searchForCEP(cep);
+                if(data instanceof Object){
+                    if("bairro" in data) setBairro(data.bairro ?? '');
+                    if("estado" in data) setCidade(data.estado ?? '');
+                    if("logradouro" in data) setRua(data.logradouro ?? '');
+                }
+                setCepError('');
+            }catch(erro){
+                setCepError(erro?.message);
+            }
+        }
+
         try{
             if(!Validar.CEP(cep)) return;
-            const updateCEP = async () => {
-                try{
-                    const data = await  CEP.getDataFrom(cep);
-                    if(data instanceof Object){
-                        if("bairro" in data) setBairro(data.bairro ?? '');
-                        if("estado" in data) setCidade(data.estado ?? '');
-                        if("logradouro" in data) setRua(data.logradouro ?? '');
-                    }
-                    setCepError('');
-                }catch(erro){
-                    setCepError(erro?.message);
-                }
-            }
+
             updateCEP();
         }catch(erro){
             setCepError(erro?.message);
@@ -75,16 +68,16 @@ export default function CadastrarCliente() {
         event.preventDefault();
 
         const dados = {
-            "nome": nome,
-            "documento": documento,
-            "telefone": telefone,
-            "celular": celular,
-            "rua": rua,
-            "cidade": cidade,
-            "bairro": bairro,
-            "numero": numero,
-            "email": email,
-            "cep": cep,
+            "nome": Validar.NomePF(nome) ? nome : '',
+            "documento": Validar.CPF(documento) ? CPF.getOnlyDigits(documento) : Validar.CNPJ(documento) ? CNPJ.getOnlyDigits(documento) : '',
+            "telefone": Validar.TelFixo(telefone) ? TelefoneFixo.getOnlyDigits(telefone) : '',
+            "celular": Validar.TelCel(celular) ? TelefoneCelular.getOnlyDigits(celular) : '',
+            "rua": Validar.NonEmptyField(rua) ? rua : '',
+            "cidade": Validar.NonEmptyField(cidade) ? cidade : '',
+            "bairro": Validar.NonEmptyField(bairro) ? bairro : '',
+            "numero": Validar.NonEmptyField(numero) ? numero : '',
+            "email": Validar.Email(email) ? email : '',
+            "cep": Validar.CEP(cep) ? CEP.getOnlyDigits(cep) : '',
         }
 
         for(let property in dados){
@@ -140,130 +133,30 @@ export default function CadastrarCliente() {
             >
                 <strong><p>{msgAlert}</p></strong>
             </Alert>
-            <Form id="cadcliente-form" onSubmit={handleSubmit}>
-                <Form.Group as={Row} className="mb-2">
-                    <Form.Label column sm={2}>Nome Completo</Form.Label>
-                    <Col sm={10}>
-                        <InputNomePessoa required pf={cpfChecked} valueSetter={setNome}/>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="auto" md={2}>
-                        <ButtonGroup>
-                            <ToggleButton
-                                type="radio" 
-                                size="sm" 
-                                variant={cpfChecked?"primary":"secundary"} 
-                                checked={cpfChecked} 
-                                onClick={() => setCPFChecked(true)}
-                            >
-                                CPF
-                            </ToggleButton>
-                            <ToggleButton
-                                type="radio"
-                                size="sm" 
-                                variant={!cpfChecked?"primary":"secundary"} 
-                                checked={!cpfChecked}
-                                onClick={() => setCPFChecked(false)}
-                            >
-                                CNPJ
-                            </ToggleButton>
-                        </ButtonGroup>    
-                    </Form.Label>
-                    <Col sm={8}>
-                        {cpfChecked? 
-                            <InputCPF id={"cpf"} required valueSetter={setDocumento}/> 
-                            : 
-                            <InputCNPJ id={"cnpj"} required valueSetter={setDocumento}/>
-                        }
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Telefone</Form.Label>
-                    <Col sm={10}>
-                        <InputTelefoneFixo required valueSetter={setTelefone} />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Celular</Form.Label>
-                    <Col sm={10}>
-                        <InputTelefoneCelular required valueSetter={setCelular} />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>CEP</Form.Label>
-                    <Col sm={10}>
-                        <InputCEP 
-                            required 
-                            valueSetter={setCep} 
-                            msgError={cepError} 
-                            msgErrorSetter={setCepError} 
-                        />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Rua</Form.Label>
-                    <Col sm={10}>
-                        <InputTextRelativeToCEP required msgCepError={cepError} value={rua} valueSetter={setRua}/>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Número</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control
-                            required
-                            id="cepNumber" 
-                            type="number"
-                            min="1" 
-                            step="1"   
-                            onChange={(e) => setNumero(e.target.value)}/>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Bairro</Form.Label>
-                    <Col sm={10}>
-                        <InputTextRelativeToCEP required msgCepError={cepError} value={bairro} valueSetter={setBairro}/>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Cidade</Form.Label>
-                    <Col sm={10}>
-                        <InputTextRelativeToCEP required msgCepError={cepError} value={cidade} valueSetter={setCidade}/>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>E-mail</Form.Label>
-                    <Col sm={10}>
-                        <InputEmail required={true} valueSetter={setEmail} />
-                    </Col>
-                </Form.Group>
+             <Form id="cadcliente-form" onSubmit={handleSubmit}>
                 <InputDadosCliente
-                    docSetter={setDocumento} 
-                    nameSetter={setNome} 
-                    telSetter={setTelefone} 
-                    celSetter={setCelular} 
-                    emailSetter={setEmail}
+                    required
+                    doc={documento} docSetter={setDocumento} 
+                    name={nome} nameSetter={setNome} 
+                    tel={telefone} telSetter={setTelefone} 
+                    cel={celular} celSetter={setCelular} 
+                    email={email} emailSetter={setEmail}
+                    cpfChecked={cpfChecked} cpfCheckedSetter={setCPFChecked}
                 />
                 <InputEndereco
-                    cepSetter={setCep} 
-                    citySetter={setCidade} 
-                    neighborhoodSetter={setBairro} 
-                    streetSetter={setRua}
-                    numberSetter={setNumero}
+                    required
+                    cepSetter={setCep} cep={cep} cepErrorSetter={setCepError} cepError={cepError}
+                    citySetter={setCidade} city={cidade}
+                    neighborhoodSetter={setBairro}  neighborhood={bairro}
+                    streetSetter={setRua} street={rua}
+                    numberSetter={setNumero} number={numero}
                 />
-
-                {/*<Form.Group as={Row} className="mb-3">
-                    <Form.Label column sm={2}>Data de Cadastro</Form.Label>
-                    <Col sm={10}><Form.Control required type="datetime-local" /></Col>
-                </Form.Group>*/}
 
                 <ButtonGroup>
                     <Button variant="primary" type="submit">Cadastrar</Button>
                     <Button variant="secondary" href="/inicio">Cancelar</Button>
                 </ButtonGroup>
-
             </Form>
         </div>
     );
 }
-
