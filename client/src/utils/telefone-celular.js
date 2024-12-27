@@ -42,7 +42,7 @@ export default class TelefoneCelular {
     }
 
     static getFormated(telefone){
-        if(TelefoneCelular.isFormatValid(telefone))
+        if(TelefoneCelular.isFormatValid(telefone) && /\d{11}/.test(telefone))
             return `(${telefone.substr(0,2)})${telefone.substr(2,5)}-${telefone.substr(7,4)}`;
         return telefone;
     }
