@@ -5,7 +5,7 @@ import { Col, Row } from 'react-bootstrap';
 
 
 export default function InputEndereco({
-    cepSetter, cep, cepErrorSetter, 
+    cepSetter, cep, cepErrorSetter, cepError, 
     citySetter, city, 
     neighborhoodSetter, neighborhood, 
     streetSetter, street, 
@@ -16,29 +16,30 @@ export default function InputEndereco({
         <Form.FloatingLabel className='display-4 border-bottom border-primary-subtle mb-3'>Endereço</Form.FloatingLabel>
         <Form.Label>CEP</Form.Label>
         <InputCEP
-            required
+            {...props}
             value={cep}
             valueSetter={cepSetter}
+            msgError={cepError}
             msgErrorSetter={cepErrorSetter}
         />
         <Row>
             <Col md={6}>
                 <Form.Label>Cidade</Form.Label>
-                <InputTextRelativeToCEP required value={city} valueSetter={citySetter}/>
+                <InputTextRelativeToCEP {...props} value={city} valueSetter={citySetter} msgCepError={cepError}/>
             </Col>
             <Col md={6}>
                 <Form.Label>Bairro</Form.Label>
-                <InputTextRelativeToCEP required value={neighborhood} valueSetter={neighborhoodSetter}/>
+                <InputTextRelativeToCEP {...props} value={neighborhood} valueSetter={neighborhoodSetter} msgCepError={cepError}/>
             </Col>
         </Row>
         <Row>
             <Col md={8}>
                 <Form.Label>Rua</Form.Label>
-                <InputTextRelativeToCEP required value={street} valueSetter={streetSetter}/>
+                <InputTextRelativeToCEP {...props} value={street} valueSetter={streetSetter} msgCepError={cepError}/>
             </Col>
             <Col md={4}>
                 <Form.Label>Número</Form.Label>
-                <InputTextRelativeToCEP required value={number} type='number' valueSetter={numberSetter}/>
+                <InputTextRelativeToCEP {...props} value={number} type='number' valueSetter={numberSetter}/>
             </Col>
         </Row>
         
