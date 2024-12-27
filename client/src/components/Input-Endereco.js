@@ -1,8 +1,22 @@
 import Form from 'react-bootstrap/Form';
 import InputCEP from './Input-CEP';
 import InputTextRelativeToCEP from './Input-TextRelativeToCEP';
+import CEP from '../utils/cep';
 import { Col, Row } from 'react-bootstrap';
 
+export function searchCEP(){
+    const CEPS = new Map();
+    return async (cep) => {
+        if(CEPS.has(cep)){
+            return CEPS.get(cep);
+        }else{
+            console.log(`BuscandoCEP ${cep}`);
+            const data = await CEP.getDataFrom(CEP.getOnlyDigits(cep)); 
+            CEPS.set(cep, data);
+            return data;
+        }
+    } 
+}
 
 export default function InputEndereco({
     cepSetter, cep, cepErrorSetter, cepError, 
