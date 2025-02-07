@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
 
-    "title": "Dados para cadastrar de um atendente",
-    "description": "Validar os dados que serão utilizados para o cadastro",
+    "title": "Dados de um atendente",
+    "description": "Validar os dados que serão utilizados para o cadastro, atualização ou inativação de um atendente",
     "definitions": {
         "personName": {
             "type": "string",
