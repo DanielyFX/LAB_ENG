@@ -1,9 +1,19 @@
 import {Request, Response} from 'express';
 import {AtendenteModel, Atendente} from "../models/Atendente";
 import crypto from 'crypto';
+import { validarAtendente } from '../validators/atendente';
 
 class AtendenteController {
     async create(request: Request, response: Response) {
+        const { body } = request;
+        body.create = true;
+        const valido = validarAtendente(body);
+        if(!valido){
+            console.log("Invalidado por JSONSchema", valido);
+            console.dir(validarAtendente.errors);
+            return response.status(400).json({ success: false, errors: validarAtendente.errors})
+        }
+
         const new_atendente = new AtendenteModel();
         new_atendente.nome = request.body.nome;
         new_atendente.cpf = request.body.cpf;
@@ -13,6 +23,7 @@ class AtendenteController {
         new_atendente.dataContrato = request.body.dataContrato;
         new_atendente.salt = crypto.randomBytes(16).toString('hex');
         new_atendente.hash = crypto.pbkdf2Sync(request.body.senha, new_atendente.salt, 1000, 64, 'sha512').toString('base64');
+
 
         const existe = await AtendenteModel.exists(
             { cpf: new_atendente.cpf, bd_status: { $ne: "INATIVO"} })
