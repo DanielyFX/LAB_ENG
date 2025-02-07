@@ -1,29 +1,37 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import TelefoneFixo from "../utils/telefone-fixo";
 import { useState } from "react";
 
-export default function InputTelefoneFixo({valueSetter, msgError, msgErrorSetter, defaultValue, required=false, disabled=false, readOnly=false}){
+export default function InputTelefoneFixo({valueSetter, msgError, msgErrorSetter, defaultValue, ...props}){
     const [erro, setErro] = useState('');
+    const {value, disabled, readOnly} = props;
+    
+    // Para resolver o problema do controle ir de UNCONTROLED TO CONTROLED
+    if(value !== undefined && defaultValue !== undefined){
+        if(disabled !== undefined || readOnly !== undefined){
+            props.value = undefined;
+        }else{
+            defaultValue = undefined;
+        }
+    }
 
     return (
         <>
             <Form.Control
+                {...props}
                 type="text"
-                required={required} 
-                disabled={disabled} 
-                readOnly={readOnly} 
-                defaultValue={Validar.TelFixo.getFormated(defaultValue ?? '')}
+                defaultValue={defaultValue ? TelefoneFixo.getFormated(defaultValue) : undefined}
                 style={{minWidth: "160px", maxWidth: "170px"}}
                 isInvalid={msgError ?? erro}
-                placeholder={Validar.TelFixo.mask}
-                minLength={Validar.TelFixo.minLength}
-                maxLength={Validar.TelFixo.maxLength}
-                onKeyDown={(e) => Validar.TelFixo.handleKeyDown(e)}
+                placeholder={TelefoneFixo.mask}
+                minLength={TelefoneFixo.minLength}
+                maxLength={TelefoneFixo.maxLength}
+                onKeyDown={(e) => TelefoneFixo.handleKeyDown(e)}
                 onChange={(e) => {
                     if(valueSetter && msgErrorSetter)
-                        Validar.TelFixo.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        TelefoneFixo.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.TelFixo.handleOnChange(e.target.value, valueSetter, setErro);
+                        TelefoneFixo.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
             <Form.Control.Feedback type="invalid">

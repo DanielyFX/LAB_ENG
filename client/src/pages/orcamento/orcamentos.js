@@ -11,6 +11,7 @@ import searchIcon from "../../css/Icons";
 function OrcamentoBox(props) {
     const [show, setShow] = useState(false)
     const {orcamento, tecnicos, chamados} = props //orcamento, tecnicos, chamados, servicos
+    const {setMsgAlert, setShowAlert, setTypeAlert} = props;
     //console.log("Orcamento unico", orcamento);
 
     const handleExcluir = (orcamento_id) => {
@@ -70,6 +71,9 @@ function OrcamentoBox(props) {
                             tecnicos={tecnicos}
                             chamados={chamados}
                             onHide={() => setShow(false)}
+                            setMsgAlert={setMsgAlert} 
+                            setShowAlert={setShowAlert} 
+                            setTypeAlert={setTypeAlert}
             />
         </div>
     )

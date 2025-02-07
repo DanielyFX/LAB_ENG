@@ -1,28 +1,27 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import NonEmptyField from '../utils/non-emptyfield'
 import { useState } from "react";
 
-export default function InputTextRelativeToCEP({id, value, valueSetter, msgCepError, msgError, msgErrorSetter, defaultValue, required=false, disabled=false, readOnly=false}){
+export default function InputTextRelativeToCEP({valueSetter, msgCepError, msgError, msgErrorSetter, defaultValue, type, readOnly, ...props}){
     const [erro, setErro] = useState('');
 
     return (
         <>
             <Form.Control
-                id={id} 
-                type="text"
-                value={value ?? ''} 
-                required={required} 
-                disabled={disabled} 
-                readOnly={readOnly || !(msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!")} 
-                className={(msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!")?"":"bg-secondary-subtle"} 
+                {...props}
+                type={type === undefined ? 'text' : type}
+                min={type === 'number' ? 1 : undefined} 
+                step={type === 'number' ? 1 : undefined}
+                readOnly={type === 'number' ? false : (readOnly || !(msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!"))} 
+                className={type === 'number'? 'mb-1' : (msgCepError && msgCepError !== "Obrigatório!" && msgCepError !== "Incompleto!")?"mb-1":"bg-secondary-subtle mb-1"} 
                 defaultValue={defaultValue}
                 isInvalid={msgError ?? erro} 
-                onKeyDown={(e) => Validar.NonEmptyField.handleKeyDown(e)} 
+                onKeyDown={(e) => NonEmptyField.handleKeyDown(e)} 
                 onChange={(e) => {
                     if(valueSetter && msgErrorSetter)
-                        Validar.NonEmptyField.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        NonEmptyField.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.NonEmptyField.handleOnChange(e.target.value, valueSetter, setErro);
+                        NonEmptyField.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
             <Form.Control.Feedback type="invalid">

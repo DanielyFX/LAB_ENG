@@ -1,34 +1,40 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import CPF from '../utils/cpf'
 import { useState } from "react";
 
-export default function InputCPF({id, valueSetter, msgError, msgErrorSetter, defaultValue, onBlur, required=false, disabled=false, readOnly=false}){
+export default function InputCPF({valueSetter, msgError, msgErrorSetter, defaultValue, feedbackStyle, ...props}){
     const [erro, setErro] = useState('');
-
+    const {value, disabled, readOnly} = props;
+    
+    // Para resolver o problema do controle ir de UNCONTROLED TO CONTROLED
+    if(value !== undefined && defaultValue !== undefined){
+        if(disabled !== undefined || readOnly !== undefined){
+            props.value = undefined;
+        }else{
+            defaultValue = undefined;
+        }
+    }
+    
     return (
         <>
             <Form.Control
-                id={id} 
-                type="text"
-                required={required} 
-                disabled={disabled} 
-                readOnly={readOnly} 
-                defaultValue={Validar.CPF.getFormated(defaultValue ?? '')}
+                {...props} 
+                type="text" 
+                defaultValue={defaultValue?CPF.getFormated(defaultValue):undefined}
                 style={{minWidth: "160px", maxWidth: "170px"}}
                 isInvalid={msgError ?? erro}
-                placeholder={Validar.CPF.mask}
-                minLength={Validar.CPF.minLength}
-                maxLength={Validar.CPF.maxLength}
-                onKeyDown={(e) => Validar.CPF.handleKeyDown(e)}
-                onBlur={onBlur? (e) => onBlur(e.target.value) : undefined}  
+                placeholder={CPF.mask}
+                minLength={CPF.minLength}
+                maxLength={CPF.maxLength}
+                onKeyDown={(e) => CPF.handleKeyDown(e)} 
                 onChange={(e) => {
                     if(valueSetter && msgErrorSetter)
-                        Validar.CPF.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        CPF.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.CPF.handleOnChange(e.target.value, valueSetter, setErro);
+                        CPF.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
-            <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type="invalid" style={feedbackStyle}>
                 {msgError ?? erro}
             </Form.Control.Feedback>
         </>

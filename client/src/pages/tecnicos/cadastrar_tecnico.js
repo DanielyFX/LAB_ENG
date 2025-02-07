@@ -5,7 +5,8 @@ import Row from "react-bootstrap/Row";
 import '../../css/tecnicos/cadtecnicos.css'
 import { useState } from "react";
 import { ButtonGroup } from "react-bootstrap";
-import { Validar } from '../validacao';
+import Str from "../../utils/str";
+import CPF from "../../utils/cpf";
 import Alert from 'react-bootstrap/Alert';
 import InputCPF from "../../components/Input-CPF";
 import InputPassword from "../../components/Input-Password";
@@ -43,7 +44,7 @@ export default function CadastrarTecnico() {
         }
 
         for(let property in dados){
-            if(Validar.isNotEmptyStr(dados[property]))
+            if(Str.isNotEmpty(dados[property]))
                 continue;
             else
                 return;
@@ -69,7 +70,7 @@ export default function CadastrarTecnico() {
                 }, 2000);
             } else {
                 setShowAlert(true);
-                setMsgAlert(`Erro ao cadastrar! CPF ${Validar.CPF.getFormated(dados.cpf)} já cadastrado.`);
+                setMsgAlert(`Erro ao cadastrar! CPF ${CPF.getFormated(dados.cpf)} já cadastrado.`);
                 setTypeAlert("info");
             }
         })

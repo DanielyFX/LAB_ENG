@@ -92,8 +92,9 @@ function ChamadoModal(props) {
     const [descricao, setDescricao] = useState(chamado.descricao);
     const [prioridade, setPrioridade] = useState(chamado.prioridade);
     const [statusChamado, setStatusChamado] = useState(chamado.status); 
-    const [statusChamadoOriginal] = useState(chamado.status);
-    const [statusOrcamentoOriginal] = useState(orcamento?.situacao);
+    const [statusChamadoOriginal, setStatusChamadoOriginal] = useState(chamado.status);
+
+    const [statusOrcamentoOriginal, setStatusOrcamentoOriginal] = useState(orcamento?.situacao || "Não realizado");
     const [previsaoAtendimento, setPrevisaoAtendimento] = useState(chamado.previsao);
 
     const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
@@ -110,12 +111,17 @@ function ChamadoModal(props) {
     const [bairro, setBairro] = useState(chamado.bairro);
     const [numero, setNumero] = useState(chamado.numero);
 
+    console.log("Status chamado original", statusChamadoOriginal);
+    console.log("Status chamado", statusChamado);
+    console.log("Orçamento origina", statusOrcamentoOriginal);
+
     console.log("Servicos no chamado", servicosSelecionados);
     useEffect(() => {
         setToastMessage("");
         setShowToast(false);
         setMensagem("");
         setSucesso(false);
+        setStatusOrcamentoOriginal(orcamento?.situacao || "Não realizado");
         setDocumento(chamado.cliente.documento || '');
         setClienteCampo(chamado.cliente.nome || '');
         setClienteObj(chamado.cliente._id || '');
@@ -124,6 +130,7 @@ function ChamadoModal(props) {
         setDescricao(chamado.descricao || '');
         setPrioridade(chamado.prioridade || '');
         setStatusChamado(chamado.status || '');
+        setStatusChamadoOriginal(chamado.status || '');
         setPrevisaoAtendimento(chamado.previsao || '');
         setAtendimento(chamado.atendimento || '');
         setCep(chamado.cep || '');
@@ -137,7 +144,7 @@ function ChamadoModal(props) {
         const totalInicial = chamado.servicos.reduce((acc, item) => acc + item.preco, 0);
         setTotalServicos(totalInicial);
 
-    }, [chamado, props.show]);
+    }, [chamado]);
 
     useEffect(() => {
         const totalAtualizado = servicosSelecionados.reduce((acc, item) => acc + item.preco, 0);
@@ -252,6 +259,20 @@ function ChamadoModal(props) {
             setMensagem("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
             setToastMessage("O orçamento ainda não foi feito e aceito. Não é possível avançar.");
             setSucesso(false);
+        } else {
+            setMensagem("Este chamado não pode ser alterado para outro status.");
+            setToastMessage("Este chamado não pode ser alterado para outro status.");
+            setSucesso(false);
+        }
+        setShowToast(true);
+    };
+
+    const handleFinalizarChamado = () => {
+        if (statusChamadoOriginal === enums.StatusChamadoEnum.em_progresso) {
+            setStatusChamado(enums.StatusChamadoEnum.concluido);
+            setMensagem("Status alterado para 'Concluido' com sucesso.");
+            setToastMessage("Status alterado para 'Concluido' com sucesso.");
+            setSucesso(true);
         } else {
             setMensagem("Este chamado não pode ser alterado para outro status.");
             setToastMessage("Este chamado não pode ser alterado para outro status.");
@@ -376,6 +397,7 @@ function ChamadoModal(props) {
                     setTypeAlert("info");
                 }
             }
+            window.location.reload();
         })
         .catch((err) => {
             if(setShowAlert && setMsgAlert && setTypeAlert){
@@ -535,6 +557,8 @@ function ChamadoModal(props) {
                                 <Button variant="info" onClick={handleAceitarChamado}>Aceitar Chamado</Button>)}
                             {orcamento?.situacao === "APROVADO" && chamado.status === "EM ANÁLISE" && (
                                 <Button variant="info" onClick={handleIniciarChamado}>Iniciar</Button>)}
+                            {orcamento?.situacao === "APROVADO" && chamado.status === "EM PROGRESSO" && (
+                                <Button variant="info" onClick={handleFinalizarChamado}>Finalizar</Button>)}
                         </Modal.Footer>
                     </Form>
                 </Modal> 

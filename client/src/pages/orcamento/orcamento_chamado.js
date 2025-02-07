@@ -253,7 +253,7 @@ export default function OrcamentoChamado() {
                     <Form.Control required as="select" onChange={handleChamadoChange} value={chamado?._id || ""}>
                         <option value="" disabled>Selecione...</option>
                         {chamados
-                            .filter((chamado) => chamado.bd_status !== "INATIVO" && chamado.status !== "CANCELADO" )
+                            .filter((chamado) => chamado.bd_status !== "INATIVO" && chamado.status !== "CANCELADO" && chamado.status !== "CONCLUIDO" )
                             .map(chamado => (
                             <option key={chamado._id} value={chamado._id}>{chamado.descricao}</option>
                         ))}

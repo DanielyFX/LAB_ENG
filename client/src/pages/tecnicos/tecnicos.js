@@ -7,12 +7,10 @@ import {ButtonGroup, Dropdown, InputGroup} from "react-bootstrap";
 import TecnicoModal from "../../components/TecnicoModal";
 import searchIcon from "../../css/Icons";
 import Alert from 'react-bootstrap/Alert';
-import { 
-    CadastroPessoaFisica as CPF,
-    TelefoneCelular as TelCel,
-    TelefoneFixo as TelFixo,
-    Data
-} from "../validacao";
+import Data from "../../utils/data";
+import CPF from "../../utils/cpf";
+import TelefoneCelular from "../../utils/telefone-celular";
+import TelefoneFixo from "../../utils/telefone-fixo";
 
 function TecnicoBox(props) {
 
@@ -70,9 +68,9 @@ function TecnicoBox(props) {
             <hr/>
             <p key={`${tecnico_modal._id}_cpf`}>CPF: {CPF.getFormated(tecnico_modal.cpf)}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_telefone`}>TELEFONE: {TelFixo.getFormated(tecnico_modal.telefone)}</p>
+            <p key={`${tecnico_modal._id}_telefone`}>TELEFONE: {TelefoneFixo.getFormated(tecnico_modal.telefone)}</p>
             <hr/>
-            <p key={`${tecnico_modal._id}_celular`}>CELULAR: {TelCel.getFormated(tecnico_modal.celular)}</p>
+            <p key={`${tecnico_modal._id}_celular`}>CELULAR: {TelefoneCelular.getFormated(tecnico_modal.celular)}</p>
             <hr/>
             <p key={`${tecnico_modal._id}_email`}>EMAIL: {tecnico_modal.email}</p>
             <hr/>

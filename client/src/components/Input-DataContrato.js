@@ -1,27 +1,25 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import DataContrato from '../utils/data-contrato'
 import { useState } from "react";
 
-export default function InputDataContrato({valueSetter, msgError, msgErrorSetter, defaultValue, required=false, disabled=false, readOnly=false}){
+export default function InputDataContrato({valueSetter, msgError, msgErrorSetter, defaultValue, disabled, ...props}){
     const [erro, setErro] = useState('');
 
     return (
         <>
             <Form.Control
                 type="date"
-                required={required} 
-                disabled={disabled} 
-                readOnly={readOnly} 
+                {...props} 
                 style={{minWidth: "160px", maxWidth: "200px"}} 
-                defaultValue={defaultValue ?? Validar.DataContrato.TodayHTMLDateFormat}
+                defaultValue={defaultValue ?? DataContrato.TodayHTMLDateFormat}
                 isInvalid={msgError ?? erro}
-                max={Validar.DataContrato.TodayHTMLDateFormat} 
+                max={DataContrato.TodayHTMLDateFormat} 
                 onChange={(e) => {
                     if(disabled) return;
                     if(valueSetter && msgErrorSetter)
-                        Validar.DataContrato.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        DataContrato.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.DataContrato.handleOnChange(e.target.value, valueSetter, setErro);
+                        DataContrato.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
             <Form.Control.Feedback type="invalid">

@@ -1,34 +1,40 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import CNPJ from '../utils/cnpj'
 import { useState } from "react";
 
-export default function InputCNPJ({id, valueSetter, msgError, msgErrorSetter, defaultValue, onBlur, required=false, disabled=false, readOnly=false}){
+export default function InputCNPJ({ valueSetter, msgError, msgErrorSetter, defaultValue, feedbackStyle, ...props}){
     const [erro, setErro] = useState('');
+    const {value, disabled, readOnly} = props;
+    
+    // Para resolver o problema do controle ir de UNCONTROLED TO CONTROLED
+    if(value !== undefined && defaultValue !== undefined){
+        if(disabled !== undefined || readOnly !== undefined){
+            props.value = undefined;
+        }else{
+            defaultValue = undefined;
+        }
+    }
 
     return (
         <>
             <Form.Control
-                id={id}
+                {...props}
                 type="text"
-                required={required} 
-                disabled={disabled} 
-                readOnly={readOnly} 
-                defaultValue={Validar.CNPJ.getFormated(defaultValue ?? '')}
+                defaultValue={defaultValue ? CNPJ.getFormated(defaultValue) : undefined}
                 style={{minWidth: "190px", maxWidth: "200px"}}
                 isInvalid={msgError ?? erro}
-                placeholder={Validar.CNPJ.mask}
-                minLength={Validar.CNPJ.minLength}
-                maxLength={Validar.CNPJ.maxLength}
-                onKeyDown={(e) => Validar.CNPJ.handleKeyDown(e)}
-                onBlur={onBlur? (e) => onBlur(e.target.value) : undefined}
+                placeholder={CNPJ.mask}
+                minLength={CNPJ.minLength}
+                maxLength={CNPJ.maxLength}
+                onKeyDown={(e) => CNPJ.handleKeyDown(e)}
                 onChange={(e) => {
                     if(valueSetter && msgErrorSetter)
-                        Validar.CNPJ.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        CNPJ.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.CNPJ.handleOnChange(e.target.value, valueSetter, setErro);
+                        CNPJ.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
-            <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type="invalid" style={feedbackStyle}>
                 {msgError ?? erro}
             </Form.Control.Feedback>
         </>

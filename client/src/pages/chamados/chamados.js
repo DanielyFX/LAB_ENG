@@ -8,10 +8,8 @@ import ChamadoModal from "../../components/ChamadoModal";
 import searchIcon from "../../css/Icons";
 import enums from "../../utils/enums.json";
 import Alert from 'react-bootstrap/Alert';
-import { 
-    CadastroNacionalPessoaJuridica as CNPJ,
-    CadastroPessoaFisica as CPF
-} from "../validacao";
+import CPF from "../../utils/cpf";
+import CNPJ from "../../utils/cnpj";
 
 function ChamadoBox(props) {
     const [show, setShow] = useState(false);

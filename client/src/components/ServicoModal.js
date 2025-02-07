@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { Validar } from '../pages/validacao';
+import NomeServico from '../utils/nome-servico';
 import { useState } from 'react';
 
 function ServicoModal(props) {
@@ -103,8 +103,8 @@ function ServicoModal(props) {
                                     required 
                                     isInvalid={nomeError} 
                                     defaultValue={servico.nome}
-                                    onKeyDown={(e) => Validar.NomeServiço.handleKeyDown(e)} 
-                                    onChange={(e) => Validar.NomeServiço.handleOnChange(e.target.value, setNome, setNomeError)}
+                                    onKeyDown={(e) => NomeServico.handleKeyDown(e)} 
+                                    onChange={(e) => NomeServico.handleOnChange(e.target.value, setNome, setNomeError)}
                                 />
                                 <Form.Control.Feedback type='invalid'>
                                     {nomeError}

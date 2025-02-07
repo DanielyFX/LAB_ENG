@@ -10,7 +10,8 @@ import { Table } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import enums from '../../utils/enums.json';
 import ToggleButton  from "react-bootstrap/ToggleButton";
-import { Validar } from "../validacao";
+import Str from "../../utils/str";
+import Data from "../../utils/data";
 import InputCPF from "../../components/Input-CPF";
 import InputCNPJ from "../../components/Input-CNPJ";
 import InputCEP from "../../components/Input-CEP";
@@ -245,7 +246,7 @@ export default function CadastrarChamado() {
                     case "previsao":
                     case "dataAbertura":
                         console.log(`validando 2: ${property} valor 2: ${dados[property]} ${dados[property] === ''}`)
-                        if(Validar.isNotEmptyStr(dados[property]))
+                        if(Str.isNotEmpty(dados[property]))
                             continue;
                         else break;
 
@@ -411,7 +412,7 @@ export default function CadastrarChamado() {
                         required
                         type="datetime-local"
                         value={dataAbertura}
-                        max={Validar.Data.TodayHTMLDatetimeLocalFormat} 
+                        max={Data.TodayHTMLDatetimeLocalFormat} 
                         onChange={(e) => setDataAbertura(e.target.value)} 
                     />
                 </Col>
@@ -433,7 +434,7 @@ export default function CadastrarChamado() {
                     <Form.Control
                         type="date"
                         onChange={(e) => setPrevisaoAtendimento(e.target.value)} 
-                        min={Validar.Data.TodayHTMLDateFormat} 
+                        min={Data.TodayHTMLDateFormat} 
                         value={previsaoAtendimento} // Permite que o usuário altere o valor
                     />
                 </Col>

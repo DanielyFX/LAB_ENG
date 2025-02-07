@@ -1,36 +1,37 @@
 import Form from "react-bootstrap/Form";
-import { Validar } from "../pages/validacao";
+import TelefoneCelular from "../utils/telefone-celular";
 import { useState } from "react";
 
-export default function InputTelefoneCelular({valueSetter, msgError, msgErrorSetter, defaultValue, required=false, disabled=false, readOnly=false}){
+export default function InputTelefoneCelular({valueSetter, msgError, msgErrorSetter, defaultValue, ...props}){
     const [erro, setErro] = useState('');
-    // console.group('TelefoneCelularComponent');
-    // console.log(`valueSetter: ${valueSetter} ${valueSetter===undefined}`);
-    // console.log(`msgError: ${msgError} ${msgError===undefined}`);
-    // console.log(`msgErrorSetter: ${msgErrorSetter} ${msgErrorSetter===undefined}`);
-    // console.log(`required: ${required} ${required===undefined}`);
-    // console.groupEnd('TelefoneCelularComponent');
+    const {value, disabled, readOnly} = props;
+    
+    // Para resolver o problema do controle ir de UNCONTROLED TO CONTROLED
+    if(value !== undefined && defaultValue !== undefined){
+        if(disabled !== undefined || readOnly !== undefined){
+            props.value = undefined;
+        }else{
+            defaultValue = undefined;
+        }
+    }
 
     return (
         <>
             <Form.Control
+                {...props}
                 type="text"
-                required={required} 
-                disabled={disabled} 
-                readOnly={readOnly} 
-                defaultValue={Validar.TelCel.getFormated(defaultValue ?? '')}
+                defaultValue={defaultValue ? TelefoneCelular.getFormated(defaultValue) : undefined}
                 style={{minWidth: "160px", maxWidth: "170px"}}
-                isInvalid={disabled? false : msgError ?? erro }
-                placeholder={Validar.TelCel.mask}
-                minLength={Validar.TelCel.minLength}
-                maxLength={Validar.TelCel.maxLength}
-                onKeyDown={(e) => Validar.TelCel.handleKeyDown(e)}
+                isInvalid={ msgError ?? erro }
+                placeholder={TelefoneCelular.mask}
+                minLength={TelefoneCelular.minLength}
+                maxLength={TelefoneCelular.maxLength}
+                onKeyDown={(e) => TelefoneCelular.handleKeyDown(e)}
                 onChange={(e) => {
-                    if(disabled) return;
                     if(valueSetter && msgErrorSetter)
-                        Validar.TelCel.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
+                        TelefoneCelular.handleOnChange(e.target.value, valueSetter, msgErrorSetter);
                     else if(valueSetter)
-                        Validar.TelCel.handleOnChange(e.target.value, valueSetter, setErro);
+                        TelefoneCelular.handleOnChange(e.target.value, valueSetter, setErro);
                 }}
             />
             <Form.Control.Feedback type="invalid">
