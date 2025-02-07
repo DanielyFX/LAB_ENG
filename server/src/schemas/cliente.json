@@ -1,0 +1,153 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Dados de um cliente",
+    "description": "Validar os dados que serão utilizados para o cadastro, atualização ou inativação de um cliente",
+    "definitions": {
+        "personName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Záéíóúâêîôãõïäëöü]{3,}[a-zA-Záéíóúâêîôãõïäëöü\\s]*$"
+        },
+        "cpf": {
+            "type": "string",
+            "pattern": "^\\d{11}$"
+        },
+        "cnpj": {
+            "type": "string",
+            "pattern": "^\\d{14}$"
+        },
+        "mobileNumber": {
+            "type": "string",
+            "pattern": "^\\d{10}$"
+        },
+        "phoneNumber": {
+            "type": "string",
+            "pattern": "^\\d{11}$"
+        },
+        "email": {
+            "type": "string",
+            "pattern": "^$"
+        },
+        "postalCodeAddress": {
+            "type": "string",
+            "pattern": "^\\d{8}$"
+        },
+        "addressCity": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30,
+            "pattern": "^$"
+        },
+        "addressNeighborhood": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30,
+            "pattern": "^$"
+        },
+        "addressStreet": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30,
+            "pattern": "^$"
+        },
+        "addressNumber": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "multipleOf": 1
+        },
+        "uniqueIdentifier": {
+            "type": "string",
+            "pattern": "^$"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "create": {
+            "type": "boolean"
+        },
+        "inative": {
+            "type": "boolean"
+        },
+        "nome": {
+            "$ref": "#/definitions/personName"
+        },
+        "documento": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/cpf"
+                },
+                {
+                    "$ref": "#/definitions/cnpj"
+                }
+            ]
+        },
+        "telefone": {
+            "$ref": "#/definitions/phoneNumber"
+        },
+        "celular": {
+            "$ref": "#/definitions/mobileNumber"
+        },
+        "email": {
+            "$ref": "#/definitions/email"
+        },
+        "cep": {
+            "$ref": "#/definitions/postalCodeAddress"
+        },
+        "cidade": {
+            "$ref": "#/definitions/addressCity"
+        },
+        "bairro": {
+            "$ref": "#/definitions/addressNeighborhood"
+        },
+        "rua": {
+            "$ref": "#/definitions/addressStreet"
+        },
+        "numero": {
+            "$ref": "#/definitions/addressNumber"
+        },
+        "cliente_id": {
+            "$ref": "#/definitions/uniqueIdentifier"
+        }
+    },
+    "if": {
+        "properties": {
+            "create": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "dependencies": {
+            "create": [
+                "nome",
+                "documento",
+                "telefone",
+                "celular",
+                "email",
+                "cep",
+                "cidade",
+                "bairro",
+                "rua",
+                "numero"
+            ]
+        }
+    },
+    "else": {
+        "if": {
+            "properties": {
+                "inative": {
+                    "const": true
+                }
+            }
+        },
+        "then": {
+            "dependencies": {
+                "inative": [
+                    "cliente_id"
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+}
