@@ -27,7 +27,7 @@
         },
         "email": {
             "type": "string",
-            "pattern": "^$"
+            "pattern": "^[\\w]{3,0}$"
         },
         "postalCodeAddress": {
             "type": "string",
@@ -36,20 +36,17 @@
         "addressCity": {
             "type": "string",
             "minLength": 3,
-            "maxLength": 30,
-            "pattern": "^$"
+            "maxLength": 30
         },
         "addressNeighborhood": {
             "type": "string",
             "minLength": 3,
-            "maxLength": 30,
-            "pattern": "^$"
+            "maxLength": 30
         },
         "addressStreet": {
             "type": "string",
             "minLength": 3,
-            "maxLength": 30,
-            "pattern": "^$"
+            "maxLength": 30
         },
         "addressNumber": {
             "type": "number",
@@ -58,7 +55,9 @@
         },
         "uniqueIdentifier": {
             "type": "string",
-            "pattern": "^$"
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[\\da-z]{24}$"
         }
     },
     "type": "object",
