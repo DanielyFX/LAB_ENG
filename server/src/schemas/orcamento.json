@@ -1,0 +1,123 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+
+    "title": "Dados de um orçamento",
+    "description": "Validar os dados que serão utilizados para o cadastro, atualização ou inativação de um orçamento",
+    "definitions": {
+        "uniqueIdentifier":{
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[\\da-z]{24}$"
+        },
+        "monetaryValue":{
+            "type":"number",
+            "minimum": 0,
+            "multipleOf": 0.01
+        }
+    },
+
+    "type": "object",
+    "properties": {
+        "create":{
+            "type":"boolean"
+        },
+        "inativate":{
+            "type":"boolean"
+        }, 
+        "chamado":{
+            "$ref": "#/definitions/uniqueIdentifier"
+        },
+        "tecnico":{
+            "$ref": "#/definitions/uniqueIdentifier"
+        },
+        "tempoExecucao":{
+            "type":"string"
+        },
+        "enderecoServico":{
+            "type":"string"
+        },
+        "observacao":{
+            "type":"string"
+        },
+        "situacao":{
+            "enum": [
+                "NÃO INICIADO",
+                "EM ANÁLISE",
+                "CONCLUIDO",
+                "EM PROGRESSO",
+                "CANCELADO"
+            ]
+        },
+        "descontoServico":{
+            "$ref": "#/definitions/monetaryValue"
+        },
+        "dataCriacao":{
+            "type":"string"
+        },
+        "precoTotal":{
+            "$ref": "#/definitions/monetaryValue"
+        },
+        "despesas":{
+            "type":"array",
+            "items": {
+                "type":"object",
+                "properties": {
+                    "tipo":{
+                        "type":"string"
+                    },
+                    "valor":{
+                        "$ref": "#/definitions/monetaryValue"
+                    },
+                    "_id":{
+                        "$ref": "#/definitions/uniqueIdentifier"
+                    }
+                }
+            }
+        },
+        "orcamento_id":{
+            "$ref": "#/definitions/uniqueIdentifier"
+        }
+    },
+    "if": {
+        "properties": {
+            "create":{
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "dependencies": {
+            "create":[
+                "chamado",
+                "tecnico",
+                "tempoExecucao",
+                "enderecoServico",
+                "observacao",
+                "situacao",
+                "descontoServico",
+                "dataCriacao",
+                "precoTotal",
+                "despesas"
+            ]
+        }
+    },
+    "else": {
+        "if": {
+            "properties": {
+                "inativate":{
+                    "const": true
+                }
+            }
+        },
+        "then": {
+            "dependencies": {
+                "inativate":[
+                    "orcamento_id"
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+
+}
