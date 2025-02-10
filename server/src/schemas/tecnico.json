@@ -1,0 +1,119 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+
+    "title": "Dados de um técnico",
+    "description": "Validar os dados que serão utilizados para o cadastro, atualização ou inativação de um técnico",
+    "definitions": {
+        "personName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Záéíóúâêîôãõïäëöü]{3,}[a-zA-Záéíóúâêîôãõïäëöü\\s]*$"
+        },
+        "cpf": {
+            "type": "string",
+            "pattern": "^\\d{11}$"
+        },
+        "mobileNumber":{
+            "type": "string",
+            "pattern": "^\\(?\\d{2}\\)?\\d{4}-?\\d{4}$"
+        },
+        "phoneNumber":{
+            "type": "string",
+            "pattern": "^\\(?\\d{2}\\)?\\d{5}-?\\d{4}$"
+        },
+        "email":{
+            "type": "string",
+            "pattern": "^$"
+        },
+        "pass":{
+            "type": "string",
+            "pattern": "^[\\w]{6,}$"
+        },
+        "contractDate":{
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "uniqueIdentifier": {
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[\\da-z]{24}$"
+        }
+    },
+
+    "type": "object",
+    "properties": {
+        "create": {
+            "type": "boolean"
+        },
+        "inative": {
+            "type": "boolean"
+        },
+        "nome": {
+            "$ref": "#/definitions/personName"
+        },
+        "cpf": {
+            "$ref": "#/definitions/cpf"
+        },
+        "telefone": {
+            "$ref": "#/definitions/phoneNumber"
+        },
+        "celular": {
+            "$ref": "#/definitions/mobileNumber"
+        },
+        "email": {
+            "$ref": "#/definitions/email"
+        },
+        "ativo": {
+            "type": "boolean",
+            "default": true
+        },
+        "senha": {
+            "$ref": "#/definitions/pass"
+        },
+        "dataContrato": {
+            "$ref": "#/definitions/contractDate"
+        },
+        "tecnico_id":{
+            "$ref": "#/definitions/uniqueIdentifier"
+        }
+    },
+    "if": {
+        "properties": {
+            "create": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "dependencies": {
+            "create":[
+                "nome",
+                "cpf",
+                "telefone",
+                "celular",
+                "email",
+                "senha",
+                "dataContrato"
+            ]
+        }
+    },
+    "else": {
+        "if":{
+            "properties": {
+                "inative":{
+                    "const": true
+                }
+            }
+        },
+        "then": {
+            "dependencies": {
+                "inative":[
+                    "tecnico_id"
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+}

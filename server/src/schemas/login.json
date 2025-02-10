@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Dados de um cliente",
+    "description": "Validar os dados que serão utilizados para o cadastro, atualização ou inativação de um cliente",
+    "definitions": {
+        "email": {
+            "type": "string",
+            "pattern": "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,6}$"
+        },
+        "pass": {
+            "type": "string",
+            "pattern": "^.{8,}$"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "recover": {
+            "type": "boolean"
+        },
+        "senha": {
+            "$ref": "#definitions/pass"
+        },
+        "email": {
+            "$ref": "#/definitions/email"
+        }
+    },
+    "if": {
+        "properties": {
+            "recover": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "dependencies": {
+            "recover":[
+                "email"
+            ]
+        }
+    },
+    "else": {
+        "required": [
+            "email",
+            "senha"
+        ]
+    },
+    "additionalProperties": false
+}

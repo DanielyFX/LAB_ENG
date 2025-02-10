@@ -1,0 +1,81 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+
+    "title": "Dados de um serviço",
+    "description": "Validar os dados que serão utilizados para o cadastro, atualização ou inativação de um serviço",
+    "definitions": {
+        "uniqueIdentifier":{
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[\\da-z]{24}$"
+        }
+    },
+
+    "type": "object",
+    "properties": {
+        "create":{
+            "type":"boolean"
+        },
+        "inativate":{
+            "type":"boolean"
+        },
+        "nome":{
+            "type":"string",
+            "minLength": 3,
+            "maxLength": 80
+        },
+        "tipo":{
+            "type":"string",
+            "minLength": 3,
+            "maxLength": 30
+        },
+        "descricao":{
+            "type":"string",
+            "minLength": 10,
+            "maxLength": 300
+        },
+        "preco":{
+            "type":"number",
+            "exclusiveMinimum": 0,
+            "multipleOf": 0.01
+        },
+        "servico_id":{
+            "$ref": "#definitions/uniqueIdentifier"
+        }
+    },
+    "if": {
+        "properties": {
+            "create": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "dependencies": {
+            "create": [
+                "nome",
+                "tipo",
+                "descricao",
+                "preco"
+            ]
+        }
+    },
+    "else": {
+        "if": {
+            "properties": {
+                "inative": {
+                    "const": true
+                }
+            }
+        },
+        "then": {
+            "dependencies": {
+                "inativate":[
+                    "servico_id"
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+}
